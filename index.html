@@ -15,9 +15,9 @@
     --bg3: #202020;
     --surface: #222222;
     --surface2: #2a2a2a;
-    --green: #aaaaaa;
-    --green-dim: #888888;
-    --green-glow: #aaaaaa22;
+    --green: #3dba6f;
+    --green-dim: #2a9455;
+    --green-glow: #3dba6f22;
     --text: #f0f0f0;
     --text2: #909090;
     --text3: #555555;
@@ -30,6 +30,26 @@
     --radius: 14px;
     --radius-sm: 8px;
   }
+
+  /* ── LIGHT MODE ── */
+  body.day-mode {
+    --bg: #f2f4f0;
+    --bg2: #e8ebe4;
+    --bg3: #dde1d8;
+    --surface: #ffffff;
+    --surface2: #eef0eb;
+    --green: #2a9455;
+    --green-dim: #1e7040;
+    --green-glow: #3dba6f22;
+    --text: #1a1a1a;
+    --text2: #555555;
+    --text3: #999999;
+    --border: #d0d4cc;
+    --border2: #c0c5bb;
+  }
+
+  * { transition: background-color 0.4s ease, border-color 0.4s ease, color 0.3s ease; }
+  .day-check-box, .toggle, .toggle::after { transition: all 0.2s !important; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -149,7 +169,7 @@
     text-align: right;
     font-family: 'DM Mono', monospace;
   }
-  .day-count span { color: var(--text); }
+  .day-count span { color: var(--green); font-weight: 600; }
 
   /* ── LIFE ROWS ── */
   .life-row {
@@ -466,14 +486,21 @@ input[type="time"] {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 .inline-comment {
-  width: 120px;
+  flex: 1;
+  min-width: 0;
   min-height: 28px;
   height: 28px;
-  padding: 4px 6px;
+  padding: 4px 8px;
   font-size: 12px;
   resize: none;
+  display: none;
+}
+.companion-on .inline-comment {
+  display: block;
 }
 
 </style>
@@ -562,9 +589,9 @@ input[type="time"] {
       <div class="form-group">
         <label>Time</label>
         <div class="time-row">
-          <input type="time" id="f-start">
+          <select id="f-start"></select>
           <span>–</span>
-          <input type="time" id="f-end">
+          <select id="f-end"></select>
         </div>
       </div>
       <div class="form-group">
@@ -694,10 +721,11 @@ function renderLife() {
   el.innerHTML = LIFE_ITEMS.map(item => {
     const on = !!data.life[item.key];
     const comment = data.comments[item.key] || '';
-    return `<div class="life-row">
+    const companionClass = (item.key === 'companion' && on) ? ' companion-on' : '';
+    return `<div class="life-row${companionClass}">
       <div class="life-row-inline">
         <div class="life-row-label">${item.label}</div>
-        ${item.key === 'companion' ? `<textarea class="comments-area inline-comment" placeholder="Note..." onchange="saveComment('${item.key}', this.value)">${comment}</textarea>` : ''}
+        ${item.key === 'companion' ? `<textarea class="comments-area inline-comment" placeholder="When and with whom..." onchange="saveComment('${item.key}', this.value)">${comment}</textarea>` : ''}
       </div>
       <div class="toggle-wrap">
         <div class="toggle ${on ? 'on' : ''}" onclick="toggleLife('${item.key}', this)"></div>
@@ -739,6 +767,10 @@ function toggleLife(key, el) {
   const data = getWeekData();
   data.life[key] = !data.life[key];
   el.classList.toggle('on', data.life[key]);
+  if (key === 'companion') {
+    const row = el.closest('.life-row');
+    if (row) row.classList.toggle('companion-on', data.life[key]);
+  }
   save();
 }
 
@@ -781,7 +813,7 @@ function renderService() {
         </div>
         <div class="entry-meta">
           ${e.cat === 'app' && e.apptType ? `<span class="appt-badge ${e.apptType === 'student' ? 'badge-student' : 'badge-non-student'}">${e.apptType === 'student' ? 'Student' : 'Non-student'}</span>` : ''}
-          <span class="entry-time">${e.start ? fmtTime(e.start) : ''}${e.end ? ' – ' + fmtTime(e.end) : ''}</span>
+          <span class="entry-time">${(e.start && e.start !== '—') ? fmtTime(e.start) : ''}${(e.end && e.end !== '—') ? ' – ' + fmtTime(e.end) : ''}</span>
         </div>
       </div>
     </div>`;
@@ -812,10 +844,10 @@ const DAY_ORDER = ["Lord's day","Monday","Tuesday","Wednesday","Thursday","Frida
 
 function sortEntries(entries) {
   return [...entries].sort((a, b) => {
-    const di = DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day);
+    const di = DAY_ORDER.indexOf(b.day) - DAY_ORDER.indexOf(a.day); // reversed: newest day first
     if (di !== 0) return di;
     const at = a.start || '00:00', bt = b.start || '00:00';
-    return at.localeCompare(bt);
+    return at.localeCompare(bt); // within a day, still ascending by time
   });
 }
 
@@ -840,6 +872,7 @@ function saveEntry() {
   document.getElementById('f-appt-type').value = 'student';
   selCat('app');
   navTo('service');
+  populateTimeSelects();
 }
 
 function delEntry(i) {
@@ -926,6 +959,12 @@ function downloadFile(content, name, type) {
 }
 
 // ── NAV ──
+function getCurrentDayName() {
+  const jsDay = new Date().getDay(); // 0=Sun,1=Mon,...,6=Sat
+  const map = ["Lord's day", 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return map[jsDay];
+}
+
 function navTo(screen) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + screen).classList.add('active');
@@ -934,10 +973,82 @@ function navTo(screen) {
   if (nb) nb.classList.add('active');
   if (screen === 'service') renderService();
   if (screen === 'export') renderExport();
+  if (screen === 'add') {
+    const daySelect = document.getElementById('f-day');
+    daySelect.value = getCurrentDayName();
+  }
   window.scrollTo(0,0);
 }
 
+// ── TIME SELECT POPULATION ──
+function populateTimeSelects() {
+  ['f-start','f-end'].forEach(id => {
+    const sel = document.getElementById(id);
+    const cur = sel ? sel.value : '';
+    if (!sel) return;
+    sel.innerHTML = '<option value="">—</option>';
+    for (let h = 0; h < 24; h++) {
+      for (let m = 0; m < 60; m += 15) {
+        const val = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+        const ampm = h >= 12 ? 'pm' : 'am';
+        const h12 = h % 12 || 12;
+        const label = h12 + ':' + String(m).padStart(2,'0') + ' ' + ampm;
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = label;
+        sel.appendChild(opt);
+      }
+    }
+    if (cur) sel.value = cur;
+  });
+}
+
+// ── SUNRISE / SUNSET DAY-NIGHT MODE ──
+function applyTheme(isDay) {
+  document.body.classList.toggle('day-mode', isDay);
+  document.querySelector('meta[name="theme-color"]').content = isDay ? '#f2f4f0' : '#111111';
+}
+
+function checkDayNight(lat, lon) {
+  const now = new Date();
+  // Use a reliable open API for sunrise/sunset
+  fetch('https://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lon + '&formatted=0')
+    .then(r => r.json())
+    .then(data => {
+      if (data.status !== 'OK') { applyTheme(false); return; }
+      const sunrise = new Date(data.results.sunrise);
+      const sunset  = new Date(data.results.sunset);
+      const isDay   = now >= sunrise && now <= sunset;
+      applyTheme(isDay);
+      // Schedule re-check at next transition
+      const msToNext = isDay
+        ? (sunset - now + 60000)
+        : (now < sunrise ? (sunrise - now + 60000) : (86400000 - (now - sunset) + 60000));
+      setTimeout(() => checkDayNight(lat, lon), Math.min(msToNext, 10 * 60 * 1000));
+    })
+    .catch(() => {
+      // Fallback: simple local-time heuristic (6am-8pm = day)
+      const h = now.getHours();
+      applyTheme(h >= 6 && h < 20);
+    });
+}
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    pos => checkDayNight(pos.coords.latitude, pos.coords.longitude),
+    () => {
+      // No permission — fallback to local time heuristic
+      const h = new Date().getHours();
+      applyTheme(h >= 6 && h < 20);
+    }
+  );
+} else {
+  const h = new Date().getHours();
+  applyTheme(h >= 6 && h < 20);
+}
+
 renderAll();
+populateTimeSelects();
 </script>
 </body>
 </html>
