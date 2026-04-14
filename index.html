@@ -435,6 +435,47 @@
   .nav-btn.active .nav-fill { fill: var(--green); }
   .nav-stroke { stroke: var(--text3); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke .15s; }
   .nav-fill { fill: var(--text3); transition: fill .15s; }
+
+/* MOBILE TIME FIX */
+.time-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 6px;
+  overflow: hidden;
+}
+.time-row input {
+  min-width: 0;
+  width: 100%;
+  font-size: 14px;
+  padding: 10px 8px;
+}
+input[type="time"] {
+  -webkit-appearance: none;
+}
+.app {
+  overflow-x: hidden;
+}
+
+
+/* INLINE COMMENT FOR COMPANION */
+.life-row {
+  align-items: center;
+  gap: 10px;
+}
+.life-row-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.inline-comment {
+  width: 120px;
+  min-height: 28px;
+  height: 28px;
+  padding: 4px 6px;
+  font-size: 12px;
+  resize: none;
+}
+
 </style>
 </head>
 <body>
@@ -583,7 +624,7 @@
 
 <script>
 const LIFE_ITEMS = [
-  { key: 'rnr',       label: 'R & R completion',      comment: true },
+  { key: 'rnr',       label: 'R & R completion',      comment: false },
   { key: 'companion', label: 'Companion prayer',       comment: true },
   { key: 'airtable',  label: 'Airtable stats updated', comment: false },
 ];
@@ -654,14 +695,14 @@ function renderLife() {
     const on = !!data.life[item.key];
     const comment = data.comments[item.key] || '';
     return `<div class="life-row">
-      <div>
+      <div class="life-row-inline">
         <div class="life-row-label">${item.label}</div>
+        ${item.key === 'companion' ? `<textarea class="comments-area inline-comment" placeholder="Note..." onchange="saveComment('${item.key}', this.value)">${comment}</textarea>` : ''}
       </div>
       <div class="toggle-wrap">
         <div class="toggle ${on ? 'on' : ''}" onclick="toggleLife('${item.key}', this)"></div>
       </div>
-    </div>
-    ${item.comment ? `<textarea class="comments-area" placeholder="Comments..." onchange="saveComment('${item.key}', this.value)">${comment}</textarea>` : ''}`;
+    </div>`;
   }).join('');
 }
 
@@ -752,9 +793,10 @@ function renderService() {
 function fmtTime(t) {
   if (!t) return '';
   const [h, m] = t.split(':').map(Number);
-  const ampm = h >= 12 ? 'pm' : 'am';
+  const ampm = h >= 12 ? 'p' : 'a';
   const h12 = h % 12 || 12;
-  return h12 + (m ? ':' + String(m).padStart(2,'0') : '') + ampm;
+  if (m === 0) return h12 + ampm;
+  return h12 + ':' + String(m).padStart(2,'0') + ampm;
 }
 
 function selCat(c) {
