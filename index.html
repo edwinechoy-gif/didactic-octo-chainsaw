@@ -33,7 +33,6 @@
     --nav-h: 70px;
   }
 
-  /* ── LIGHT MODE ── */
   body.day-mode {
     --bg: #f2f4f0;
     --bg2: #e8ebe4;
@@ -88,178 +87,116 @@
   .topbar-sub { font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 1px; }
   .week-nav { display: flex; align-items: center; gap: 10px; }
   .week-nav button {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    color: var(--text2);
-    width: 32px; height: 32px;
-    font-size: 16px;
-    cursor: pointer;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); color: var(--text2);
+    width: 32px; height: 32px; font-size: 16px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background .15s;
   }
   .week-nav button:active { background: var(--surface2); }
   .week-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    color: var(--green);
-    min-width: 80px;
-    text-align: center;
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    color: var(--green); min-width: 80px; text-align: center;
   }
 
   /* ── SCREENS ── */
   .screen {
-    display: none;
-    flex-direction: column;
-    padding: 16px;
-    gap: 12px;
-    overflow-y: auto;
+    display: none; flex-direction: column;
+    padding: 16px; gap: 12px; overflow-y: auto;
     padding-bottom: calc(var(--nav-h) + 20px);
   }
   .screen.active { display: flex; }
 
-  /* Service screen: fixed height, entries fill to nav */
   #screen-service {
     overflow: hidden;
     height: calc(100dvh - var(--topbar-h));
-    padding: 16px;
-    padding-bottom: 0;
-    gap: 12px;
-    flex-direction: column;
+    padding: 16px; padding-bottom: 0; gap: 12px;
   }
   #screen-service .totals-card { flex-shrink: 0; }
   #screen-service .entries-card {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    overflow: hidden;
+    flex: 1; display: flex; flex-direction: column;
+    min-height: 0; overflow: hidden;
     margin-bottom: calc(var(--nav-h) + 8px);
   }
   #entry-list { flex: 1; overflow-y: auto; min-height: 0; }
 
   /* ── CARDS ── */
   .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px;
   }
   .card-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text);
+    font-size: 15px; font-weight: 500; color: var(--text);
     margin-bottom: 14px;
   }
 
   /* ── DAY CHECKBOXES ── */
-  .day-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-    margin-bottom: 4px;
-  }
+  .day-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 4px; }
   .day-cell { display: flex; flex-direction: column; align-items: center; gap: 5px; }
   .day-cell-label { font-size: 10px; color: var(--text); font-family: 'DM Mono', monospace; }
   .day-check-box {
-    width: 34px; height: 34px;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--border2);
-    background: var(--bg3);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
+    width: 34px; height: 34px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border2); background: var(--bg3);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative;
   }
   .day-check-box.checked { background: var(--green-glow); border-color: var(--green); }
   .day-check-box.checked::after {
-    content: '';
-    width: 10px; height: 6px;
-    border-left: 2px solid var(--green);
-    border-bottom: 2px solid var(--green);
-    transform: rotate(-45deg) translateY(-1px);
-    display: block;
+    content: ''; width: 10px; height: 6px;
+    border-left: 2px solid var(--green); border-bottom: 2px solid var(--green);
+    transform: rotate(-45deg) translateY(-1px); display: block;
   }
-  .day-count {
-    font-size: 12px; color: var(--text);
-    margin-top: 10px; text-align: right;
-    font-family: 'DM Mono', monospace;
-  }
+  .day-count { font-size: 12px; color: var(--text); margin-top: 10px; text-align: right; font-family: 'DM Mono', monospace; }
   .day-count span { color: var(--green); font-weight: 600; }
 
   /* ── LIFE ROWS ── */
   .life-row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 0;
-    border-top: 1px solid var(--border);
-    gap: 10px;
+    padding: 12px 0; border-top: 1px solid var(--border); gap: 10px;
   }
   .life-row-label { font-size: 15px; color: var(--text); }
-  .life-row-inline {
-    display: flex; align-items: center; gap: 8px;
-    flex: 1; min-width: 0;
-  }
+  .life-row-inline { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
 
-  /* ── LIFE CHECKBOXES (replaced toggles) ── */
+  /* ── LIFE CHECKBOXES ── */
   .life-checkbox {
-    width: 28px; height: 28px;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--border2);
-    background: var(--bg3);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    position: relative;
+    width: 28px; height: 28px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border2); background: var(--bg3);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative;
   }
   .life-checkbox.checked { background: var(--green-glow); border-color: var(--green); }
   .life-checkbox.checked::after {
-    content: '';
-    width: 8px; height: 5px;
-    border-left: 2px solid var(--green);
-    border-bottom: 2px solid var(--green);
-    transform: rotate(-45deg) translateY(-1px);
-    display: block;
+    content: ''; width: 8px; height: 5px;
+    border-left: 2px solid var(--green); border-bottom: 2px solid var(--green);
+    transform: rotate(-45deg) translateY(-1px); display: block;
   }
 
   /* ── COMMENTS ── */
   .comments-area {
-    width: 100%; background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    color: var(--text); font-family: 'DM Sans', sans-serif;
-    font-size: 14px; padding: 10px 12px;
-    resize: none; margin-top: 8px; min-height: 60px;
+    width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; padding: 10px 12px; resize: none; margin-top: 8px; min-height: 60px;
   }
   .comments-area:focus { outline: none; border-color: var(--green-dim); }
   .inline-comment {
-    flex: 1; min-width: 0;
-    min-height: 28px; height: 28px;
-    padding: 4px 8px; font-size: 12px;
-    resize: none; display: none;
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    color: var(--text); font-family: 'DM Sans', sans-serif;
+    flex: 1; min-width: 0; min-height: 28px; height: 28px;
+    padding: 4px 8px; font-size: 12px; resize: none; display: none;
+    background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif;
   }
   .companion-on .inline-comment { display: block; }
 
   /* ── TOTALS ── */
-  .totals-row { display: flex; gap: 0; }
+  .totals-row { display: flex; }
   .total-box {
     flex: 1; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 2px; text-align: center;
-    position: relative; padding: 8px 0;
+    gap: 2px; text-align: center; position: relative; padding: 8px 0;
   }
   .total-box:not(:last-child)::after {
     content: ''; position: absolute;
-    right: 0; top: 20%; height: 60%; width: 1px;
-    background: var(--border);
+    right: 0; top: 20%; height: 60%; width: 1px; background: var(--border);
   }
-  .total-num {
-    font-size: 22px; font-weight: 500; line-height: 1;
-    display: flex; align-items: baseline; gap: 1px;
-  }
+  .total-num { font-size: 22px; font-weight: 500; line-height: 1; display: flex; align-items: baseline; gap: 1px; }
   .total-denom { font-size: 14px; font-weight: 400; opacity: 0.45; }
   .total-lbl { font-size: 10px; font-family: 'DM Mono', monospace; letter-spacing: 0.08em; opacity: 0.6; }
   .total-box.app .total-num { color: var(--app-color); }
@@ -269,62 +206,39 @@
   .total-box.gos .total-lbl { color: var(--gos-color); }
   .total-box.misc .total-lbl { color: var(--misc-color); }
 
-  /* ── SWIPE ENTRY WRAPPER ── */
-  .swipe-wrapper {
-    position: relative;
-    margin-bottom: 8px;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-  }
+  /* ── SWIPE WRAPPERS ── */
+  .swipe-wrapper { position: relative; margin-bottom: 8px; border-radius: var(--radius-sm); overflow: hidden; }
   .swipe-bg {
-    position: absolute;
-    top: 0; bottom: 0;
-    display: flex; align-items: center;
-    padding: 0 14px;
-    z-index: 0;
+    position: absolute; top: 0; bottom: 0;
+    display: flex; align-items: center; padding: 0 14px; z-index: 0;
   }
-  .swipe-bg-edit { left: 0; background: var(--gos-color); }
+  .swipe-bg-edit  { left: 0;  background: var(--gos-color); }
   .swipe-bg-delete { right: 0; background: var(--danger); }
-  .swipe-action {
-    display: flex; flex-direction: column; align-items: center; gap: 2px;
-    color: white; font-size: 10px; font-family: 'DM Mono', monospace;
-    text-align: center; min-width: 44px;
-  }
+  .swipe-action { display: flex; flex-direction: column; align-items: center; gap: 2px; color: white; font-size: 10px; font-family: 'DM Mono', monospace; text-align: center; min-width: 44px; }
   .swipe-action-icon { font-size: 17px; line-height: 1; }
 
   /* ── ENTRY ITEMS ── */
   .entry-item {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 12px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 12px;
     display: flex; gap: 8px; align-items: flex-start;
     position: relative; z-index: 1;
-    transform: translateX(0);
-    will-change: transform;
-    user-select: none;
-    touch-action: pan-y;
+    transform: translateX(0); will-change: transform;
+    user-select: none; touch-action: pan-y;
   }
   .entry-item.dragging { opacity: 0.4; border-style: dashed; }
+  .drop-target-above { border-top: 2px solid var(--green) !important; }
+  .drop-target-below { border-bottom: 2px solid var(--green) !important; }
 
   .drag-handle {
-    color: var(--text3);
-    font-size: 15px;
-    cursor: grab;
-    padding: 2px 2px 2px 0;
-    margin-top: 3px;
-    touch-action: none;
-    flex-shrink: 0;
-    line-height: 1;
+    color: var(--text3); font-size: 15px; cursor: grab;
+    padding: 2px 2px 2px 0; margin-top: 3px;
+    touch-action: none; flex-shrink: 0; line-height: 1;
   }
   .drag-handle:active { cursor: grabbing; }
-
-  .entry-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    margin-top: 5px; flex-shrink: 0;
-  }
-  .entry-dot.app { background: var(--app-color); }
-  .entry-dot.gos { background: var(--gos-color); }
+  .entry-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .entry-dot.app  { background: var(--app-color); }
+  .entry-dot.gos  { background: var(--gos-color); }
   .entry-dot.misc { background: var(--misc-color); }
   .entry-body { flex: 1; min-width: 0; }
   .entry-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
@@ -332,67 +246,48 @@
   .entry-time { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; white-space: nowrap; }
   .entry-meta { display: flex; align-items: center; gap: 7px; margin-top: 4px; flex-wrap: wrap; }
   .appt-badge {
-    font-size: 10px; font-family: 'DM Mono', monospace;
-    font-weight: 500; letter-spacing: .04em;
-    padding: 2px 7px; border-radius: 20px; text-transform: uppercase;
+    font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 500;
+    letter-spacing: .04em; padding: 2px 7px; border-radius: 20px; text-transform: uppercase;
   }
-  .badge-student { background: #3dba6f18; color: var(--app-color); border: 1px solid #3dba6f44; }
+  .badge-student     { background: #3dba6f18; color: var(--app-color); border: 1px solid #3dba6f44; }
   .badge-non-student { background: #aaaaaa14; color: var(--text2); border: 1px solid var(--border2); }
 
   /* ── DAY GROUPS ── */
   .day-group { margin-bottom: 4px; }
   .day-group-header {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; font-weight: 500;
-    letter-spacing: .1em; color: var(--text3);
-    text-transform: uppercase;
-    padding: 10px 2px 6px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: .1em; color: var(--text3); text-transform: uppercase;
+    padding: 10px 2px 6px; border-bottom: 1px solid var(--border); margin-bottom: 6px;
   }
   .day-group:first-child .day-group-header { padding-top: 2px; }
 
-  /* Drag drop target highlight */
-  .drop-target-above { border-top: 2px solid var(--green) !important; }
-  .drop-target-below { border-bottom: 2px solid var(--green) !important; }
-
   .add-entry-btn {
-    width: 100%; background: none;
-    border: 1.5px dashed var(--border2);
-    border-radius: var(--radius-sm);
-    color: var(--text3); font-size: 14px;
-    padding: 13px; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all .15s;
-    margin-top: 4px; flex-shrink: 0;
+    width: 100%; background: none; border: 1.5px dashed var(--border2);
+    border-radius: var(--radius-sm); color: var(--text3); font-size: 14px;
+    padding: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all .15s; margin-top: 4px; flex-shrink: 0;
   }
   .add-entry-btn:active { background: var(--surface2); color: var(--text2); }
   .empty-state { text-align: center; color: var(--text3); font-size: 14px; padding: 28px 0; }
 
-  /* ── FORM SCREEN ── */
+  /* ── FORM ── */
   .form-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
   .back-btn {
     background: var(--surface); border: 1px solid var(--border2);
     border-radius: var(--radius-sm); color: var(--text2);
-    width: 36px; height: 36px;
-    font-size: 18px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    width: 36px; height: 36px; font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .form-title { font-size: 18px; font-weight: 500; }
   .form-group { margin-bottom: 16px; }
   .form-group label {
-    display: block; font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    color: var(--text3); text-transform: uppercase;
-    letter-spacing: .08em; margin-bottom: 7px;
+    display: block; font-size: 11px; font-family: 'DM Mono', monospace;
+    color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 7px;
   }
   .form-group input, .form-group select, .form-group textarea {
-    width: 100%; background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    color: var(--text); font-family: 'DM Sans', sans-serif;
-    font-size: 15px; padding: 11px 14px;
+    width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 11px 14px;
   }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
     outline: none; border-color: var(--green-dim);
@@ -404,48 +299,31 @@
   }
   .form-group textarea { resize: vertical; min-height: 80px; }
 
-  /* ── DRUM ROLL TIME PICKER ── */
+  /* ═══════════════════════════════════
+     DRUM ROLL TIME PICKER
+     ─ Key fix: overlay is a real HTML div,
+       not a ::pseudo-element, so z-index
+       stacking is explicit and reliable.
+  ═══════════════════════════════════ */
   .time-pickers-row {
-    display: grid;
-    grid-template-columns: 1fr 18px 1fr;
-    align-items: center;
-    gap: 6px;
+    display: grid; grid-template-columns: 1fr 18px 1fr;
+    align-items: center; gap: 6px;
   }
-  .time-pickers-row .tp-sep {
-    text-align: center; color: var(--text3); font-size: 16px;
-  }
+  .tp-sep { text-align: center; color: var(--text3); font-size: 16px; }
+
+  /* Container */
   .drum-picker {
     position: relative;
     display: flex;
     background: var(--bg3);
     border: 1px solid var(--border2);
     border-radius: var(--radius-sm);
-    overflow: hidden;
     height: 120px;
+    overflow: hidden;
   }
-  /* Highlight selected row */
-  .drum-picker::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 0; right: 0;
-    height: 40px;
-    transform: translateY(-50%);
-    background: var(--surface2);
-    border-top: 1px solid var(--border2);
-    border-bottom: 1px solid var(--border2);
-    pointer-events: none;
-    z-index: 2;
-  }
-  /* Fade gradient top/bottom */
-  .drum-picker::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom,
-      var(--bg3) 0%, transparent 28%,
-      transparent 72%, var(--bg3) 100%);
-    pointer-events: none;
-    z-index: 3;
-  }
+
+  /* Scrollable columns — must be position:relative + z-index so they
+     appear BELOW the overlay div but above the picker background */
   .drum-col {
     flex: 1;
     overflow-y: scroll;
@@ -453,69 +331,103 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     position: relative;
+    z-index: 1;           /* below .drum-overlay (z-index 4) */
   }
   .drum-col::-webkit-scrollbar { display: none; }
   .drum-col.ampm-col {
-    flex: 0 0 48px;
+    flex: 0 0 50px;
     border-left: 1px solid var(--border2);
   }
-  .drum-pad { height: 40px; flex-shrink: 0; }
+
+  /* Top & bottom padding so first/last item can scroll to center */
+  .drum-pad { height: 40px; }
+
   .drum-item {
     height: 40px;
     display: flex; align-items: center; justify-content: center;
     scroll-snap-align: center;
-    font-size: 16px;
+    font-size: 17px;
     font-family: 'DM Mono', monospace;
     color: var(--text);
-    position: relative; z-index: 4;
-    cursor: pointer;
+    /* No z-index needed — items live inside .drum-col which is z:1 */
   }
-  .drum-col.ampm-col .drum-item { font-size: 13px; letter-spacing: 0.05em; }
+  .drum-col.ampm-col .drum-item { font-size: 13px; letter-spacing: 0.04em; }
+
+  /* Overlay div: drawn on top of scroll columns (z-index 4).
+     pointer-events:none lets touch events fall through to the columns. */
+  .drum-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  /* Center-row highlight lines */
+  .drum-overlay::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 40px;
+    transform: translateY(-50%);
+    border-top: 1px solid var(--green-dim);
+    border-bottom: 1px solid var(--green-dim);
+    /* transparent background — items show through */
+    background: rgba(61, 186, 111, 0.06);
+  }
+
+  /* Top/bottom fade — covers only the outer 28%, center stays clear */
+  .drum-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      var(--bg3)    0%,
+      var(--bg3)    5%,
+      transparent  28%,
+      transparent  72%,
+      var(--bg3)   95%,
+      var(--bg3)  100%
+    );
+  }
 
   .cat-row { display: flex; gap: 8px; }
   .cat-btn {
-    flex: 1; padding: 10px 0;
-    border: 1.5px solid var(--border2);
-    border-radius: var(--radius-sm);
-    background: var(--bg3);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 500;
+    flex: 1; padding: 10px 0; border: 1.5px solid var(--border2);
+    border-radius: var(--radius-sm); background: var(--bg3);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
     cursor: pointer; transition: all .15s;
   }
-  .cat-btn.app { color: var(--app-color); }
-  .cat-btn.gos { color: var(--gos-color); }
+  .cat-btn.app  { color: var(--app-color); }
+  .cat-btn.gos  { color: var(--gos-color); }
   .cat-btn.misc { color: var(--misc-color); }
-  .cat-btn.sel.app { background: #3dba6f18; border-color: var(--app-color); }
-  .cat-btn.sel.gos { background: #5ba8e018; border-color: var(--gos-color); }
+  .cat-btn.sel.app  { background: #3dba6f18; border-color: var(--app-color); }
+  .cat-btn.sel.gos  { background: #5ba8e018; border-color: var(--gos-color); }
   .cat-btn.sel.misc { background: #c49a3a18; border-color: var(--misc-color); }
 
   .save-btn {
-    width: 100%; background: var(--green);
-    border: none; border-radius: var(--radius-sm);
-    color: #0a1209; font-family: 'DM Sans', sans-serif;
-    font-size: 15px; font-weight: 500;
-    padding: 14px; cursor: pointer;
-    margin-top: 8px; transition: opacity .15s;
+    width: 100%; background: var(--green); border: none;
+    border-radius: var(--radius-sm); color: #0a1209;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+    padding: 14px; cursor: pointer; margin-top: 8px; transition: opacity .15s;
   }
   .save-btn:active { opacity: .85; }
 
-  /* ── EXPORT SCREEN ── */
+  /* ── EXPORT ── */
   .export-note { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 16px; }
   .export-note strong { color: var(--text); }
   .export-main-btn {
-    width: 100%; background: var(--green);
-    border: none; border-radius: var(--radius-sm);
-    color: #0a1209; font-family: 'DM Sans', sans-serif;
-    font-size: 15px; font-weight: 500;
+    width: 100%; background: var(--green); border: none;
+    border-radius: var(--radius-sm); color: #0a1209;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
     padding: 14px; cursor: pointer; transition: opacity .15s;
   }
   .export-main-btn:active { opacity: .85; }
   .export-all-btn {
-    width: 100%; background: var(--surface);
-    border: 1px solid var(--border2); border-radius: var(--radius-sm);
-    color: var(--text2); font-family: 'DM Sans', sans-serif;
-    font-size: 14px; padding: 12px; cursor: pointer;
-    margin-top: 10px; transition: background .15s;
+    width: 100%; background: var(--surface); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); color: var(--text2);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px;
+    cursor: pointer; margin-top: 10px; transition: background .15s;
   }
   .export-all-btn:active { background: var(--surface2); }
   .week-history-item {
@@ -539,10 +451,8 @@
     background: var(--bg2);
     border-top: 1px solid var(--border);
     padding: 10px 0 max(14px, env(safe-area-inset-bottom));
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed; bottom: 0;
+    left: 50%; transform: translateX(-50%);
     width: min(100vw, 480px);
     z-index: 100;
   }
@@ -555,11 +465,11 @@
   .nav-btn:active { opacity: .6; }
   .nav-icon { width: 24px; height: 24px; }
   .nav-label { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
-  .nav-btn.active .nav-label { color: var(--green); }
+  .nav-btn.active .nav-label  { color: var(--green); }
   .nav-btn.active .nav-stroke { stroke: var(--green); }
-  .nav-btn.active .nav-fill { fill: var(--green); }
+  .nav-btn.active .nav-fill   { fill: var(--green); }
   .nav-stroke { stroke: var(--text3); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke .15s; }
-  .nav-fill { fill: var(--text3); transition: fill .15s; }
+  .nav-fill   { fill: var(--text3); transition: fill .15s; }
 </style>
 </head>
 <body>
@@ -593,7 +503,6 @@
       </div>
       <div class="day-count" id="day-count"><span>0</span> of 7 days</div>
     </div>
-
     <div class="card">
       <div class="card-label">Daily prayer time</div>
       <div class="day-grid">
@@ -607,7 +516,6 @@
       </div>
       <div class="day-count" id="prayer-count"><span>0</span> of 7 days</div>
     </div>
-
     <div id="life-rows"></div>
   </div>
 
@@ -652,16 +560,19 @@
           <option>Thursday</option><option>Friday</option><option>Saturday</option>
         </select>
       </div>
+
       <!-- Drum-roll time pickers -->
       <div class="form-group">
         <label>Time</label>
         <div class="time-pickers-row">
           <div>
             <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;">Start</div>
+            <!-- drum-overlay MUST be last child so it paints on top of scroll cols -->
             <div class="drum-picker" id="drum-start">
               <div class="drum-col" id="drum-start-h"></div>
               <div class="drum-col" id="drum-start-m"></div>
               <div class="drum-col ampm-col" id="drum-start-ap"></div>
+              <div class="drum-overlay"></div>
             </div>
           </div>
           <div class="tp-sep">–</div>
@@ -671,10 +582,12 @@
               <div class="drum-col" id="drum-end-h"></div>
               <div class="drum-col" id="drum-end-m"></div>
               <div class="drum-col ampm-col" id="drum-end-ap"></div>
+              <div class="drum-overlay"></div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label>Description</label>
         <textarea id="f-desc" placeholder="Who, what topic..."></textarea>
@@ -728,7 +641,7 @@
     </button>
   </nav>
 
-</div>
+</div><!-- .app -->
 
 <script>
 /* ─────────────── CONSTANTS ─────────────── */
@@ -739,31 +652,30 @@ const LIFE_ITEMS = [
 ];
 const DAY_LABELS_SHORT = ['LD','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DAY_ORDER = ["Lord's day","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-const DRUM_H = 40; // px per drum item
+const DRUM_H = 40; // px per drum row
 
 /* ─────────────── STATE ─────────────── */
 let state = {};
 try { state = JSON.parse(localStorage.getItem('manny_report_v2') || '{}'); } catch(e) {}
 
-let currentWeek = getMondayStr(new Date());
-let selCatVal = 'app';
-let editingIndex = null;   // null = new entry, number = editing entry at that index
-let dragSrcIdx = null;
+let currentWeek  = getMondayStr(new Date());
+let selCatVal    = 'app';
+let editingIndex = null;   // null = new entry, number = editing index
+let dragSrcIdx   = null;
 
-/* ─────────────── LAYOUT MEASUREMENT ─────────────── */
+/* ─────────────── LAYOUT ─────────────── */
 function updateLayout() {
-  const topbarH = document.getElementById('topbar').offsetHeight;
-  const navH    = document.getElementById('nav-bar').offsetHeight;
-  document.documentElement.style.setProperty('--topbar-h', topbarH + 'px');
-  document.documentElement.style.setProperty('--nav-h',    navH    + 'px');
+  const th = document.getElementById('topbar').offsetHeight;
+  const nh = document.getElementById('nav-bar').offsetHeight;
+  document.documentElement.style.setProperty('--topbar-h', th + 'px');
+  document.documentElement.style.setProperty('--nav-h',    nh + 'px');
 }
 
 /* ─────────────── WEEK HELPERS ─────────────── */
 function getMondayStr(d) {
-  const day  = d.getDay();
+  const day = d.getDay();
   const diff = day === 0 ? -6 : 1 - day;
-  const mon  = new Date(d);
-  mon.setDate(d.getDate() + diff);
+  const mon = new Date(d); mon.setDate(d.getDate() + diff);
   return mon.toISOString().slice(0,10);
 }
 function weekLabel(monStr) {
@@ -794,32 +706,29 @@ function renderAll() {
 function renderLife() {
   const data = getWeekData();
 
-  // Personal days
   document.querySelectorAll('.day-check-box:not(.prayer-check-box)').forEach(box => {
     box.classList.toggle('checked', (data.days||[]).includes(parseInt(box.dataset.day)));
   });
   document.getElementById('day-count').innerHTML = '<span>' + (data.days||[]).length + '</span> of 7 days';
 
-  // Prayer days
   document.querySelectorAll('.prayer-check-box').forEach(box => {
     box.classList.toggle('checked', (data.prayerDays||[]).includes(parseInt(box.dataset.day)));
   });
   document.getElementById('prayer-count').innerHTML = '<span>' + (data.prayerDays||[]).length + '</span> of 7 days';
 
-  // Life rows — now using checkboxes instead of toggles
   const el = document.getElementById('life-rows');
   el.innerHTML = LIFE_ITEMS.map(item => {
     const on      = !!data.life[item.key];
     const comment = data.comments[item.key] || '';
-    const companionClass = (item.key === 'companion' && on) ? ' companion-on' : '';
-    return `<div class="life-row${companionClass}">
+    const compCls = (item.key === 'companion' && on) ? ' companion-on' : '';
+    return `<div class="life-row${compCls}">
       <div class="life-row-inline">
         <div class="life-row-label">${item.label}</div>
         ${item.key === 'companion'
-          ? `<textarea class="comments-area inline-comment" placeholder="When and with whom..." onchange="saveComment('${item.key}', this.value)">${comment}</textarea>`
+          ? `<textarea class="comments-area inline-comment" placeholder="When and with whom..." onchange="saveComment('${item.key}',this.value)">${comment}</textarea>`
           : ''}
       </div>
-      <div class="life-checkbox ${on ? 'checked' : ''}" onclick="toggleLife('${item.key}', this)"></div>
+      <div class="life-checkbox ${on ? 'checked' : ''}" onclick="toggleLife('${item.key}',this)"></div>
     </div>`;
   }).join('');
 }
@@ -827,13 +736,8 @@ function renderLife() {
 function toggleDay(box) {
   const data = getWeekData();
   const d = parseInt(box.dataset.day);
-  if ((data.days||[]).includes(d)) {
-    data.days = data.days.filter(x => x !== d);
-    box.classList.remove('checked');
-  } else {
-    data.days.push(d);
-    box.classList.add('checked');
-  }
+  if ((data.days||[]).includes(d)) { data.days = data.days.filter(x=>x!==d); box.classList.remove('checked'); }
+  else { data.days.push(d); box.classList.add('checked'); }
   document.getElementById('day-count').innerHTML = '<span>' + data.days.length + '</span> of 7 days';
   save();
 }
@@ -841,13 +745,8 @@ function togglePrayerDay(box) {
   const data = getWeekData();
   if (!data.prayerDays) data.prayerDays = [];
   const d = parseInt(box.dataset.day);
-  if (data.prayerDays.includes(d)) {
-    data.prayerDays = data.prayerDays.filter(x => x !== d);
-    box.classList.remove('checked');
-  } else {
-    data.prayerDays.push(d);
-    box.classList.add('checked');
-  }
+  if (data.prayerDays.includes(d)) { data.prayerDays = data.prayerDays.filter(x=>x!==d); box.classList.remove('checked'); }
+  else { data.prayerDays.push(d); box.classList.add('checked'); }
   document.getElementById('prayer-count').innerHTML = '<span>' + data.prayerDays.length + '</span> of 7 days';
   save();
 }
@@ -861,32 +760,23 @@ function toggleLife(key, el) {
   }
   save();
 }
-function saveComment(key, val) {
-  const data = getWeekData();
-  data.comments[key] = val;
-  save();
-}
+function saveComment(key, val) { getWeekData().comments[key] = val; save(); }
 
 /* ─────────────── SERVICE ─────────────── */
 function renderService() {
   const data    = getWeekData();
   const entries = data.entries || [];
-  let app = 0, gos = 0, misc = 0;
+  let app=0, gos=0, misc=0;
   entries.forEach(e => { if(e.cat==='app') app++; else if(e.cat==='gos') gos++; else misc++; });
   document.getElementById('tot-app').textContent  = app;
   document.getElementById('tot-gos').textContent  = gos;
   document.getElementById('tot-misc').textContent = misc;
 
   const el = document.getElementById('entry-list');
-  if (!entries.length) {
-    el.innerHTML = '<div class="empty-state">No entries yet this week</div>';
-    return;
-  }
+  if (!entries.length) { el.innerHTML = '<div class="empty-state">No entries yet this week</div>'; return; }
 
-  // Group by day (preserving stored order)
-  const dayGroups = {};
-  const dayOrder  = [];
-  entries.forEach((e, i) => {
+  const dayGroups = {}, dayOrder = [];
+  entries.forEach((e,i) => {
     if (!dayGroups[e.day]) { dayGroups[e.day] = []; dayOrder.push(e.day); }
     dayGroups[e.day].push({ ...e, storeIdx: i });
   });
@@ -896,31 +786,20 @@ function renderService() {
     html += `<div class="day-group"><div class="day-group-header">${day}</div>`;
     dayGroups[day].forEach(e => {
       const i = e.storeIdx;
-      html += `
-      <div class="swipe-wrapper" data-index="${i}">
-        <div class="swipe-bg swipe-bg-edit">
-          <div class="swipe-action">
-            <span class="swipe-action-icon">✎</span>
-            <span>Edit</span>
-          </div>
-        </div>
-        <div class="swipe-bg swipe-bg-delete">
-          <div class="swipe-action">
-            <span class="swipe-action-icon">✕</span>
-            <span>Delete</span>
-          </div>
-        </div>
+      html += `<div class="swipe-wrapper" data-index="${i}">
+        <div class="swipe-bg swipe-bg-edit"><div class="swipe-action"><span class="swipe-action-icon">✎</span><span>Edit</span></div></div>
+        <div class="swipe-bg swipe-bg-delete"><div class="swipe-action"><span class="swipe-action-icon">✕</span><span>Delete</span></div></div>
         <div class="entry-item" draggable="true">
           <div class="drag-handle" title="Drag to reorder">⋮⋮</div>
           <div class="entry-dot ${e.cat}"></div>
           <div class="entry-body">
             <div class="entry-top">
-              <div class="entry-desc">${e.desc || '—'}</div>
-              <div class="entry-time">${fmtTimeRange(e.start, e.end)}</div>
+              <div class="entry-desc">${e.desc||'—'}</div>
+              <div class="entry-time">${fmtTimeRange(e.start,e.end)}</div>
             </div>
             <div class="entry-meta">
-              ${e.cat === 'app' && e.apptType
-                ? `<span class="appt-badge ${e.apptType === 'student' ? 'badge-student' : 'badge-non-student'}">${e.apptType === 'student' ? 'Student' : 'Non-student'}</span>`
+              ${e.cat==='app'&&e.apptType
+                ? `<span class="appt-badge ${e.apptType==='student'?'badge-student':'badge-non-student'}">${e.apptType==='student'?'Student':'Non-student'}</span>`
                 : ''}
             </div>
           </div>
@@ -930,183 +809,137 @@ function renderService() {
     html += '</div>';
   });
   el.innerHTML = html;
-
   initSwipeGestures();
   initDragDrop();
 }
 
-/* ─────────────── FORMAT TIME ─────────────── */
 function fmtTime(t) {
   if (!t) return '';
-  const [h, m] = t.split(':').map(Number);
-  const ampm = h >= 12 ? 'p' : 'a';
-  const h12  = h % 12 || 12;
-  return m === 0 ? h12 + ampm : h12 + ':' + String(m).padStart(2,'0') + ampm;
+  const [h,m] = t.split(':').map(Number);
+  const ap = h>=12?'p':'a', h12 = h%12||12;
+  return m===0 ? h12+ap : h12+':'+String(m).padStart(2,'0')+ap;
 }
-function fmtTimeRange(start, end) {
-  const s = fmtTime(start);
-  const e = fmtTime(end);
-  if (s && e) return s + ' – ' + e;
-  return s || e || '';
+function fmtTimeRange(s,e) {
+  const fs=fmtTime(s), fe=fmtTime(e);
+  return (fs&&fe) ? fs+' – '+fe : fs||fe||'';
 }
 
-/* ─────────────── SWIPE GESTURES ─────────────── */
+/* ─────────────── SWIPE ─────────────── */
 function initSwipeGestures() {
   document.querySelectorAll('.swipe-wrapper').forEach(wrapper => {
     const item = wrapper.querySelector('.entry-item');
     const idx  = parseInt(wrapper.dataset.index);
-    let startX, startY, curX = 0, isHoriz = null, revealed = false;
+    let startX, startY, curX=0, isHoriz=null, revealed=false;
 
     item.addEventListener('touchstart', e => {
-      startX  = e.touches[0].clientX;
-      startY  = e.touches[0].clientY;
-      curX    = 0;
-      isHoriz = null;
-      item.style.transition = 'none';
-    }, { passive: true });
+      startX=e.touches[0].clientX; startY=e.touches[0].clientY;
+      curX=0; isHoriz=null; item.style.transition='none';
+    }, {passive:true});
 
     item.addEventListener('touchmove', e => {
-      const dx = e.touches[0].clientX - startX;
-      const dy = e.touches[0].clientY - startY;
-      if (isHoriz === null) {
-        if (Math.abs(dx) > 6 || Math.abs(dy) > 6) isHoriz = Math.abs(dx) > Math.abs(dy);
-      }
+      const dx=e.touches[0].clientX-startX, dy=e.touches[0].clientY-startY;
+      if (isHoriz===null && (Math.abs(dx)>6||Math.abs(dy)>6)) isHoriz=Math.abs(dx)>Math.abs(dy);
       if (!isHoriz) return;
       e.preventDefault();
-      curX = Math.max(-88, Math.min(88, dx));
-      item.style.transform = `translateX(${curX}px)`;
-    }, { passive: false });
+      curX=Math.max(-88,Math.min(88,dx));
+      item.style.transform=`translateX(${curX}px)`;
+    }, {passive:false});
 
     item.addEventListener('touchend', () => {
       if (!isHoriz) return;
-      item.style.transition = 'transform 0.22s ease';
-      if (curX < -55) {
-        // Reveal delete
-        item.style.transform = 'translateX(-80px)';
-        revealed = 'delete';
-      } else if (curX > 55) {
-        // Reveal edit
-        item.style.transform = 'translateX(80px)';
-        revealed = 'edit';
-      } else {
-        item.style.transform = 'translateX(0)';
-        revealed = false;
-      }
+      item.style.transition='transform 0.22s ease';
+      if (curX < -55)      { item.style.transform='translateX(-80px)'; revealed='delete'; }
+      else if (curX > 55)  { item.style.transform='translateX(80px)';  revealed='edit';   }
+      else                 { item.style.transform='translateX(0)';      revealed=false;    }
     });
 
-    // Action tap on revealed bg
     wrapper.querySelector('.swipe-bg-delete').addEventListener('click', () => {
-      if (revealed === 'delete') delEntryByIdx(idx);
+      if (revealed==='delete') delEntryByIdx(idx);
     });
     wrapper.querySelector('.swipe-bg-edit').addEventListener('click', () => {
-      if (revealed === 'edit') {
-        resetSwipe(item);
-        editEntry(idx);
-      }
+      if (revealed==='edit') { resetSwipe(item); editEntry(idx); }
     });
   });
 
-  // Dismiss on tap elsewhere
+  // Dismiss revealed swipe when tapping elsewhere
   document.getElementById('entry-list').addEventListener('touchstart', e => {
-    if (!e.target.closest('.swipe-wrapper')) return;
-    // reset any other revealed items
     document.querySelectorAll('.entry-item').forEach(item => {
-      if (item.style.transform && item.style.transform !== 'translateX(0px)') {
-        const thiswrapper = e.target.closest('.swipe-wrapper');
-        if (!thiswrapper || item !== thiswrapper.querySelector('.entry-item')) {
+      const t = item.style.transform;
+      if (t && t !== 'translateX(0px)' && t !== 'translateX(0)') {
+        if (!e.target.closest('.swipe-wrapper') ||
+            item !== e.target.closest('.swipe-wrapper')?.querySelector('.entry-item')) {
           resetSwipe(item);
         }
       }
     });
-  }, { passive: true });
+  }, {passive:true});
 }
 
 function resetSwipe(item) {
-  item.style.transition = 'transform 0.22s ease';
-  item.style.transform  = 'translateX(0)';
+  item.style.transition='transform 0.22s ease';
+  item.style.transform='translateX(0)';
 }
 
-/* ─────────────── DRAG & DROP (HTML5 + touch) ─────────────── */
+/* ─────────────── DRAG & DROP ─────────────── */
 function initDragDrop() {
-  const wrappers = Array.from(document.querySelectorAll('.swipe-wrapper'));
-
-  wrappers.forEach(wrapper => {
+  document.querySelectorAll('.swipe-wrapper').forEach(wrapper => {
     const item   = wrapper.querySelector('.entry-item');
     const handle = wrapper.querySelector('.drag-handle');
     const idx    = parseInt(wrapper.dataset.index);
 
     // HTML5 drag (desktop)
     item.addEventListener('dragstart', e => {
-      dragSrcIdx = idx;
-      item.classList.add('dragging');
+      dragSrcIdx = idx; item.classList.add('dragging');
       e.dataTransfer.effectAllowed = 'move';
     });
     item.addEventListener('dragend', () => {
       item.classList.remove('dragging');
-      document.querySelectorAll('.swipe-wrapper').forEach(w => {
-        w.classList.remove('drop-target-above', 'drop-target-below');
-      });
+      document.querySelectorAll('.swipe-wrapper').forEach(w => w.classList.remove('drop-target-above','drop-target-below'));
     });
     wrapper.addEventListener('dragover', e => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
+      e.preventDefault(); e.dataTransfer.dropEffect = 'move';
       document.querySelectorAll('.swipe-wrapper').forEach(w => w.classList.remove('drop-target-above','drop-target-below'));
-      const rect = wrapper.getBoundingClientRect();
-      const mid  = rect.top + rect.height / 2;
-      wrapper.classList.add(e.clientY < mid ? 'drop-target-above' : 'drop-target-below');
+      const r = wrapper.getBoundingClientRect();
+      wrapper.classList.add(e.clientY < r.top + r.height/2 ? 'drop-target-above' : 'drop-target-below');
     });
-    wrapper.addEventListener('dragleave', () => {
-      wrapper.classList.remove('drop-target-above','drop-target-below');
-    });
+    wrapper.addEventListener('dragleave', () => wrapper.classList.remove('drop-target-above','drop-target-below'));
     wrapper.addEventListener('drop', e => {
       e.preventDefault();
       wrapper.classList.remove('drop-target-above','drop-target-below');
-      const targetIdx = parseInt(wrapper.dataset.index);
-      if (dragSrcIdx !== null && dragSrcIdx !== targetIdx) {
-        reorderEntries(dragSrcIdx, targetIdx, e.clientY < wrapper.getBoundingClientRect().top + wrapper.getBoundingClientRect().height / 2);
+      const tIdx = parseInt(wrapper.dataset.index);
+      if (dragSrcIdx !== null && dragSrcIdx !== tIdx) {
+        reorderEntries(dragSrcIdx, tIdx, e.clientY < wrapper.getBoundingClientRect().top + wrapper.getBoundingClientRect().height/2);
       }
       dragSrcIdx = null;
     });
 
     // Touch drag via handle
-    let touchDragActive = false;
-    let touchTimer = null;
-    let touchTargetIdx = null;
-
-    handle.addEventListener('touchstart', e => {
-      const touchStartY = e.touches[0].clientY;
-      touchTimer = setTimeout(() => {
-        touchDragActive = true;
-        item.classList.add('dragging');
-        navigator.vibrate && navigator.vibrate(20);
-      }, 350);
-    }, { passive: true });
-
+    let touchActive=false, touchTimer=null, touchTargetIdx=null;
+    handle.addEventListener('touchstart', () => {
+      touchTimer = setTimeout(() => { touchActive=true; item.classList.add('dragging'); navigator.vibrate&&navigator.vibrate(20); }, 350);
+    }, {passive:true});
     handle.addEventListener('touchmove', e => {
       clearTimeout(touchTimer);
-      if (!touchDragActive) return;
+      if (!touchActive) return;
       e.preventDefault();
-      const touchY = e.touches[0].clientY;
+      const ty = e.touches[0].clientY;
       document.querySelectorAll('.swipe-wrapper').forEach(w => {
         w.classList.remove('drop-target-above','drop-target-below');
         const r = w.getBoundingClientRect();
-        if (touchY >= r.top && touchY <= r.bottom) {
+        if (ty >= r.top && ty <= r.bottom) {
           touchTargetIdx = parseInt(w.dataset.index);
-          const mid = r.top + r.height / 2;
-          w.classList.add(touchY < mid ? 'drop-target-above' : 'drop-target-below');
+          w.classList.add(ty < r.top+r.height/2 ? 'drop-target-above' : 'drop-target-below');
         }
       });
-    }, { passive: false });
-
+    }, {passive:false});
     handle.addEventListener('touchend', () => {
       clearTimeout(touchTimer);
       item.classList.remove('dragging');
       document.querySelectorAll('.swipe-wrapper').forEach(w => w.classList.remove('drop-target-above','drop-target-below'));
-      if (touchDragActive && touchTargetIdx !== null && touchTargetIdx !== idx) {
+      if (touchActive && touchTargetIdx !== null && touchTargetIdx !== idx) {
         reorderEntries(idx, touchTargetIdx, true);
       }
-      touchDragActive = false;
-      touchTargetIdx  = null;
+      touchActive=false; touchTargetIdx=null;
     });
   });
 }
@@ -1114,28 +947,24 @@ function initDragDrop() {
 function reorderEntries(fromIdx, toIdx, insertBefore) {
   const data  = getWeekData();
   const entry = data.entries.splice(fromIdx, 1)[0];
-  let dest    = toIdx > fromIdx ? toIdx - 1 : toIdx;
+  let dest = toIdx > fromIdx ? toIdx - 1 : toIdx;
   if (!insertBefore && dest < data.entries.length) dest++;
   data.entries.splice(dest, 0, entry);
-  save();
-  renderService();
+  save(); renderService();
 }
 
 /* ─────────────── CATEGORY ─────────────── */
 function selCat(c) {
   selCatVal = c;
-  ['app','gos','misc'].forEach(x => {
-    document.getElementById('cat-' + x).classList.toggle('sel', x === c);
-  });
-  document.getElementById('appt-type-group').style.display = c === 'app' ? 'block' : 'none';
+  ['app','gos','misc'].forEach(x => document.getElementById('cat-'+x).classList.toggle('sel', x===c));
+  document.getElementById('appt-type-group').style.display = c==='app' ? 'block' : 'none';
 }
 
-/* ─────────────── SORTING ─────────────── */
+/* ─────────────── SORT ─────────────── */
 function sortEntries(entries) {
-  return [...entries].sort((a, b) => {
+  return [...entries].sort((a,b) => {
     const di = DAY_ORDER.indexOf(b.day) - DAY_ORDER.indexOf(a.day);
-    if (di !== 0) return di;
-    return (a.start||'00:00').localeCompare(b.start||'00:00');
+    return di !== 0 ? di : (a.start||'00:00').localeCompare(b.start||'00:00');
   });
 }
 
@@ -1144,12 +973,12 @@ function openAddEntry() {
   editingIndex = null;
   document.getElementById('form-title').textContent = 'New entry';
   document.getElementById('save-btn').textContent   = 'Save entry';
-  document.getElementById('f-day').value  = getCurrentDayName();
-  document.getElementById('f-desc').value = '';
-  document.getElementById('f-appt-type').value = 'student';
+  document.getElementById('f-day').value            = getCurrentDayName();
+  document.getElementById('f-desc').value           = '';
+  document.getElementById('f-appt-type').value      = 'student';
   selCat('app');
-  setDrumTimeNow('start');
-  setDrumTimeNow('end', 60); // end = 1 hr later
+  setDrumTimeNow('start', 0);
+  setDrumTimeNow('end',   60);
   navTo('add');
 }
 
@@ -1157,86 +986,65 @@ function editEntry(i) {
   const data  = getWeekData();
   const entry = data.entries[i];
   if (!entry) return;
-
   editingIndex = i;
   document.getElementById('form-title').textContent = 'Edit entry';
   document.getElementById('save-btn').textContent   = 'Update entry';
-  document.getElementById('f-day').value  = entry.day;
-  document.getElementById('f-desc').value = entry.desc || '';
-  document.getElementById('f-appt-type').value = entry.apptType || 'student';
+  document.getElementById('f-day').value            = entry.day;
+  document.getElementById('f-desc').value           = entry.desc || '';
+  document.getElementById('f-appt-type').value      = entry.apptType || 'student';
   selCat(entry.cat || 'app');
   setDrumTimeStr('start', entry.start);
   setDrumTimeStr('end',   entry.end);
   navTo('add');
 }
 
-function cancelEntry() {
-  editingIndex = null;
-  navTo('service');
-}
+function cancelEntry() { editingIndex = null; navTo('service'); }
 
 function saveEntry() {
   const desc = document.getElementById('f-desc').value.trim();
   if (!desc) { document.getElementById('f-desc').focus(); return; }
-
   const data = getWeekData();
   if (!data.entries) data.entries = [];
-
   const entry = {
     day:      document.getElementById('f-day').value,
     start:    getDrumTime('start'),
     end:      getDrumTime('end'),
     desc,
     cat:      selCatVal,
-    apptType: selCatVal === 'app' ? document.getElementById('f-appt-type').value : null
+    apptType: selCatVal==='app' ? document.getElementById('f-appt-type').value : null
   };
-
-  if (editingIndex !== null) {
-    data.entries[editingIndex] = entry;
-  } else {
-    data.entries.push(entry);
-    data.entries = sortEntries(data.entries);
-  }
-
+  if (editingIndex !== null) { data.entries[editingIndex] = entry; }
+  else { data.entries.push(entry); data.entries = sortEntries(data.entries); }
   editingIndex = null;
-  save();
-  navTo('service');
+  save(); navTo('service');
 }
 
 function delEntryByIdx(i) {
   if (!confirm('Delete this entry?')) return;
   const data = getWeekData();
   data.entries.splice(i, 1);
-  save();
-  renderService();
+  save(); renderService();
 }
 
 /* ─────────────── DRUM ROLL TIME PICKER ─────────────── */
 function buildDrumCol(el, items) {
   el.innerHTML = '';
-  const padT = document.createElement('div');
-  padT.className = 'drum-pad';
-  el.appendChild(padT);
+  const padT = document.createElement('div'); padT.className = 'drum-pad'; el.appendChild(padT);
   items.forEach(item => {
     const d = document.createElement('div');
-    d.className = 'drum-item';
-    d.textContent = typeof item === 'object' ? item.label : item;
+    d.className    = 'drum-item';
+    d.textContent  = typeof item === 'object' ? item.label : item;
     d.dataset.value = typeof item === 'object' ? item.value : item;
     el.appendChild(d);
   });
-  const padB = document.createElement('div');
-  padB.className = 'drum-pad';
-  el.appendChild(padB);
+  const padB = document.createElement('div'); padB.className = 'drum-pad'; el.appendChild(padB);
 }
 
 function initDrumPickers() {
   ['start','end'].forEach(prefix => {
-    const hours   = Array.from({length:12}, (_,i) => String(i+1));
-    const minutes = ['00','15','30','45'];
-    const ampm    = ['AM','PM'];
-    buildDrumCol(document.getElementById('drum-' + prefix + '-h'),  hours);
-    buildDrumCol(document.getElementById('drum-' + prefix + '-m'),  minutes);
-    buildDrumCol(document.getElementById('drum-' + prefix + '-ap'), ampm);
+    buildDrumCol(document.getElementById('drum-'+prefix+'-h'),  Array.from({length:12},(_,i)=>String(i+1)));
+    buildDrumCol(document.getElementById('drum-'+prefix+'-m'),  ['00','15','30','45']);
+    buildDrumCol(document.getElementById('drum-'+prefix+'-ap'), ['AM','PM']);
   });
 }
 
@@ -1245,63 +1053,55 @@ function getDrumColValue(colEl) {
   const items = colEl.querySelectorAll('.drum-item');
   return (items[Math.max(0, Math.min(idx, items.length-1))] || {}).dataset?.value || '';
 }
-
-function setDrumColIndex(colEl, idx) {
-  // Use requestAnimationFrame to ensure DOM is ready
+function setDrumColIdx(colEl, idx) {
   requestAnimationFrame(() => { colEl.scrollTop = idx * DRUM_H; });
 }
 
 function getDrumTime(prefix) {
-  const hCol  = document.getElementById('drum-' + prefix + '-h');
-  const mCol  = document.getElementById('drum-' + prefix + '-m');
-  const apCol = document.getElementById('drum-' + prefix + '-ap');
+  const hCol  = document.getElementById('drum-'+prefix+'-h');
+  const mCol  = document.getElementById('drum-'+prefix+'-m');
+  const apCol = document.getElementById('drum-'+prefix+'-ap');
   let h = parseInt(getDrumColValue(hCol)) || 12;
   const m  = parseInt(getDrumColValue(mCol)) || 0;
   const ap = getDrumColValue(apCol) || 'AM';
-  if (ap === 'AM') { if (h === 12) h = 0; }
-  else             { if (h !== 12) h += 12; }
+  if (ap === 'AM') { if (h === 12) h = 0; } else { if (h !== 12) h += 12; }
   return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
 }
 
 function setDrumTimeStr(prefix, timeStr) {
-  // timeStr = 'HH:MM' 24h, or empty
-  if (!timeStr) { setDrumTimeNow(prefix); return; }
-  const [hh, mm] = timeStr.split(':').map(Number);
+  if (!timeStr) { setDrumTimeNow(prefix, 0); return; }
+  const [hh,mm] = timeStr.split(':').map(Number);
   applyDrumTime(prefix, hh, mm);
 }
 
 function setDrumTimeNow(prefix, offsetMinutes) {
   const now = new Date();
-  let totalMin = now.getHours() * 60 + now.getMinutes() + (offsetMinutes || 0);
-  totalMin = Math.round(totalMin / 15) * 15;
-  const h = Math.floor(totalMin / 60) % 24;
-  const m = totalMin % 60;
-  applyDrumTime(prefix, h, m);
+  let total = now.getHours()*60 + now.getMinutes() + (offsetMinutes||0);
+  total = Math.round(total/15)*15;
+  applyDrumTime(prefix, Math.floor(total/60)%24, total%60);
 }
 
 function applyDrumTime(prefix, h24, m) {
   const isPm = h24 >= 12;
   const h12  = h24 % 12 || 12;
   const mIdx = [0,15,30,45].indexOf(Math.round(m/15)*15 % 60);
-  setDrumColIndex(document.getElementById('drum-' + prefix + '-h'),  h12 - 1);
-  setDrumColIndex(document.getElementById('drum-' + prefix + '-m'),  mIdx >= 0 ? mIdx : 0);
-  setDrumColIndex(document.getElementById('drum-' + prefix + '-ap'), isPm ? 1 : 0);
+  setDrumColIdx(document.getElementById('drum-'+prefix+'-h'),  h12 - 1);
+  setDrumColIdx(document.getElementById('drum-'+prefix+'-m'),  mIdx >= 0 ? mIdx : 0);
+  setDrumColIdx(document.getElementById('drum-'+prefix+'-ap'), isPm ? 1 : 0);
 }
 
 /* ─────────────── NAV ─────────────── */
 function getCurrentDayName() {
-  const map = ["Lord's day",'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  return map[new Date().getDay()];
+  return ["Lord's day",'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
 }
-
 function navTo(screen) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
+  document.getElementById('screen-'+screen).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const nb = document.getElementById('nav-' + screen);
+  const nb = document.getElementById('nav-'+screen);
   if (nb) nb.classList.add('active');
-  if (screen === 'service') renderService();
-  if (screen === 'export') renderExport();
+  if (screen==='service') renderService();
+  if (screen==='export')  renderExport();
   window.scrollTo(0,0);
 }
 
@@ -1309,96 +1109,69 @@ function navTo(screen) {
 function renderExport() {
   const weeks = Object.keys(state).sort().reverse();
   const el    = document.getElementById('week-history');
-  if (!weeks.length) { el.innerHTML = '<div class="empty-state">No data yet</div>'; return; }
+  if (!weeks.length) { el.innerHTML='<div class="empty-state">No data yet</div>'; return; }
   el.innerHTML = weeks.map(w => {
-    const d    = state[w] || {};
-    const e    = d.entries || [];
-    const app  = e.filter(x=>x.cat==='app').length;
-    const gos  = e.filter(x=>x.cat==='gos').length;
-    const misc = e.filter(x=>x.cat==='misc').length;
-    const days = (d.days||[]).length;
+    const d=state[w]||{}, e=d.entries||[];
+    const app=e.filter(x=>x.cat==='app').length, gos=e.filter(x=>x.cat==='gos').length;
+    const misc=e.filter(x=>x.cat==='misc').length, days=(d.days||[]).length;
     return `<div class="week-history-item">
-      <div>
-        <div class="wh-label">Week of ${weekLabel(w)}</div>
-        <div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div>
-      </div>
+      <div><div class="wh-label">Week of ${weekLabel(w)}</div>
+      <div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div></div>
       <button class="wh-csv" onclick="exportWeekCSV('${w}')">CSV</button>
     </div>`;
   }).join('');
 }
-
 function buildCSVRows(weekKey) {
-  const data    = state[weekKey] || {};
-  const life    = data.life || {};
-  const days    = data.days || [];
-  const entries = data.entries || [];
-  const comments= data.comments || {};
-  const daysStr = DAY_LABELS_SHORT.filter((_,i) => days.includes(i)).join(', ') + ' (' + days.length + ' of 7)';
-  const rows = [
-    ['Fulltimers Accountability Report','Manny Choy','Week of ' + weekLabel(weekKey)],
-    [],
+  const data=state[weekKey]||{}, life=data.life||{}, days=data.days||[], entries=data.entries||[], comments=data.comments||{};
+  const daysStr=DAY_LABELS_SHORT.filter((_,i)=>days.includes(i)).join(', ')+' ('+days.length+' of 7)';
+  const rows=[
+    ['Fulltimers Accountability Report','Manny Choy','Week of '+weekLabel(weekKey)],[],
     ['LIFE','Y','N','Comments'],
     ['Daily Personal Time',daysStr,'',''],
-    ['R & R Completion',      life.rnr       ?'Y':'', life.rnr       ?'':'N', comments.rnr||''],
-    ['Companion Prayer',      life.companion ?'Y':'', life.companion ?'':'N', comments.companion||''],
-    ['Airtable Stats Updated',life.airtable  ?'Y':'', life.airtable  ?'':'N',''],
-    [],
-    ['SERVICE'],
-    ['Day','Start','End','Description','Category'],
+    ['R & R Completion',life.rnr?'Y':'',life.rnr?'':'N',comments.rnr||''],
+    ['Companion Prayer',life.companion?'Y':'',life.companion?'':'N',comments.companion||''],
+    ['Airtable Stats Updated',life.airtable?'Y':'',life.airtable?'':'N',''],
+    [],[`SERVICE`],['Day','Start','End','Description','Category'],
   ];
-  entries.forEach(e => rows.push([e.day, e.start?fmtTime(e.start):'', e.end?fmtTime(e.end):'', e.desc, e.cat==='app'?'Appointment':e.cat==='gos'?'Gospel':'Misc']));
+  entries.forEach(e=>rows.push([e.day,e.start?fmtTime(e.start):'',e.end?fmtTime(e.end):'',e.desc,e.cat==='app'?'Appointment':e.cat==='gos'?'Gospel':'Misc']));
   return rows;
 }
-function rowsToCSV(rows) {
-  return rows.map(r => r.map(c => '"' + String(c).replace(/"/g,'""') + '"').join(',')).join('\n');
-}
-function exportWeekCSV(weekKey) {
-  downloadFile(rowsToCSV(buildCSVRows(weekKey)), 'accountability_' + weekKey + '.csv', 'text/csv');
-}
+function rowsToCSV(rows) { return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n'); }
+function exportWeekCSV(k) { dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
 function exportAllCSV() {
-  const weeks = Object.keys(state).sort();
-  let allRows = [];
-  weeks.forEach((w, i) => { if (i>0) allRows.push([]); allRows = allRows.concat(buildCSVRows(w)); });
-  downloadFile(rowsToCSV(allRows), 'accountability_all_weeks.csv', 'text/csv');
+  const weeks=Object.keys(state).sort(); let all=[];
+  weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); });
+  dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv');
 }
-function downloadFile(content, name, type) {
-  const a = Object.assign(document.createElement('a'), {
-    href: URL.createObjectURL(new Blob([content], {type})),
-    download: name
-  });
+function dlFile(content,name,type) {
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([content],{type})),download:name});
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
-/* ─────────────── DAY/NIGHT MODE ─────────────── */
+/* ─────────────── DAY / NIGHT ─────────────── */
 function applyTheme(isDay) {
   document.body.classList.toggle('day-mode', isDay);
   document.querySelector('meta[name="theme-color"]').content = isDay ? '#f2f4f0' : '#111111';
 }
-function checkDayNight(lat, lon) {
-  const now = new Date();
-  fetch('https://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lon + '&formatted=0')
-    .then(r => r.json())
-    .then(data => {
-      if (data.status !== 'OK') { applyTheme(false); return; }
-      const sunrise = new Date(data.results.sunrise);
-      const sunset  = new Date(data.results.sunset);
-      applyTheme(now >= sunrise && now <= sunset);
-      const ms = now < sunrise ? (sunrise - now + 60000) : now <= sunset ? (sunset - now + 60000) : (86400000 - (now - sunset) + 60000);
-      setTimeout(() => checkDayNight(lat, lon), Math.min(ms, 10*60*1000));
-    })
-    .catch(() => { const h = now.getHours(); applyTheme(h >= 6 && h < 20); });
+function checkDayNight(lat,lon) {
+  const now=new Date();
+  fetch('https://api.sunrise-sunset.org/json?lat='+lat+'&lng='+lon+'&formatted=0')
+    .then(r=>r.json())
+    .then(d=>{ if(d.status!=='OK'){applyTheme(false);return;}
+      const sr=new Date(d.results.sunrise),ss=new Date(d.results.sunset);
+      applyTheme(now>=sr&&now<=ss);
+      const ms=now<sr?(sr-now+60000):now<=ss?(ss-now+60000):(86400000-(now-ss)+60000);
+      setTimeout(()=>checkDayNight(lat,lon),Math.min(ms,10*60*1000));
+    }).catch(()=>{ const h=now.getHours(); applyTheme(h>=6&&h<20); });
 }
-
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
-    pos => checkDayNight(pos.coords.latitude, pos.coords.longitude),
-    () => { const h = new Date().getHours(); applyTheme(h >= 6 && h < 20); }
+    p=>checkDayNight(p.coords.latitude,p.coords.longitude),
+    ()=>{ const h=new Date().getHours(); applyTheme(h>=6&&h<20); }
   );
-} else {
-  const h = new Date().getHours(); applyTheme(h >= 6 && h < 20);
-}
+} else { const h=new Date().getHours(); applyTheme(h>=6&&h<20); }
 
-/* ─────────────── INIT ─────────────── */
+/* ─────────────── BOOT ─────────────── */
 updateLayout();
 window.addEventListener('resize', updateLayout);
 initDrumPickers();
