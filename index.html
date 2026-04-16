@@ -75,12 +75,8 @@
     background: var(--bg2);
     border-bottom: 1px solid var(--border);
     padding: 16px 20px 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
   }
   .topbar-left { display: flex; flex-direction: column; }
   .topbar-title { font-size: 18px; font-weight: 500; color: var(--text); letter-spacing: -0.3px; }
@@ -121,14 +117,8 @@
   #entry-list { flex: 1; overflow-y: auto; min-height: 0; }
 
   /* ── CARDS ── */
-  .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 16px;
-  }
-  .card-label {
-    font-size: 15px; font-weight: 500; color: var(--text);
-    margin-bottom: 14px;
-  }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .card-label { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 14px; }
 
   /* ── DAY CHECKBOXES ── */
   .day-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-bottom: 4px; }
@@ -199,20 +189,17 @@
   .total-num { font-size: 22px; font-weight: 500; line-height: 1; display: flex; align-items: baseline; gap: 1px; }
   .total-denom { font-size: 14px; font-weight: 400; opacity: 0.45; }
   .total-lbl { font-size: 10px; font-family: 'DM Mono', monospace; letter-spacing: 0.08em; opacity: 0.6; }
-  .total-box.app .total-num { color: var(--app-color); }
-  .total-box.gos .total-num { color: var(--gos-color); }
+  .total-box.app  .total-num { color: var(--app-color); }
+  .total-box.gos  .total-num { color: var(--gos-color); }
   .total-box.misc .total-num { color: var(--misc-color); }
-  .total-box.app .total-lbl { color: var(--app-color); }
-  .total-box.gos .total-lbl { color: var(--gos-color); }
+  .total-box.app  .total-lbl { color: var(--app-color); }
+  .total-box.gos  .total-lbl { color: var(--gos-color); }
   .total-box.misc .total-lbl { color: var(--misc-color); }
 
   /* ── SWIPE WRAPPERS ── */
   .swipe-wrapper { position: relative; margin-bottom: 8px; border-radius: var(--radius-sm); overflow: hidden; }
-  .swipe-bg {
-    position: absolute; top: 0; bottom: 0;
-    display: flex; align-items: center; padding: 0 14px; z-index: 0;
-  }
-  .swipe-bg-edit  { left: 0;  background: var(--gos-color); }
+  .swipe-bg { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; padding: 0 14px; z-index: 0; }
+  .swipe-bg-edit   { left: 0;  background: var(--gos-color); }
   .swipe-bg-delete { right: 0; background: var(--danger); }
   .swipe-action { display: flex; flex-direction: column; align-items: center; gap: 2px; color: white; font-size: 10px; font-family: 'DM Mono', monospace; text-align: center; min-width: 44px; }
   .swipe-action-icon { font-size: 17px; line-height: 1; }
@@ -299,96 +286,55 @@
   }
   .form-group textarea { resize: vertical; min-height: 80px; }
 
-  /* ═══════════════════════════════════
-     DRUM ROLL TIME PICKER
-     ─ Key fix: overlay is a real HTML div,
-       not a ::pseudo-element, so z-index
-       stacking is explicit and reliable.
-  ═══════════════════════════════════ */
+  /* ── DRUM ROLL TIME PICKER ── */
   .time-pickers-row {
     display: grid; grid-template-columns: 1fr 18px 1fr;
     align-items: center; gap: 6px;
   }
   .tp-sep { text-align: center; color: var(--text3); font-size: 16px; }
 
-  /* Container */
   .drum-picker {
-    position: relative;
-    display: flex;
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    height: 120px;
-    overflow: hidden;
+    position: relative; display: flex;
+    background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: var(--radius-sm); height: 120px; overflow: hidden;
   }
 
-  /* Scrollable columns — must be position:relative + z-index so they
-     appear BELOW the overlay div but above the picker background */
+  /* Scroll columns — position:relative + z-index so they sit below the overlay */
   .drum-col {
     flex: 1;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    position: relative;
-    z-index: 1;           /* below .drum-overlay (z-index 4) */
+    overflow-y: scroll; scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    position: relative; z-index: 1;
   }
   .drum-col::-webkit-scrollbar { display: none; }
-  .drum-col.ampm-col {
-    flex: 0 0 50px;
-    border-left: 1px solid var(--border2);
-  }
+  .drum-col.ampm-col { flex: 0 0 50px; border-left: 1px solid var(--border2); }
 
-  /* Top & bottom padding so first/last item can scroll to center */
-  .drum-pad { height: 40px; }
-
+  .drum-pad  { height: 40px; }
   .drum-item {
-    height: 40px;
-    display: flex; align-items: center; justify-content: center;
-    scroll-snap-align: center;
-    font-size: 17px;
-    font-family: 'DM Mono', monospace;
-    color: var(--text);
-    /* No z-index needed — items live inside .drum-col which is z:1 */
+    height: 40px; display: flex; align-items: center; justify-content: center;
+    scroll-snap-align: center; font-size: 17px;
+    font-family: 'DM Mono', monospace; color: var(--text);
   }
   .drum-col.ampm-col .drum-item { font-size: 13px; letter-spacing: 0.04em; }
 
-  /* Overlay div: drawn on top of scroll columns (z-index 4).
-     pointer-events:none lets touch events fall through to the columns. */
+  /* Overlay div: above scroll cols (z:4), pointer-events:none so touch passes through */
   .drum-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 4;
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 4;
   }
-
-  /* Center-row highlight lines */
+  /* Center-row highlight */
   .drum-overlay::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 0; right: 0;
-    height: 40px;
-    transform: translateY(-50%);
-    border-top: 1px solid var(--green-dim);
-    border-bottom: 1px solid var(--green-dim);
-    /* transparent background — items show through */
-    background: rgba(61, 186, 111, 0.06);
+    content: ''; position: absolute;
+    top: 50%; left: 0; right: 0; height: 40px; transform: translateY(-50%);
+    border-top: 1px solid var(--green-dim); border-bottom: 1px solid var(--green-dim);
+    background: rgba(61,186,111,0.06);
   }
-
-  /* Top/bottom fade — covers only the outer 28%, center stays clear */
+  /* Top/bottom fade — transparent in center 28–72% */
   .drum-overlay::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      var(--bg3)    0%,
-      var(--bg3)    5%,
-      transparent  28%,
-      transparent  72%,
-      var(--bg3)   95%,
-      var(--bg3)  100%
-    );
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      var(--bg3) 0%, var(--bg3) 5%, transparent 28%,
+      transparent 72%, var(--bg3) 95%, var(--bg3) 100%);
   }
 
   .cat-row { display: flex; gap: 8px; }
@@ -447,14 +393,10 @@
 
   /* ── NAV — fixed at bottom ── */
   .nav {
-    display: flex;
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
+    display: flex; background: var(--bg2); border-top: 1px solid var(--border);
     padding: 10px 0 max(14px, env(safe-area-inset-bottom));
-    position: fixed; bottom: 0;
-    left: 50%; transform: translateX(-50%);
-    width: min(100vw, 480px);
-    z-index: 100;
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: min(100vw, 480px); z-index: 100;
   }
   .nav-btn {
     flex: 1; display: flex; flex-direction: column;
@@ -560,14 +502,11 @@
           <option>Thursday</option><option>Friday</option><option>Saturday</option>
         </select>
       </div>
-
-      <!-- Drum-roll time pickers -->
       <div class="form-group">
         <label>Time</label>
         <div class="time-pickers-row">
           <div>
             <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;">Start</div>
-            <!-- drum-overlay MUST be last child so it paints on top of scroll cols -->
             <div class="drum-picker" id="drum-start">
               <div class="drum-col" id="drum-start-h"></div>
               <div class="drum-col" id="drum-start-m"></div>
@@ -587,7 +526,6 @@
           </div>
         </div>
       </div>
-
       <div class="form-group">
         <label>Description</label>
         <textarea id="f-desc" placeholder="Who, what topic..."></textarea>
@@ -641,7 +579,7 @@
     </button>
   </nav>
 
-</div><!-- .app -->
+</div>
 
 <script>
 /* ─────────────── CONSTANTS ─────────────── */
@@ -652,15 +590,24 @@ const LIFE_ITEMS = [
 ];
 const DAY_LABELS_SHORT = ['LD','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DAY_ORDER = ["Lord's day","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-const DRUM_H = 40; // px per drum row
+const DRUM_H = 40;
 
 /* ─────────────── STATE ─────────────── */
 let state = {};
 try { state = JSON.parse(localStorage.getItem('manny_report_v2') || '{}'); } catch(e) {}
 
-let currentWeek  = getMondayStr(new Date());
+// ── Week is Sunday-anchored ──
+// getSundayStr: find the Sunday on or before date d.
+// getDay() returns 0=Sun … 6=Sat, so subtracting that value gives Sunday.
+function getSundayStr(d) {
+  const sun = new Date(d);
+  sun.setDate(d.getDate() - d.getDay()); // go back to Sunday (no-op if already Sunday)
+  return sun.toISOString().slice(0, 10);
+}
+
+let currentWeek  = getSundayStr(new Date()); // e.g. "2026-04-12" for this Sun
 let selCatVal    = 'app';
-let editingIndex = null;   // null = new entry, number = editing index
+let editingIndex = null;
 let dragSrcIdx   = null;
 
 /* ─────────────── LAYOUT ─────────────── */
@@ -672,22 +619,19 @@ function updateLayout() {
 }
 
 /* ─────────────── WEEK HELPERS ─────────────── */
-function getMondayStr(d) {
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  const mon = new Date(d); mon.setDate(d.getDate() + diff);
-  return mon.toISOString().slice(0,10);
+function weekLabel(sunStr) {
+  // Show "Sun M/D" so it's clear the date is the Sunday start
+  const d = new Date(sunStr + 'T12:00:00');
+  return (d.getMonth() + 1) + '/' + d.getDate();
 }
-function weekLabel(monStr) {
-  const d = new Date(monStr + 'T12:00:00');
-  return (d.getMonth()+1) + '/' + d.getDate();
-}
+
 function shiftWeek(dir) {
   const d = new Date(currentWeek + 'T12:00:00');
   d.setDate(d.getDate() + dir * 7);
-  currentWeek = getMondayStr(d);
+  currentWeek = getSundayStr(d); // d is already a Sunday, but getSundayStr is idempotent
   renderAll();
 }
+
 function getWeekData() {
   if (!state[currentWeek]) state[currentWeek] = { life:{}, days:[], prayerDays:[], entries:[], comments:{} };
   if (!state[currentWeek].comments) state[currentWeek].comments = {};
@@ -728,64 +672,57 @@ function renderLife() {
           ? `<textarea class="comments-area inline-comment" placeholder="When and with whom..." onchange="saveComment('${item.key}',this.value)">${comment}</textarea>`
           : ''}
       </div>
-      <div class="life-checkbox ${on ? 'checked' : ''}" onclick="toggleLife('${item.key}',this)"></div>
+      <div class="life-checkbox ${on?'checked':''}" onclick="toggleLife('${item.key}',this)"></div>
     </div>`;
   }).join('');
 }
 
 function toggleDay(box) {
-  const data = getWeekData();
-  const d = parseInt(box.dataset.day);
+  const data = getWeekData(), d = parseInt(box.dataset.day);
   if ((data.days||[]).includes(d)) { data.days = data.days.filter(x=>x!==d); box.classList.remove('checked'); }
   else { data.days.push(d); box.classList.add('checked'); }
   document.getElementById('day-count').innerHTML = '<span>' + data.days.length + '</span> of 7 days';
   save();
 }
 function togglePrayerDay(box) {
-  const data = getWeekData();
-  if (!data.prayerDays) data.prayerDays = [];
+  const data = getWeekData(); if (!data.prayerDays) data.prayerDays = [];
   const d = parseInt(box.dataset.day);
-  if (data.prayerDays.includes(d)) { data.prayerDays = data.prayerDays.filter(x=>x!==d); box.classList.remove('checked'); }
+  if (data.prayerDays.includes(d)) { data.prayerDays=data.prayerDays.filter(x=>x!==d); box.classList.remove('checked'); }
   else { data.prayerDays.push(d); box.classList.add('checked'); }
   document.getElementById('prayer-count').innerHTML = '<span>' + data.prayerDays.length + '</span> of 7 days';
   save();
 }
 function toggleLife(key, el) {
-  const data = getWeekData();
-  data.life[key] = !data.life[key];
+  const data = getWeekData(); data.life[key] = !data.life[key];
   el.classList.toggle('checked', data.life[key]);
-  if (key === 'companion') {
-    const row = el.closest('.life-row');
-    if (row) row.classList.toggle('companion-on', data.life[key]);
-  }
+  if (key==='companion') { const row=el.closest('.life-row'); if(row) row.classList.toggle('companion-on',data.life[key]); }
   save();
 }
 function saveComment(key, val) { getWeekData().comments[key] = val; save(); }
 
 /* ─────────────── SERVICE ─────────────── */
 function renderService() {
-  const data    = getWeekData();
-  const entries = data.entries || [];
-  let app=0, gos=0, misc=0;
-  entries.forEach(e => { if(e.cat==='app') app++; else if(e.cat==='gos') gos++; else misc++; });
+  const data=getWeekData(), entries=data.entries||[];
+  let app=0,gos=0,misc=0;
+  entries.forEach(e=>{ if(e.cat==='app') app++; else if(e.cat==='gos') gos++; else misc++; });
   document.getElementById('tot-app').textContent  = app;
   document.getElementById('tot-gos').textContent  = gos;
   document.getElementById('tot-misc').textContent = misc;
 
   const el = document.getElementById('entry-list');
-  if (!entries.length) { el.innerHTML = '<div class="empty-state">No entries yet this week</div>'; return; }
+  if (!entries.length) { el.innerHTML='<div class="empty-state">No entries yet this week</div>'; return; }
 
-  const dayGroups = {}, dayOrder = [];
+  const dayGroups={}, dayOrder=[];
   entries.forEach((e,i) => {
-    if (!dayGroups[e.day]) { dayGroups[e.day] = []; dayOrder.push(e.day); }
-    dayGroups[e.day].push({ ...e, storeIdx: i });
+    if (!dayGroups[e.day]) { dayGroups[e.day]=[]; dayOrder.push(e.day); }
+    dayGroups[e.day].push({...e, storeIdx:i});
   });
 
-  let html = '';
+  let html='';
   dayOrder.forEach(day => {
     html += `<div class="day-group"><div class="day-group-header">${day}</div>`;
     dayGroups[day].forEach(e => {
-      const i = e.storeIdx;
+      const i=e.storeIdx;
       html += `<div class="swipe-wrapper" data-index="${i}">
         <div class="swipe-bg swipe-bg-edit"><div class="swipe-action"><span class="swipe-action-icon">✎</span><span>Edit</span></div></div>
         <div class="swipe-bg swipe-bg-delete"><div class="swipe-action"><span class="swipe-action-icon">✕</span><span>Delete</span></div></div>
@@ -799,8 +736,7 @@ function renderService() {
             </div>
             <div class="entry-meta">
               ${e.cat==='app'&&e.apptType
-                ? `<span class="appt-badge ${e.apptType==='student'?'badge-student':'badge-non-student'}">${e.apptType==='student'?'Student':'Non-student'}</span>`
-                : ''}
+                ?`<span class="appt-badge ${e.apptType==='student'?'badge-student':'badge-non-student'}">${e.apptType==='student'?'Student':'Non-student'}</span>`:''}
             </div>
           </div>
         </div>
@@ -815,361 +751,185 @@ function renderService() {
 
 function fmtTime(t) {
   if (!t) return '';
-  const [h,m] = t.split(':').map(Number);
-  const ap = h>=12?'p':'a', h12 = h%12||12;
+  const [h,m]=t.split(':').map(Number), ap=h>=12?'p':'a', h12=h%12||12;
   return m===0 ? h12+ap : h12+':'+String(m).padStart(2,'0')+ap;
 }
 function fmtTimeRange(s,e) {
-  const fs=fmtTime(s), fe=fmtTime(e);
-  return (fs&&fe) ? fs+' – '+fe : fs||fe||'';
+  const fs=fmtTime(s),fe=fmtTime(e);
+  return (fs&&fe)?fs+' – '+fe:fs||fe||'';
 }
 
 /* ─────────────── SWIPE ─────────────── */
 function initSwipeGestures() {
   document.querySelectorAll('.swipe-wrapper').forEach(wrapper => {
-    const item = wrapper.querySelector('.entry-item');
-    const idx  = parseInt(wrapper.dataset.index);
-    let startX, startY, curX=0, isHoriz=null, revealed=false;
+    const item=wrapper.querySelector('.entry-item'), idx=parseInt(wrapper.dataset.index);
+    let startX,startY,curX=0,isHoriz=null,revealed=false;
 
-    item.addEventListener('touchstart', e => {
-      startX=e.touches[0].clientX; startY=e.touches[0].clientY;
-      curX=0; isHoriz=null; item.style.transition='none';
-    }, {passive:true});
-
-    item.addEventListener('touchmove', e => {
+    item.addEventListener('touchstart',e=>{ startX=e.touches[0].clientX; startY=e.touches[0].clientY; curX=0; isHoriz=null; item.style.transition='none'; },{passive:true});
+    item.addEventListener('touchmove',e=>{
       const dx=e.touches[0].clientX-startX, dy=e.touches[0].clientY-startY;
-      if (isHoriz===null && (Math.abs(dx)>6||Math.abs(dy)>6)) isHoriz=Math.abs(dx)>Math.abs(dy);
-      if (!isHoriz) return;
-      e.preventDefault();
-      curX=Math.max(-88,Math.min(88,dx));
-      item.style.transform=`translateX(${curX}px)`;
-    }, {passive:false});
-
-    item.addEventListener('touchend', () => {
-      if (!isHoriz) return;
-      item.style.transition='transform 0.22s ease';
-      if (curX < -55)      { item.style.transform='translateX(-80px)'; revealed='delete'; }
-      else if (curX > 55)  { item.style.transform='translateX(80px)';  revealed='edit';   }
-      else                 { item.style.transform='translateX(0)';      revealed=false;    }
+      if(isHoriz===null&&(Math.abs(dx)>6||Math.abs(dy)>6)) isHoriz=Math.abs(dx)>Math.abs(dy);
+      if(!isHoriz) return; e.preventDefault();
+      curX=Math.max(-88,Math.min(88,dx)); item.style.transform=`translateX(${curX}px)`;
+    },{passive:false});
+    item.addEventListener('touchend',()=>{
+      if(!isHoriz) return; item.style.transition='transform 0.22s ease';
+      if(curX<-55){item.style.transform='translateX(-80px)';revealed='delete';}
+      else if(curX>55){item.style.transform='translateX(80px)';revealed='edit';}
+      else{item.style.transform='translateX(0)';revealed=false;}
     });
-
-    wrapper.querySelector('.swipe-bg-delete').addEventListener('click', () => {
-      if (revealed==='delete') delEntryByIdx(idx);
-    });
-    wrapper.querySelector('.swipe-bg-edit').addEventListener('click', () => {
-      if (revealed==='edit') { resetSwipe(item); editEntry(idx); }
-    });
+    wrapper.querySelector('.swipe-bg-delete').addEventListener('click',()=>{ if(revealed==='delete') delEntryByIdx(idx); });
+    wrapper.querySelector('.swipe-bg-edit').addEventListener('click',()=>{ if(revealed==='edit'){resetSwipe(item);editEntry(idx);} });
   });
-
-  // Dismiss revealed swipe when tapping elsewhere
-  document.getElementById('entry-list').addEventListener('touchstart', e => {
-    document.querySelectorAll('.entry-item').forEach(item => {
-      const t = item.style.transform;
-      if (t && t !== 'translateX(0px)' && t !== 'translateX(0)') {
-        if (!e.target.closest('.swipe-wrapper') ||
-            item !== e.target.closest('.swipe-wrapper')?.querySelector('.entry-item')) {
-          resetSwipe(item);
-        }
+  document.getElementById('entry-list').addEventListener('touchstart',e=>{
+    document.querySelectorAll('.entry-item').forEach(item=>{
+      const t=item.style.transform;
+      if(t&&t!=='translateX(0px)'&&t!=='translateX(0)'){
+        if(!e.target.closest('.swipe-wrapper')||item!==e.target.closest('.swipe-wrapper')?.querySelector('.entry-item')) resetSwipe(item);
       }
     });
-  }, {passive:true});
+  },{passive:true});
 }
-
-function resetSwipe(item) {
-  item.style.transition='transform 0.22s ease';
-  item.style.transform='translateX(0)';
-}
+function resetSwipe(item){ item.style.transition='transform 0.22s ease'; item.style.transform='translateX(0)'; }
 
 /* ─────────────── DRAG & DROP ─────────────── */
 function initDragDrop() {
-  document.querySelectorAll('.swipe-wrapper').forEach(wrapper => {
-    const item   = wrapper.querySelector('.entry-item');
-    const handle = wrapper.querySelector('.drag-handle');
-    const idx    = parseInt(wrapper.dataset.index);
+  document.querySelectorAll('.swipe-wrapper').forEach(wrapper=>{
+    const item=wrapper.querySelector('.entry-item'), handle=wrapper.querySelector('.drag-handle'), idx=parseInt(wrapper.dataset.index);
 
-    // HTML5 drag (desktop)
-    item.addEventListener('dragstart', e => {
-      dragSrcIdx = idx; item.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    item.addEventListener('dragend', () => {
-      item.classList.remove('dragging');
-      document.querySelectorAll('.swipe-wrapper').forEach(w => w.classList.remove('drop-target-above','drop-target-below'));
-    });
-    wrapper.addEventListener('dragover', e => {
-      e.preventDefault(); e.dataTransfer.dropEffect = 'move';
-      document.querySelectorAll('.swipe-wrapper').forEach(w => w.classList.remove('drop-target-above','drop-target-below'));
-      const r = wrapper.getBoundingClientRect();
-      wrapper.classList.add(e.clientY < r.top + r.height/2 ? 'drop-target-above' : 'drop-target-below');
-    });
-    wrapper.addEventListener('dragleave', () => wrapper.classList.remove('drop-target-above','drop-target-below'));
-    wrapper.addEventListener('drop', e => {
-      e.preventDefault();
-      wrapper.classList.remove('drop-target-above','drop-target-below');
-      const tIdx = parseInt(wrapper.dataset.index);
-      if (dragSrcIdx !== null && dragSrcIdx !== tIdx) {
-        reorderEntries(dragSrcIdx, tIdx, e.clientY < wrapper.getBoundingClientRect().top + wrapper.getBoundingClientRect().height/2);
-      }
-      dragSrcIdx = null;
-    });
+    item.addEventListener('dragstart',e=>{ dragSrcIdx=idx; item.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+    item.addEventListener('dragend',()=>{ item.classList.remove('dragging'); document.querySelectorAll('.swipe-wrapper').forEach(w=>w.classList.remove('drop-target-above','drop-target-below')); });
+    wrapper.addEventListener('dragover',e=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; document.querySelectorAll('.swipe-wrapper').forEach(w=>w.classList.remove('drop-target-above','drop-target-below')); const r=wrapper.getBoundingClientRect(); wrapper.classList.add(e.clientY<r.top+r.height/2?'drop-target-above':'drop-target-below'); });
+    wrapper.addEventListener('dragleave',()=>wrapper.classList.remove('drop-target-above','drop-target-below'));
+    wrapper.addEventListener('drop',e=>{ e.preventDefault(); wrapper.classList.remove('drop-target-above','drop-target-below'); const tIdx=parseInt(wrapper.dataset.index); if(dragSrcIdx!==null&&dragSrcIdx!==tIdx) reorderEntries(dragSrcIdx,tIdx,e.clientY<wrapper.getBoundingClientRect().top+wrapper.getBoundingClientRect().height/2); dragSrcIdx=null; });
 
-    // Touch drag via handle
-    let touchActive=false, touchTimer=null, touchTargetIdx=null;
-    handle.addEventListener('touchstart', () => {
-      touchTimer = setTimeout(() => { touchActive=true; item.classList.add('dragging'); navigator.vibrate&&navigator.vibrate(20); }, 350);
-    }, {passive:true});
-    handle.addEventListener('touchmove', e => {
-      clearTimeout(touchTimer);
-      if (!touchActive) return;
-      e.preventDefault();
-      const ty = e.touches[0].clientY;
-      document.querySelectorAll('.swipe-wrapper').forEach(w => {
-        w.classList.remove('drop-target-above','drop-target-below');
-        const r = w.getBoundingClientRect();
-        if (ty >= r.top && ty <= r.bottom) {
-          touchTargetIdx = parseInt(w.dataset.index);
-          w.classList.add(ty < r.top+r.height/2 ? 'drop-target-above' : 'drop-target-below');
-        }
-      });
-    }, {passive:false});
-    handle.addEventListener('touchend', () => {
-      clearTimeout(touchTimer);
-      item.classList.remove('dragging');
-      document.querySelectorAll('.swipe-wrapper').forEach(w => w.classList.remove('drop-target-above','drop-target-below'));
-      if (touchActive && touchTargetIdx !== null && touchTargetIdx !== idx) {
-        reorderEntries(idx, touchTargetIdx, true);
-      }
-      touchActive=false; touchTargetIdx=null;
-    });
+    let touchActive=false,touchTimer=null,touchTargetIdx=null;
+    handle.addEventListener('touchstart',()=>{ touchTimer=setTimeout(()=>{ touchActive=true; item.classList.add('dragging'); navigator.vibrate&&navigator.vibrate(20); },350); },{passive:true});
+    handle.addEventListener('touchmove',e=>{ clearTimeout(touchTimer); if(!touchActive) return; e.preventDefault(); const ty=e.touches[0].clientY; document.querySelectorAll('.swipe-wrapper').forEach(w=>{ w.classList.remove('drop-target-above','drop-target-below'); const r=w.getBoundingClientRect(); if(ty>=r.top&&ty<=r.bottom){ touchTargetIdx=parseInt(w.dataset.index); w.classList.add(ty<r.top+r.height/2?'drop-target-above':'drop-target-below'); } }); },{passive:false});
+    handle.addEventListener('touchend',()=>{ clearTimeout(touchTimer); item.classList.remove('dragging'); document.querySelectorAll('.swipe-wrapper').forEach(w=>w.classList.remove('drop-target-above','drop-target-below')); if(touchActive&&touchTargetIdx!==null&&touchTargetIdx!==idx) reorderEntries(idx,touchTargetIdx,true); touchActive=false; touchTargetIdx=null; });
   });
 }
-
-function reorderEntries(fromIdx, toIdx, insertBefore) {
-  const data  = getWeekData();
-  const entry = data.entries.splice(fromIdx, 1)[0];
-  let dest = toIdx > fromIdx ? toIdx - 1 : toIdx;
-  if (!insertBefore && dest < data.entries.length) dest++;
-  data.entries.splice(dest, 0, entry);
-  save(); renderService();
+function reorderEntries(fromIdx,toIdx,insertBefore){
+  const data=getWeekData(), entry=data.entries.splice(fromIdx,1)[0];
+  let dest=toIdx>fromIdx?toIdx-1:toIdx; if(!insertBefore&&dest<data.entries.length) dest++;
+  data.entries.splice(dest,0,entry); save(); renderService();
 }
 
 /* ─────────────── CATEGORY ─────────────── */
-function selCat(c) {
-  selCatVal = c;
-  ['app','gos','misc'].forEach(x => document.getElementById('cat-'+x).classList.toggle('sel', x===c));
-  document.getElementById('appt-type-group').style.display = c==='app' ? 'block' : 'none';
+function selCat(c){
+  selCatVal=c;
+  ['app','gos','misc'].forEach(x=>document.getElementById('cat-'+x).classList.toggle('sel',x===c));
+  document.getElementById('appt-type-group').style.display=c==='app'?'block':'none';
 }
 
 /* ─────────────── SORT ─────────────── */
-function sortEntries(entries) {
-  return [...entries].sort((a,b) => {
-    const di = DAY_ORDER.indexOf(b.day) - DAY_ORDER.indexOf(a.day);
-    return di !== 0 ? di : (a.start||'00:00').localeCompare(b.start||'00:00');
+function sortEntries(entries){
+  return [...entries].sort((a,b)=>{
+    const di=DAY_ORDER.indexOf(b.day)-DAY_ORDER.indexOf(a.day);
+    return di!==0?di:(a.start||'00:00').localeCompare(b.start||'00:00');
   });
 }
 
 /* ─────────────── ADD / EDIT / DELETE ─────────────── */
-function openAddEntry() {
-  editingIndex = null;
-  document.getElementById('form-title').textContent = 'New entry';
-  document.getElementById('save-btn').textContent   = 'Save entry';
-  document.getElementById('f-day').value            = getCurrentDayName();
-  document.getElementById('f-desc').value           = '';
-  document.getElementById('f-appt-type').value      = 'student';
-  selCat('app');
-  setDrumTimeNow('start', 0);
-  setDrumTimeNow('end',   60);
-  navTo('add');
+function openAddEntry(){
+  editingIndex=null;
+  document.getElementById('form-title').textContent='New entry';
+  document.getElementById('save-btn').textContent='Save entry';
+  document.getElementById('f-day').value=getCurrentDayName();
+  document.getElementById('f-desc').value='';
+  document.getElementById('f-appt-type').value='student';
+  selCat('app'); setDrumTimeNow('start',0); setDrumTimeNow('end',60); navTo('add');
 }
-
-function editEntry(i) {
-  const data  = getWeekData();
-  const entry = data.entries[i];
-  if (!entry) return;
-  editingIndex = i;
-  document.getElementById('form-title').textContent = 'Edit entry';
-  document.getElementById('save-btn').textContent   = 'Update entry';
-  document.getElementById('f-day').value            = entry.day;
-  document.getElementById('f-desc').value           = entry.desc || '';
-  document.getElementById('f-appt-type').value      = entry.apptType || 'student';
-  selCat(entry.cat || 'app');
-  setDrumTimeStr('start', entry.start);
-  setDrumTimeStr('end',   entry.end);
-  navTo('add');
+function editEntry(i){
+  const data=getWeekData(), entry=data.entries[i]; if(!entry) return;
+  editingIndex=i;
+  document.getElementById('form-title').textContent='Edit entry';
+  document.getElementById('save-btn').textContent='Update entry';
+  document.getElementById('f-day').value=entry.day;
+  document.getElementById('f-desc').value=entry.desc||'';
+  document.getElementById('f-appt-type').value=entry.apptType||'student';
+  selCat(entry.cat||'app'); setDrumTimeStr('start',entry.start); setDrumTimeStr('end',entry.end); navTo('add');
 }
-
-function cancelEntry() { editingIndex = null; navTo('service'); }
-
-function saveEntry() {
-  const desc = document.getElementById('f-desc').value.trim();
-  if (!desc) { document.getElementById('f-desc').focus(); return; }
-  const data = getWeekData();
-  if (!data.entries) data.entries = [];
-  const entry = {
-    day:      document.getElementById('f-day').value,
-    start:    getDrumTime('start'),
-    end:      getDrumTime('end'),
-    desc,
-    cat:      selCatVal,
-    apptType: selCatVal==='app' ? document.getElementById('f-appt-type').value : null
+function cancelEntry(){ editingIndex=null; navTo('service'); }
+function saveEntry(){
+  const desc=document.getElementById('f-desc').value.trim();
+  if(!desc){ document.getElementById('f-desc').focus(); return; }
+  const data=getWeekData(); if(!data.entries) data.entries=[];
+  const entry={
+    day:document.getElementById('f-day').value, start:getDrumTime('start'), end:getDrumTime('end'),
+    desc, cat:selCatVal, apptType:selCatVal==='app'?document.getElementById('f-appt-type').value:null
   };
-  if (editingIndex !== null) { data.entries[editingIndex] = entry; }
-  else { data.entries.push(entry); data.entries = sortEntries(data.entries); }
-  editingIndex = null;
-  save(); navTo('service');
+  if(editingIndex!==null){ data.entries[editingIndex]=entry; }
+  else { data.entries.push(entry); data.entries=sortEntries(data.entries); }
+  editingIndex=null; save(); navTo('service');
 }
-
-function delEntryByIdx(i) {
-  if (!confirm('Delete this entry?')) return;
-  const data = getWeekData();
-  data.entries.splice(i, 1);
-  save(); renderService();
+function delEntryByIdx(i){
+  if(!confirm('Delete this entry?')) return;
+  const data=getWeekData(); data.entries.splice(i,1); save(); renderService();
 }
 
 /* ─────────────── DRUM ROLL TIME PICKER ─────────────── */
-function buildDrumCol(el, items) {
-  el.innerHTML = '';
-  const padT = document.createElement('div'); padT.className = 'drum-pad'; el.appendChild(padT);
-  items.forEach(item => {
-    const d = document.createElement('div');
-    d.className    = 'drum-item';
-    d.textContent  = typeof item === 'object' ? item.label : item;
-    d.dataset.value = typeof item === 'object' ? item.value : item;
-    el.appendChild(d);
-  });
-  const padB = document.createElement('div'); padB.className = 'drum-pad'; el.appendChild(padB);
+function buildDrumCol(el, items){
+  el.innerHTML='';
+  const padT=document.createElement('div'); padT.className='drum-pad'; el.appendChild(padT);
+  items.forEach(item=>{ const d=document.createElement('div'); d.className='drum-item'; d.textContent=typeof item==='object'?item.label:item; d.dataset.value=typeof item==='object'?item.value:item; el.appendChild(d); });
+  const padB=document.createElement('div'); padB.className='drum-pad'; el.appendChild(padB);
 }
-
-function initDrumPickers() {
-  ['start','end'].forEach(prefix => {
-    buildDrumCol(document.getElementById('drum-'+prefix+'-h'),  Array.from({length:12},(_,i)=>String(i+1)));
-    buildDrumCol(document.getElementById('drum-'+prefix+'-m'),  ['00','15','30','45']);
-    buildDrumCol(document.getElementById('drum-'+prefix+'-ap'), ['AM','PM']);
+function initDrumPickers(){
+  ['start','end'].forEach(p=>{
+    buildDrumCol(document.getElementById('drum-'+p+'-h'), Array.from({length:12},(_,i)=>String(i+1)));
+    buildDrumCol(document.getElementById('drum-'+p+'-m'), ['00','15','30','45']);
+    buildDrumCol(document.getElementById('drum-'+p+'-ap'), ['AM','PM']);
   });
 }
-
-function getDrumColValue(colEl) {
-  const idx   = Math.round(colEl.scrollTop / DRUM_H);
-  const items = colEl.querySelectorAll('.drum-item');
-  return (items[Math.max(0, Math.min(idx, items.length-1))] || {}).dataset?.value || '';
+function getDrumColValue(colEl){ const idx=Math.round(colEl.scrollTop/DRUM_H), items=colEl.querySelectorAll('.drum-item'); return (items[Math.max(0,Math.min(idx,items.length-1))]||{}).dataset?.value||''; }
+function setDrumColIdx(colEl,idx){ requestAnimationFrame(()=>{ colEl.scrollTop=idx*DRUM_H; }); }
+function getDrumTime(prefix){
+  const hCol=document.getElementById('drum-'+prefix+'-h'), mCol=document.getElementById('drum-'+prefix+'-m'), apCol=document.getElementById('drum-'+prefix+'-ap');
+  let h=parseInt(getDrumColValue(hCol))||12; const m=parseInt(getDrumColValue(mCol))||0, ap=getDrumColValue(apCol)||'AM';
+  if(ap==='AM'){ if(h===12) h=0; } else { if(h!==12) h+=12; }
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
 }
-function setDrumColIdx(colEl, idx) {
-  requestAnimationFrame(() => { colEl.scrollTop = idx * DRUM_H; });
-}
-
-function getDrumTime(prefix) {
-  const hCol  = document.getElementById('drum-'+prefix+'-h');
-  const mCol  = document.getElementById('drum-'+prefix+'-m');
-  const apCol = document.getElementById('drum-'+prefix+'-ap');
-  let h = parseInt(getDrumColValue(hCol)) || 12;
-  const m  = parseInt(getDrumColValue(mCol)) || 0;
-  const ap = getDrumColValue(apCol) || 'AM';
-  if (ap === 'AM') { if (h === 12) h = 0; } else { if (h !== 12) h += 12; }
-  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
-}
-
-function setDrumTimeStr(prefix, timeStr) {
-  if (!timeStr) { setDrumTimeNow(prefix, 0); return; }
-  const [hh,mm] = timeStr.split(':').map(Number);
-  applyDrumTime(prefix, hh, mm);
-}
-
-function setDrumTimeNow(prefix, offsetMinutes) {
-  const now = new Date();
-  let total = now.getHours()*60 + now.getMinutes() + (offsetMinutes||0);
-  total = Math.round(total/15)*15;
-  applyDrumTime(prefix, Math.floor(total/60)%24, total%60);
-}
-
-function applyDrumTime(prefix, h24, m) {
-  const isPm = h24 >= 12;
-  const h12  = h24 % 12 || 12;
-  const mIdx = [0,15,30,45].indexOf(Math.round(m/15)*15 % 60);
-  setDrumColIdx(document.getElementById('drum-'+prefix+'-h'),  h12 - 1);
-  setDrumColIdx(document.getElementById('drum-'+prefix+'-m'),  mIdx >= 0 ? mIdx : 0);
-  setDrumColIdx(document.getElementById('drum-'+prefix+'-ap'), isPm ? 1 : 0);
-}
+function setDrumTimeStr(prefix,timeStr){ if(!timeStr){ setDrumTimeNow(prefix,0); return; } const [hh,mm]=timeStr.split(':').map(Number); applyDrumTime(prefix,hh,mm); }
+function setDrumTimeNow(prefix,offsetMinutes){ const now=new Date(); let total=now.getHours()*60+now.getMinutes()+(offsetMinutes||0); total=Math.round(total/15)*15; applyDrumTime(prefix,Math.floor(total/60)%24,total%60); }
+function applyDrumTime(prefix,h24,m){ const isPm=h24>=12, h12=h24%12||12, mIdx=[0,15,30,45].indexOf(Math.round(m/15)*15%60); setDrumColIdx(document.getElementById('drum-'+prefix+'-h'),h12-1); setDrumColIdx(document.getElementById('drum-'+prefix+'-m'),mIdx>=0?mIdx:0); setDrumColIdx(document.getElementById('drum-'+prefix+'-ap'),isPm?1:0); }
 
 /* ─────────────── NAV ─────────────── */
-function getCurrentDayName() {
-  return ["Lord's day",'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
-}
-function navTo(screen) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function getCurrentDayName(){ return ["Lord's day",'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()]; }
+function navTo(screen){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+screen).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const nb = document.getElementById('nav-'+screen);
-  if (nb) nb.classList.add('active');
-  if (screen==='service') renderService();
-  if (screen==='export')  renderExport();
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const nb=document.getElementById('nav-'+screen); if(nb) nb.classList.add('active');
+  if(screen==='service') renderService();
+  if(screen==='export') renderExport();
   window.scrollTo(0,0);
 }
 
 /* ─────────────── EXPORT ─────────────── */
-function renderExport() {
-  const weeks = Object.keys(state).sort().reverse();
-  const el    = document.getElementById('week-history');
-  if (!weeks.length) { el.innerHTML='<div class="empty-state">No data yet</div>'; return; }
-  el.innerHTML = weeks.map(w => {
-    const d=state[w]||{}, e=d.entries||[];
-    const app=e.filter(x=>x.cat==='app').length, gos=e.filter(x=>x.cat==='gos').length;
-    const misc=e.filter(x=>x.cat==='misc').length, days=(d.days||[]).length;
-    return `<div class="week-history-item">
-      <div><div class="wh-label">Week of ${weekLabel(w)}</div>
-      <div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div></div>
-      <button class="wh-csv" onclick="exportWeekCSV('${w}')">CSV</button>
-    </div>`;
+function renderExport(){
+  const weeks=Object.keys(state).sort().reverse(), el=document.getElementById('week-history');
+  if(!weeks.length){ el.innerHTML='<div class="empty-state">No data yet</div>'; return; }
+  el.innerHTML=weeks.map(w=>{ const d=state[w]||{},e=d.entries||[]; const app=e.filter(x=>x.cat==='app').length,gos=e.filter(x=>x.cat==='gos').length,misc=e.filter(x=>x.cat==='misc').length,days=(d.days||[]).length;
+    return `<div class="week-history-item"><div><div class="wh-label">Week of ${weekLabel(w)}</div><div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div></div><button class="wh-csv" onclick="exportWeekCSV('${w}')">CSV</button></div>`;
   }).join('');
 }
-function buildCSVRows(weekKey) {
-  const data=state[weekKey]||{}, life=data.life||{}, days=data.days||[], entries=data.entries||[], comments=data.comments||{};
-  const daysStr=DAY_LABELS_SHORT.filter((_,i)=>days.includes(i)).join(', ')+' ('+days.length+' of 7)';
-  const rows=[
-    ['Fulltimers Accountability Report','Manny Choy','Week of '+weekLabel(weekKey)],[],
-    ['LIFE','Y','N','Comments'],
-    ['Daily Personal Time',daysStr,'',''],
-    ['R & R Completion',life.rnr?'Y':'',life.rnr?'':'N',comments.rnr||''],
-    ['Companion Prayer',life.companion?'Y':'',life.companion?'':'N',comments.companion||''],
-    ['Airtable Stats Updated',life.airtable?'Y':'',life.airtable?'':'N',''],
-    [],[`SERVICE`],['Day','Start','End','Description','Category'],
-  ];
+function buildCSVRows(weekKey){
+  const data=state[weekKey]||{},life=data.life||{},days=data.days||[],entries=data.entries||[],comments=data.comments||{};
+  const daysStr=DAY_LABELS_SHORT.filter((_,i)=>days.includes(i)).join(', ')+'('+days.length+' of 7)';
+  const rows=[['Fulltimers Accountability Report','Manny Choy','Week of '+weekLabel(weekKey)],[],['LIFE','Y','N','Comments'],['Daily Personal Time',daysStr,'',''],['R & R Completion',life.rnr?'Y':'',life.rnr?'':'N',comments.rnr||''],['Companion Prayer',life.companion?'Y':'',life.companion?'':'N',comments.companion||''],['Airtable Stats Updated',life.airtable?'Y':'',life.airtable?'':'N',''],[[],['SERVICE'],['Day','Start','End','Description','Category']]];
   entries.forEach(e=>rows.push([e.day,e.start?fmtTime(e.start):'',e.end?fmtTime(e.end):'',e.desc,e.cat==='app'?'Appointment':e.cat==='gos'?'Gospel':'Misc']));
   return rows;
 }
-function rowsToCSV(rows) { return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n'); }
-function exportWeekCSV(k) { dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
-function exportAllCSV() {
-  const weeks=Object.keys(state).sort(); let all=[];
-  weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); });
-  dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv');
-}
-function dlFile(content,name,type) {
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([content],{type})),download:name});
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-}
+function rowsToCSV(rows){ return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n'); }
+function exportWeekCSV(k){ dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
+function exportAllCSV(){ const weeks=Object.keys(state).sort(); let all=[]; weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); }); dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv'); }
+function dlFile(content,name,type){ const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([content],{type})),download:name}); document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 
 /* ─────────────── DAY / NIGHT ─────────────── */
-function applyTheme(isDay) {
-  document.body.classList.toggle('day-mode', isDay);
-  document.querySelector('meta[name="theme-color"]').content = isDay ? '#f2f4f0' : '#111111';
-}
-function checkDayNight(lat,lon) {
-  const now=new Date();
-  fetch('https://api.sunrise-sunset.org/json?lat='+lat+'&lng='+lon+'&formatted=0')
-    .then(r=>r.json())
-    .then(d=>{ if(d.status!=='OK'){applyTheme(false);return;}
-      const sr=new Date(d.results.sunrise),ss=new Date(d.results.sunset);
-      applyTheme(now>=sr&&now<=ss);
-      const ms=now<sr?(sr-now+60000):now<=ss?(ss-now+60000):(86400000-(now-ss)+60000);
-      setTimeout(()=>checkDayNight(lat,lon),Math.min(ms,10*60*1000));
-    }).catch(()=>{ const h=now.getHours(); applyTheme(h>=6&&h<20); });
-}
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    p=>checkDayNight(p.coords.latitude,p.coords.longitude),
-    ()=>{ const h=new Date().getHours(); applyTheme(h>=6&&h<20); }
-  );
-} else { const h=new Date().getHours(); applyTheme(h>=6&&h<20); }
+function applyTheme(isDay){ document.body.classList.toggle('day-mode',isDay); document.querySelector('meta[name="theme-color"]').content=isDay?'#f2f4f0':'#111111'; }
+function checkDayNight(lat,lon){ const now=new Date(); fetch('https://api.sunrise-sunset.org/json?lat='+lat+'&lng='+lon+'&formatted=0').then(r=>r.json()).then(d=>{ if(d.status!=='OK'){applyTheme(false);return;} const sr=new Date(d.results.sunrise),ss=new Date(d.results.sunset); applyTheme(now>=sr&&now<=ss); const ms=now<sr?(sr-now+60000):now<=ss?(ss-now+60000):(86400000-(now-ss)+60000); setTimeout(()=>checkDayNight(lat,lon),Math.min(ms,10*60*1000)); }).catch(()=>{ const h=now.getHours(); applyTheme(h>=6&&h<20); }); }
+if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(p=>checkDayNight(p.coords.latitude,p.coords.longitude),()=>{ const h=new Date().getHours(); applyTheme(h>=6&&h<20); }); } else { const h=new Date().getHours(); applyTheme(h>=6&&h<20); }
 
 /* ─────────────── BOOT ─────────────── */
 updateLayout();
