@@ -642,6 +642,19 @@ function getWeekData() {
 function save() {
   try { localStorage.setItem('manny_report_v2', JSON.stringify(state)); } catch(e) {}
 }
+
+// Re-load state from localStorage whenever the page becomes visible again
+// (iOS Safari unloads/reloads the page when backgrounded)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    try { const saved = localStorage.getItem('manny_report_v2'); if (saved) state = JSON.parse(saved); } catch(e) {}
+    renderAll();
+  }
+});
+
+// Force a save before the page unloads (belt-and-suspenders for iOS)
+window.addEventListener('pagehide', () => { save(); });
+window.addEventListener('beforeunload', () => { save(); });
 function renderAll() {
   document.getElementById('week-label').textContent = weekLabel(currentWeek);
   renderLife();
