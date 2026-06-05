@@ -422,7 +422,7 @@
   <!-- TOP BAR -->
   <div class="topbar" id="topbar">
     <div class="topbar-left">
-      <div class="topbar-title">Manny Choy</div>
+      <div class="topbar-title" onclick="handleTitleTap()">Manny Choy</div>
       <div class="topbar-sub">Full-timers Report</div>
     </div>
     <div class="week-nav">
@@ -604,8 +604,12 @@ try { state = JSON.parse(localStorage.getItem('manny_report_v2') || '{}'); } cat
 // getDay() returns 0=Sun … 6=Sat, so subtracting that value gives Sunday.
 function getSundayStr(d) {
   const sun = new Date(d);
-  sun.setDate(d.getDate() - d.getDay()); // go back to Sunday (no-op if already Sunday)
-  return sun.toISOString().slice(0, 10);
+  sun.setDate(d.getDate() - d.getDay());
+  // Use local date parts to avoid UTC offset pushing date to wrong day
+  const y = sun.getFullYear();
+  const m = String(sun.getMonth() + 1).padStart(2, '0');
+  const day = String(sun.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 let currentWeek  = getSundayStr(new Date());
@@ -640,7 +644,30 @@ function getWeekData() {
   return state[currentWeek];
 }
 function save() {
-  try { localStorage.setItem('manny_report_v2', JSON.stringify(state)); } catch(e) {}
+  try {
+    localStorage.setItem('manny_report_v2', JSON.stringify(state));
+    // Debug: log every save with a timestamp
+    const log = JSON.parse(localStorage.getItem('manny_debug_log') || '[]');
+    log.push({ t: new Date().toISOString(), action: 'save', keys: Object.keys(state) });
+    if (log.length > 30) log.splice(0, log.length - 30);
+    localStorage.setItem('manny_debug_log', JSON.stringify(log));
+  } catch(e) {}
+}
+
+function debugLog(action) {
+  try {
+    const log = JSON.parse(localStorage.getItem('manny_debug_log') || '[]');
+    log.push({ t: new Date().toISOString(), action, stateKeys: Object.keys(state), hasData: JSON.stringify(state).length });
+    if (log.length > 30) log.splice(0, log.length - 30);
+    localStorage.setItem('manny_debug_log', JSON.stringify(log));
+  } catch(e) {}
+}
+
+function showDebugLog() {
+  try {
+    const log = JSON.parse(localStorage.getItem('manny_debug_log') || '[]');
+    alert(log.map(l => l.t.slice(11,19) + ' ' + l.action + ' keys=' + (l.stateKeys||[]).join(',') + ' len=' + l.hasData).join('\n') || 'No log yet');
+  } catch(e) { alert('Error reading log'); }
 }
 
 // Re-load state from localStorage whenever the page becomes visible again
@@ -648,13 +675,23 @@ function save() {
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
     try { const saved = localStorage.getItem('manny_report_v2'); if (saved) state = JSON.parse(saved); } catch(e) {}
+    debugLog('visibilitychange-visible');
     renderAll();
   }
 });
 
 // Force a save before the page unloads (belt-and-suspenders for iOS)
-window.addEventListener('pagehide', () => { save(); });
-window.addEventListener('beforeunload', () => { save(); });
+window.addEventListener('pagehide', () => { debugLog('pagehide'); save(); });
+window.addEventListener('beforeunload', () => { debugLog('beforeunload'); save(); });
+debugLog('page-load');
+
+let titleTapCount = 0, titleTapTimer = null;
+function handleTitleTap() {
+  titleTapCount++;
+  clearTimeout(titleTapTimer);
+  titleTapTimer = setTimeout(() => { titleTapCount = 0; }, 600);
+  if (titleTapCount >= 3) { titleTapCount = 0; showDebugLog(); }
+}
 function renderAll() {
   document.getElementById('week-label').textContent = weekLabel(currentWeek);
   renderLife();
@@ -894,25 +931,13 @@ function dlFile(content,name,type){ const a=Object.assign(document.createElement
 
 /* ─────────────── DAY / NIGHT ─────────────── */
 function applyTheme(isDay){ document.body.classList.toggle('day-mode',isDay); document.querySelector('meta[name="theme-color"]').content=isDay?'#f2f4f0':'#111111'; }
-function checkDayNight(lat,lon){
-  const now=new Date();
-  fetch('https://api.sunrise-sunset.org/json?lat='+lat+'&lng='+lon+'&formatted=0')
-    .then(r=>r.json())
-    .then(d=>{
-      if(d.status!=='OK'){ applyTheme(now.getHours()>=6&&now.getHours()<20); return; }
-      const sr=new Date(d.results.sunrise), ss=new Date(d.results.sunset);
-      applyTheme(now>=sr&&now<=ss);
-    })
-    .catch(()=>{ applyTheme(now.getHours()>=6&&now.getHours()<20); });
+function checkDayNight(){
+  const h=new Date().getHours();
+  applyTheme(h>=7&&h<20);
 }
 function initTheme(){
-  const h=new Date().getHours(); applyTheme(h>=6&&h<20);
-  if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(
-      p=>{ checkDayNight(p.coords.latitude,p.coords.longitude); setInterval(()=>checkDayNight(p.coords.latitude,p.coords.longitude),10*60*1000); },
-      ()=>{}
-    );
-  }
+  checkDayNight();
+  setInterval(checkDayNight, 5*60*1000);
 }
 initTheme();
 
