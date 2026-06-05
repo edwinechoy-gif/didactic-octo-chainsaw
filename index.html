@@ -392,6 +392,20 @@
     padding: 5px 10px; cursor: pointer;
   }
   .wh-csv:active { opacity: .7; }
+  .wh-sheets {
+    background: var(--bg3); border: 1px solid #2d7a3a;
+    border-radius: var(--radius-sm); color: #4caf6e;
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    padding: 5px 10px; cursor: pointer; margin-left: 6px;
+  }
+  .wh-sheets:active { opacity: .7; }
+  .export-sheets-btn {
+    width: 100%; background: #1a3d2b; border: 1px solid #2d7a3a;
+    border-radius: var(--radius-sm); color: #4caf6e;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 12px;
+    cursor: pointer; margin-top: 10px; transition: background .15s;
+  }
+  .export-sheets-btn:active { background: #1f4d34; }
 
   /* ── NAV — fixed at bottom ── */
   .nav {
@@ -558,6 +572,7 @@
       <div class="card-label">Export to Google Sheets</div>
       <p class="export-note">Downloads a CSV for the current week. In Google Sheets, go to <strong>File &rarr; Import &rarr; Upload</strong> and select the file.</p>
       <button class="export-main-btn" onclick="exportWeekCSV(currentWeek)">Download this week's CSV</button>
+      <button class="export-sheets-btn" onclick="sendToSheets(currentWeek)">↑ Send this week to Google Sheets</button>
       <button class="export-all-btn" onclick="exportAllCSV()">Download all weeks (combined)</button>
     </div>
     <div class="card">
@@ -914,7 +929,7 @@ function renderExport(){
   const weeks=Object.keys(state).sort().reverse(), el=document.getElementById('week-history');
   if(!weeks.length){ el.innerHTML='<div class="empty-state">No data yet</div>'; return; }
   el.innerHTML=weeks.map(w=>{ const d=state[w]||{},e=d.entries||[]; const app=e.filter(x=>x.cat==='app').length,gos=e.filter(x=>x.cat==='gos').length,misc=e.filter(x=>x.cat==='misc').length,days=(d.days||[]).length;
-    return `<div class="week-history-item"><div><div class="wh-label">Week of ${weekLabel(w)}</div><div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div></div><button class="wh-csv" onclick="exportWeekCSV('${w}')">CSV</button></div>`;
+    return `<div class="week-history-item"><div><div class="wh-label">Week of ${weekLabel(w)}</div><div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div></div><div style="display:flex;gap:4px"><button class="wh-csv" onclick="exportWeekCSV('${w}')">CSV</button><button class="wh-sheets" onclick="sendToSheets('${w}')">Sheets</button></div></div>`;
   }).join('');
 }
 function buildCSVRows(weekKey){
@@ -927,6 +942,22 @@ function buildCSVRows(weekKey){
 function rowsToCSV(rows){ return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n'); }
 function exportWeekCSV(k){ dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
 function exportAllCSV(){ const weeks=Object.keys(state).sort(); let all=[]; weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); }); dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv'); }
+
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyQ1aaG2ZTibBg6CqYaODkZpXnbd729fKI4qabLr5O4-7mgHPrwQM-XNrn6rzqSgJFz/exec';
+
+function sendToSheets(weekKey) {
+  const data = state[weekKey];
+  if (!data) { alert('No data for this week.'); return; }
+  const btn = event.target; btn.textContent = '…'; btn.disabled = true;
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ weekKey, data })
+  })
+  .then(() => { btn.textContent = '✓ Sent'; btn.style.color = '#4caf6e'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); })
+  .catch(() => { btn.textContent = 'Failed'; btn.style.color = 'var(--danger)'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); });
+}
 function dlFile(content,name,type){ const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([content],{type})),download:name}); document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 
 /* ─────────────── DAY / NIGHT ─────────────── */
