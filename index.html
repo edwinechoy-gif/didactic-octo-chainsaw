@@ -140,6 +140,31 @@
   .day-count { font-size: 12px; color: var(--text); margin-top: 10px; text-align: right; font-family: 'DM Mono', monospace; }
   .day-count span { color: var(--green); font-weight: 600; }
 
+  /* ── BIBLE READING GRID ── */
+  .bible-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; }
+  .bible-cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bible-cell-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .bible-check-wrap { display: flex; flex-direction: column; gap: 3px; width: 100%; align-items: center; }
+  .bible-check {
+    width: 34px; height: 24px; border-radius: 6px;
+    border: 1.5px solid var(--border2); background: var(--bg3);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    position: relative; flex-shrink: 0;
+  }
+  .bible-check.checked { background: var(--green-glow); border-color: var(--green); }
+  .bible-check.checked::after {
+    content: ''; width: 8px; height: 5px;
+    border-left: 2px solid var(--green); border-bottom: 2px solid var(--green);
+    transform: rotate(-45deg) translateY(-1px); display: block;
+  }
+  .bible-check-lbl {
+    font-size: 8px; font-family: 'DM Mono', monospace;
+    color: var(--text3); text-align: center; line-height: 1;
+  }
+  .bible-legend { display: flex; gap: 12px; margin-top: 10px; }
+  .bible-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text2); }
+  .bible-legend-swatch { width: 12px; height: 8px; border-radius: 3px; border: 1.5px solid var(--border2); background: var(--bg3); }
+
   /* ── LIFE ROWS ── */
   .life-row {
     display: flex; align-items: center; justify-content: space-between;
@@ -475,6 +500,15 @@
       <div class="day-count" id="prayer-count"><span>0</span> of 7 days</div>
     </div>
     <div id="life-rows"></div>
+    <div class="card">
+      <div class="card-label">Bible reading</div>
+      <div id="bible-book-label" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:10px;"></div>
+      <div class="bible-grid" id="bible-grid"></div>
+      <div class="bible-legend">
+        <div class="bible-legend-item"><div class="bible-legend-swatch"></div>LS / Book</div>
+        <div class="bible-legend-item"><div class="bible-legend-swatch"></div>Bible Reading</div>
+      </div>
+    </div>
   </div>
 
   <!-- SERVICE SCREEN -->
@@ -569,6 +603,12 @@
   <!-- EXPORT SCREEN -->
   <div class="screen" id="screen-export">
     <div class="card">
+      <div class="card-label">Bible Reading</div>
+      <p class="export-note">Check off today's reading and push it directly to the team spreadsheet.</p>
+      <div id="bible-today-label" style="font-family:'DM Mono',monospace;font-size:12px;opacity:0.6;margin-bottom:10px;"></div>
+      <button class="export-sheets-btn" onclick="sendBibleReading()" id="bible-btn" style="margin-top:0">✓ Mark today as read in team sheet</button>
+    </div>
+    <div class="card">
       <div class="card-label">Export to Google Sheets</div>
       <p class="export-note">Downloads a CSV for the current week. In Google Sheets, go to <strong>File &rarr; Import &rarr; Upload</strong> and select the file.</p>
       <button class="export-main-btn" onclick="exportWeekCSV(currentWeek)">Download this week's CSV</button>
@@ -602,7 +642,6 @@
 <script>
 /* ─────────────── CONSTANTS ─────────────── */
 const LIFE_ITEMS = [
-  { key: 'rnr',       label: 'R & R completion',      comment: false },
   { key: 'companion', label: 'Companion prayer',       comment: true  },
   { key: 'airtable',  label: 'Airtable stats updated', comment: false },
 ];
@@ -742,6 +781,7 @@ function renderLife() {
       <div class="life-checkbox ${on?'checked':''}" onclick="toggleLife('${item.key}',this)"></div>
     </div>`;
   }).join('');
+  renderBibleGrid();
 }
 
 function toggleDay(box) {
@@ -766,6 +806,75 @@ function toggleLife(key, el) {
   save();
 }
 function saveComment(key, val) { getWeekData().comments[key] = val; save(); }
+
+/* ─────────────── BIBLE READING ─────────────── */
+const BIBLE_DAY_LABELS = ['LD','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function getBookLabel() {
+  // Determine current book from the spreadsheet schedule
+  // Based on the sheet: June 2026 = 2 Corinthians (2C), with Ephesians (E) on weekends
+  const now = new Date();
+  const dow = now.getDay(); // 0=Sun,6=Sat
+  // Saturdays and Sundays show E (Ephesians), weekdays show 2C (2 Corinthians)
+  // This is approximate — the actual pattern alternates but this covers the common case
+  return (dow === 0 || dow === 6) ? 'E' : '2C';
+}
+
+function renderBibleGrid() {
+  const data = getWeekData();
+  if (!data.bible) data.bible = {};
+
+  // Show current book
+  const bookEl = document.getElementById('bible-book-label');
+  if (bookEl) bookEl.textContent = 'Current book: 2 Corinthians / Ephesians on weekends';
+
+  const grid = document.getElementById('bible-grid');
+  if (!grid) return;
+
+  grid.innerHTML = BIBLE_DAY_LABELS.map((lbl, dayIdx) => {
+    const lsKey = 'ls_' + dayIdx;
+    const brKey = 'br_' + dayIdx;
+    const lsOn  = !!(data.bible[lsKey]);
+    const brOn  = !!(data.bible[brKey]);
+    return `<div class="bible-cell">
+      <div class="bible-cell-label">${lbl}</div>
+      <div class="bible-check-wrap">
+        <div class="bible-check ${lsOn?'checked':''}" title="LS/Book" onclick="toggleBible(${dayIdx},'ls',this)"></div>
+        <div class="bible-check-lbl">LS</div>
+        <div class="bible-check ${brOn?'checked':''}" title="Bible Reading" onclick="toggleBible(${dayIdx},'br',this)"></div>
+        <div class="bible-check-lbl">BR</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleBible(dayIdx, type, el) {
+  const data = getWeekData();
+  if (!data.bible) data.bible = {};
+  const key = type + '_' + dayIdx;
+  data.bible[key] = !data.bible[key];
+  el.classList.toggle('checked', data.bible[key]);
+  save();
+
+  // Push to team spreadsheet — calculate the actual calendar date for this day
+  if (data.bible[key]) {
+    // currentWeek is the Sunday of this week (YYYY-MM-DD)
+    const sunDate = new Date(currentWeek + 'T12:00:00');
+    sunDate.setDate(sunDate.getDate() + dayIdx);
+    const y = sunDate.getFullYear();
+    const m = String(sunDate.getMonth()+1).padStart(2,'0');
+    const d = String(sunDate.getDate()).padStart(2,'0');
+    pushBibleDay(y+'-'+m+'-'+d, type);
+  }
+}
+
+function pushBibleDay(dateStr, type) {
+  fetch(SHEETS_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'bible_reading', date: dateStr, readingType: type })
+  }).catch(() => {}); // silent — no UI feedback needed here, just fire and forget
+}
 
 /* ─────────────── SERVICE ─────────────── */
 function renderService() {
@@ -926,6 +1035,7 @@ function navTo(screen){
 
 /* ─────────────── EXPORT ─────────────── */
 function renderExport(){
+  initBibleLabel();
   const weeks=Object.keys(state).sort().reverse(), el=document.getElementById('week-history');
   if(!weeks.length){ el.innerHTML='<div class="empty-state">No data yet</div>'; return; }
   el.innerHTML=weeks.map(w=>{ const d=state[w]||{},e=d.entries||[]; const app=e.filter(x=>x.cat==='app').length,gos=e.filter(x=>x.cat==='gos').length,misc=e.filter(x=>x.cat==='misc').length,days=(d.days||[]).length;
@@ -943,7 +1053,7 @@ function rowsToCSV(rows){ return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g
 function exportWeekCSV(k){ dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
 function exportAllCSV(){ const weeks=Object.keys(state).sort(); let all=[]; weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); }); dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv'); }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyQ1aaG2ZTibBg6CqYaODkZpXnbd729fKI4qabLr5O4-7mgHPrwQM-XNrn6rzqSgJFz/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzhcWcnBvJQUPymDIauWfcP1cNmp28dQaF0AiuLVyfbycB790eWIUw9wmTg3shA-DSo0Q/exec';
 
 function sendToSheets(weekKey) {
   const data = state[weekKey];
@@ -959,6 +1069,27 @@ function sendToSheets(weekKey) {
   .catch(() => { btn.textContent = 'Failed'; btn.style.color = 'var(--danger)'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); });
 }
 function dlFile(content,name,type){ const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([content],{type})),download:name}); document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+
+function initBibleLabel() {
+  const now = new Date();
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const el = document.getElementById('bible-today-label');
+  if (el) el.textContent = months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+}
+
+function sendBibleReading() {
+  const now = new Date();
+  const dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  const btn = document.getElementById('bible-btn');
+  btn.textContent = '…'; btn.disabled = true;
+  fetch(SHEETS_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'bible_reading', date: dateStr })
+  })
+  .then(() => { btn.textContent = '✓ Marked as read!'; btn.style.color = '#4caf6e'; setTimeout(() => { btn.textContent = '✓ Mark today as read in team sheet'; btn.style.color = ''; btn.disabled = false; }, 3000); })
+  .catch(() => { btn.textContent = 'Failed — try again'; btn.style.color = 'var(--danger)'; setTimeout(() => { btn.textContent = '✓ Mark today as read in team sheet'; btn.style.color = ''; btn.disabled = false; }, 3000); });
+}
 
 /* ─────────────── DAY / NIGHT ─────────────── */
 function applyTheme(isDay){ document.body.classList.toggle('day-mode',isDay); document.querySelector('meta[name="theme-color"]').content=isDay?'#f2f4f0':'#111111'; }
