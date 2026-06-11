@@ -885,21 +885,23 @@ function pushBibleDay(dateStr, type) {
 }
 
 function fetchBibleMsgNums() {
-  // Use no-cors — can't read response, so instead we'll derive message numbers
-  // from the sheet structure we already know. The pattern for June 2026:
-  // Each week the message numbers increment. We fetch via GET which Apps Script supports.
-  const url = SHEETS_URL + '?type=bible_msg_nums&weekStart=' + encodeURIComponent(currentWeek);
-  fetch(url)
-  .then(r => r.json())
-  .then(result => {
+  const callbackName = 'bibleMsgCallback_' + Date.now();
+  window[callbackName] = function(result) {
     if (result.status === 'ok' && result.msgNums) {
       const data = getWeekData();
       data.bibleMsg = result.msgNums;
       save();
       renderBibleGrid();
     }
-  })
-  .catch(() => {});
+    delete window[callbackName];
+    const script = document.getElementById(callbackName);
+    if (script) script.remove();
+  };
+  const script = document.createElement('script');
+  script.id = callbackName;
+  script.src = SHEETS_URL + '?type=bible_msg_nums&weekStart=' + encodeURIComponent(currentWeek) + '&callback=' + callbackName;
+  script.onerror = () => { delete window[callbackName]; script.remove(); };
+  document.body.appendChild(script);
 }
 
 /* ─────────────── SERVICE ─────────────── */
@@ -1079,7 +1081,7 @@ function rowsToCSV(rows){ return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g
 function exportWeekCSV(k){ dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
 function exportAllCSV(){ const weeks=Object.keys(state).sort(); let all=[]; weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); }); dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv'); }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzZ4l6PPuhU-CwjbXmcgFSRCN7K6KZB9-KFv4Z2qa7eSKnV6x0ELpu5NjX4TZiLfEi4rQ/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxuSeK4bzolK1ijNTKAz50W_wPWU6I73XqJfdpjMkj7YbJ4W_YIYDEPtCfBk5AQThkkyQ/exec';
 
 function sendToSheets(weekKey) {
   const data = state[weekKey];
