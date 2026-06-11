@@ -139,6 +139,7 @@
   }
   .day-count { font-size: 12px; color: var(--text); margin-top: 10px; text-align: right; font-family: 'DM Mono', monospace; }
   .day-count span { color: var(--green); font-weight: 600; }
+  .day-time-row-label { font-size: 10px; font-family: 'DM Mono', monospace; letter-spacing: 0.08em; color: var(--text3); text-transform: uppercase; margin-bottom: 6px; }
 
   /* ── BIBLE READING GRID ── */
   .bible-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; }
@@ -151,8 +152,8 @@
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     position: relative; flex-shrink: 0;
   }
-  .bible-check.checked { background: var(--green-glow); border-color: var(--green); }
-  .bible-check.checked::after {
+  .bible-check.checked, .day-check-box.checked { background: var(--green-glow); border-color: var(--green); }
+  .bible-check.checked::after, .day-check-box.checked::after {
     content: ''; width: 8px; height: 5px;
     border-left: 2px solid var(--green); border-bottom: 2px solid var(--green);
     transform: rotate(-45deg) translateY(-1px); display: block;
@@ -475,33 +476,78 @@
   <div class="screen active" id="screen-life">
     <div class="card">
       <div class="card-label">Daily personal time</div>
-      <div class="day-grid">
-        <div class="day-cell"><div class="day-cell-label">LD</div><div class="day-check-box" data-day="0" onclick="toggleDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Mon</div><div class="day-check-box" data-day="1" onclick="toggleDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Tue</div><div class="day-check-box" data-day="2" onclick="toggleDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Wed</div><div class="day-check-box" data-day="3" onclick="toggleDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Thu</div><div class="day-check-box" data-day="4" onclick="toggleDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Fri</div><div class="day-check-box" data-day="5" onclick="toggleDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Sat</div><div class="day-check-box" data-day="6" onclick="toggleDay(this)"></div></div>
+      <div class="bible-grid" id="daily-time-grid">
+        <div class="bible-cell">
+          <div class="bible-cell-label">LD</div>
+          <div class="bible-check-wrap">
+            <div class="bible-check day-check-box" data-day="0" onclick="toggleDay(this)"></div>
+            <div class="bible-check-lbl">AM</div>
+            <div class="bible-check prayer-check-box" data-day="0" onclick="togglePrayerDay(this)"></div>
+            <div class="bible-check-lbl">PM</div>
+          </div>
+        </div>
+        <div class="bible-cell">
+          <div class="bible-cell-label">Mon</div>
+          <div class="bible-check-wrap">
+            <div class="bible-check day-check-box" data-day="1" onclick="toggleDay(this)"></div>
+            <div class="bible-check-lbl">AM</div>
+            <div class="bible-check prayer-check-box" data-day="1" onclick="togglePrayerDay(this)"></div>
+            <div class="bible-check-lbl">PM</div>
+          </div>
+        </div>
+        <div class="bible-cell">
+          <div class="bible-cell-label">Tue</div>
+          <div class="bible-check-wrap">
+            <div class="bible-check day-check-box" data-day="2" onclick="toggleDay(this)"></div>
+            <div class="bible-check-lbl">AM</div>
+            <div class="bible-check prayer-check-box" data-day="2" onclick="togglePrayerDay(this)"></div>
+            <div class="bible-check-lbl">PM</div>
+          </div>
+        </div>
+        <div class="bible-cell">
+          <div class="bible-cell-label">Wed</div>
+          <div class="bible-check-wrap">
+            <div class="bible-check day-check-box" data-day="3" onclick="toggleDay(this)"></div>
+            <div class="bible-check-lbl">AM</div>
+            <div class="bible-check prayer-check-box" data-day="3" onclick="togglePrayerDay(this)"></div>
+            <div class="bible-check-lbl">PM</div>
+          </div>
+        </div>
+        <div class="bible-cell">
+          <div class="bible-cell-label">Thu</div>
+          <div class="bible-check-wrap">
+            <div class="bible-check day-check-box" data-day="4" onclick="toggleDay(this)"></div>
+            <div class="bible-check-lbl">AM</div>
+            <div class="bible-check prayer-check-box" data-day="4" onclick="togglePrayerDay(this)"></div>
+            <div class="bible-check-lbl">PM</div>
+          </div>
+        </div>
+        <div class="bible-cell">
+          <div class="bible-cell-label">Fri</div>
+          <div class="bible-check-wrap">
+            <div class="bible-check day-check-box" data-day="5" onclick="toggleDay(this)"></div>
+            <div class="bible-check-lbl">AM</div>
+            <div class="bible-check prayer-check-box" data-day="5" onclick="togglePrayerDay(this)"></div>
+            <div class="bible-check-lbl">PM</div>
+          </div>
+        </div>
+        <div class="bible-cell">
+          <div class="bible-cell-label">Sat</div>
+          <div class="bible-check-wrap">
+            <div class="bible-check day-check-box" data-day="6" onclick="toggleDay(this)"></div>
+            <div class="bible-check-lbl">AM</div>
+            <div class="bible-check prayer-check-box" data-day="6" onclick="togglePrayerDay(this)"></div>
+            <div class="bible-check-lbl">PM</div>
+          </div>
+        </div>
       </div>
-      <div class="day-count" id="day-count"><span>0</span> of 7 days</div>
+      <div style="display:flex;justify-content:space-around;margin-top:10px;">
+        <div class="day-count">AM — <span id="day-count-num">0</span> out of 7 days</div>
+        <div class="day-count">PM — <span id="prayer-count-num">0</span> out of 7 days</div>
+      </div>
     </div>
     <div class="card">
-      <div class="card-label">Daily prayer time</div>
-      <div class="day-grid">
-        <div class="day-cell"><div class="day-cell-label">LD</div><div class="day-check-box prayer-check-box" data-day="0" onclick="togglePrayerDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Mon</div><div class="day-check-box prayer-check-box" data-day="1" onclick="togglePrayerDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Tue</div><div class="day-check-box prayer-check-box" data-day="2" onclick="togglePrayerDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Wed</div><div class="day-check-box prayer-check-box" data-day="3" onclick="togglePrayerDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Thu</div><div class="day-check-box prayer-check-box" data-day="4" onclick="togglePrayerDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Fri</div><div class="day-check-box prayer-check-box" data-day="5" onclick="togglePrayerDay(this)"></div></div>
-        <div class="day-cell"><div class="day-cell-label">Sat</div><div class="day-check-box prayer-check-box" data-day="6" onclick="togglePrayerDay(this)"></div></div>
-      </div>
-      <div class="day-count" id="prayer-count"><span>0</span> of 7 days</div>
-    </div>
-    <div id="life-rows"></div>
-    <div class="card">
-      <div class="card-label">Bible reading</div>
+      <div class="card-label">Life-study and Bible reading</div>
       <div class="bible-grid" id="bible-grid"></div>
       <div class="bible-legend">
         <div class="bible-legend-item"><div class="bible-legend-swatch"></div>2C = 2 Corinthians</div>
@@ -509,6 +555,7 @@
         <div class="bible-legend-item"><div class="bible-legend-swatch"></div>BR = Bible Reading</div>
       </div>
     </div>
+    <div id="life-rows"></div>
   </div>
 
   <!-- SERVICE SCREEN -->
@@ -603,17 +650,8 @@
   <!-- EXPORT SCREEN -->
   <div class="screen" id="screen-export">
     <div class="card">
-      <div class="card-label">Bible Reading</div>
-      <p class="export-note">Check off today's reading and push it directly to the team spreadsheet.</p>
-      <div id="bible-today-label" style="font-family:'DM Mono',monospace;font-size:12px;opacity:0.6;margin-bottom:10px;"></div>
-      <button class="export-sheets-btn" onclick="sendBibleReading()" id="bible-btn" style="margin-top:0">✓ Mark today as read in team sheet</button>
-    </div>
-    <div class="card">
       <div class="card-label">Export to Google Sheets</div>
-      <p class="export-note">Downloads a CSV for the current week. In Google Sheets, go to <strong>File &rarr; Import &rarr; Upload</strong> and select the file.</p>
-      <button class="export-main-btn" onclick="exportWeekCSV(currentWeek)">Download this week's CSV</button>
-      <button class="export-sheets-btn" onclick="sendToSheets(currentWeek)">↑ Send this week to Google Sheets</button>
-      <button class="export-all-btn" onclick="exportAllCSV()">Download all weeks (combined)</button>
+      <button class="export-sheets-btn" onclick="sendToSheets(currentWeek)" style="margin-top:0">↑ Send this week to Google Sheets</button>
     </div>
     <div class="card">
       <div class="card-label">Week history</div>
@@ -759,12 +797,12 @@ function renderLife() {
   document.querySelectorAll('.day-check-box:not(.prayer-check-box)').forEach(box => {
     box.classList.toggle('checked', (data.days||[]).includes(parseInt(box.dataset.day)));
   });
-  document.getElementById('day-count').innerHTML = '<span>' + (data.days||[]).length + '</span> of 7 days';
+  document.getElementById('day-count-num').textContent = (data.days||[]).length;
 
   document.querySelectorAll('.prayer-check-box').forEach(box => {
     box.classList.toggle('checked', (data.prayerDays||[]).includes(parseInt(box.dataset.day)));
   });
-  document.getElementById('prayer-count').innerHTML = '<span>' + (data.prayerDays||[]).length + '</span> of 7 days';
+  document.getElementById('prayer-count-num').textContent = (data.prayerDays||[]).length;
 
   const el = document.getElementById('life-rows');
   el.innerHTML = LIFE_ITEMS.map(item => {
@@ -789,7 +827,7 @@ function toggleDay(box) {
   const data = getWeekData(), d = parseInt(box.dataset.day);
   if ((data.days||[]).includes(d)) { data.days = data.days.filter(x=>x!==d); box.classList.remove('checked'); }
   else { data.days.push(d); box.classList.add('checked'); }
-  document.getElementById('day-count').innerHTML = '<span>' + data.days.length + '</span> of 7 days';
+  document.getElementById('day-count-num').textContent = data.days.length;
   save();
 }
 function togglePrayerDay(box) {
@@ -797,7 +835,7 @@ function togglePrayerDay(box) {
   const d = parseInt(box.dataset.day);
   if (data.prayerDays.includes(d)) { data.prayerDays=data.prayerDays.filter(x=>x!==d); box.classList.remove('checked'); }
   else { data.prayerDays.push(d); box.classList.add('checked'); }
-  document.getElementById('prayer-count').innerHTML = '<span>' + data.prayerDays.length + '</span> of 7 days';
+  document.getElementById('prayer-count-num').textContent = data.prayerDays.length;
   save();
 }
 function toggleLife(key, el) {
@@ -1067,7 +1105,7 @@ function renderExport(){
   const weeks=Object.keys(state).sort().reverse(), el=document.getElementById('week-history');
   if(!weeks.length){ el.innerHTML='<div class="empty-state">No data yet</div>'; return; }
   el.innerHTML=weeks.map(w=>{ const d=state[w]||{},e=d.entries||[]; const app=e.filter(x=>x.cat==='app').length,gos=e.filter(x=>x.cat==='gos').length,misc=e.filter(x=>x.cat==='misc').length,days=(d.days||[]).length;
-    return `<div class="week-history-item"><div><div class="wh-label">Week of ${weekLabel(w)}</div><div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div></div><div style="display:flex;gap:4px"><button class="wh-csv" onclick="exportWeekCSV('${w}')">CSV</button><button class="wh-sheets" onclick="sendToSheets('${w}')">Sheets</button></div></div>`;
+    return `<div class="week-history-item"><div><div class="wh-label">Week of ${weekLabel(w)}</div><div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div></div><button class="wh-sheets" onclick="sendToSheets('${w}')">Sheets</button></div>`;
   }).join('');
 }
 function buildCSVRows(weekKey){
