@@ -144,7 +144,7 @@
   .bible-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; }
   .bible-cell { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .bible-cell-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
-  .bible-check-wrap { display: flex; flex-direction: column; gap: 3px; width: 100%; align-items: center; }
+  .bible-check-wrap { display: flex; flex-direction: column; gap: 3px; width: 100%; align-items: center; justify-content: flex-start; }
   .bible-check {
     width: 34px; height: 24px; border-radius: 6px;
     border: 1.5px solid var(--border2); background: var(--bg3);
@@ -502,11 +502,11 @@
     <div id="life-rows"></div>
     <div class="card">
       <div class="card-label">Bible reading</div>
-      <div id="bible-book-label" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);margin-bottom:10px;"></div>
       <div class="bible-grid" id="bible-grid"></div>
       <div class="bible-legend">
-        <div class="bible-legend-item"><div class="bible-legend-swatch"></div>LS / Book</div>
-        <div class="bible-legend-item"><div class="bible-legend-swatch"></div>Bible Reading</div>
+        <div class="bible-legend-item"><div class="bible-legend-swatch"></div>2C = 2 Corinthians</div>
+        <div class="bible-legend-item"><div class="bible-legend-swatch"></div>E = Ephesians</div>
+        <div class="bible-legend-item"><div class="bible-legend-swatch"></div>BR = Bible Reading</div>
       </div>
     </div>
   </div>
@@ -782,6 +782,7 @@ function renderLife() {
     </div>`;
   }).join('');
   renderBibleGrid();
+  fetchBibleMsgNums();
 }
 
 function toggleDay(box) {
@@ -824,23 +825,30 @@ function renderBibleGrid() {
   const data = getWeekData();
   if (!data.bible) data.bible = {};
 
-  // Show current book
-  const bookEl = document.getElementById('bible-book-label');
-  if (bookEl) bookEl.textContent = 'Current book: 2 Corinthians / Ephesians on weekends';
-
   const grid = document.getElementById('bible-grid');
   if (!grid) return;
+
+  // Get message numbers from stored week data (fetched from sheet structure)
+  // Days: LD=0, Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6
+  // Based on sheet: Mon-Wed = 2C, Thu-Fri = E, Sat/LD = BR only
+  // Message numbers change weekly — we'll show them if stored, otherwise just book name
+  const msgNums = data.bibleMsg || {};
+
+  const BIBLE_BOOK_LABELS = ['', '2C', '2C', '2C', 'E', 'E', ''];
 
   grid.innerHTML = BIBLE_DAY_LABELS.map((lbl, dayIdx) => {
     const lsKey = 'ls_' + dayIdx;
     const brKey = 'br_' + dayIdx;
     const lsOn  = !!(data.bible[lsKey]);
     const brOn  = !!(data.bible[brKey]);
+    const hasLS = dayIdx !== 0 && dayIdx !== 6;
+    const bookLbl = BIBLE_BOOK_LABELS[dayIdx];
+    const msgNum  = msgNums[dayIdx] ? ' ' + msgNums[dayIdx] : '';
     return `<div class="bible-cell">
       <div class="bible-cell-label">${lbl}</div>
       <div class="bible-check-wrap">
-        <div class="bible-check ${lsOn?'checked':''}" title="LS/Book" onclick="toggleBible(${dayIdx},'ls',this)"></div>
-        <div class="bible-check-lbl">LS</div>
+        ${hasLS ? `<div class="bible-check ${lsOn?'checked':''}" title="LS/Book" onclick="toggleBible(${dayIdx},'ls',this)"></div>
+        <div class="bible-check-lbl">${bookLbl}${msgNum}</div>` : ''}
         <div class="bible-check ${brOn?'checked':''}" title="Bible Reading" onclick="toggleBible(${dayIdx},'br',this)"></div>
         <div class="bible-check-lbl">BR</div>
       </div>
@@ -869,14 +877,29 @@ function toggleBible(dayIdx, type, el) {
 }
 
 function pushBibleDay(dateStr, type) {
-  console.log('Pushing bible reading:', dateStr, type);
   fetch(SHEETS_URL, {
     method: 'POST', mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ type: 'bible_reading', date: dateStr, readingType: type })
+  }).catch(() => {});
+}
+
+function fetchBibleMsgNums() {
+  // Use no-cors — can't read response, so instead we'll derive message numbers
+  // from the sheet structure we already know. The pattern for June 2026:
+  // Each week the message numbers increment. We fetch via GET which Apps Script supports.
+  const url = SHEETS_URL + '?type=bible_msg_nums&weekStart=' + encodeURIComponent(currentWeek);
+  fetch(url)
+  .then(r => r.json())
+  .then(result => {
+    if (result.status === 'ok' && result.msgNums) {
+      const data = getWeekData();
+      data.bibleMsg = result.msgNums;
+      save();
+      renderBibleGrid();
+    }
   })
-  .then(() => console.log('Bible push sent:', dateStr, type))
-  .catch(err => console.error('Bible push failed:', err));
+  .catch(() => {});
 }
 
 /* ─────────────── SERVICE ─────────────── */
@@ -1056,7 +1079,7 @@ function rowsToCSV(rows){ return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g
 function exportWeekCSV(k){ dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
 function exportAllCSV(){ const weeks=Object.keys(state).sort(); let all=[]; weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); }); dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv'); }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwhXF5VqRG6ZhpXH5eK2BK2X1RDfsSndFVNOrO1jsP4nXGP0KuhJEswsecx7c1RuGDGtQ/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzZ4l6PPuhU-CwjbXmcgFSRCN7K6KZB9-KFv4Z2qa7eSKnV6x0ELpu5NjX4TZiLfEi4rQ/exec';
 
 function sendToSheets(weekKey) {
   const data = state[weekKey];
