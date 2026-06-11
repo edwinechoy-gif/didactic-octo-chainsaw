@@ -198,6 +198,7 @@
   .inline-comment {
     flex: 1; min-width: 0; min-height: 28px; height: 28px;
     padding: 4px 8px; font-size: 12px; resize: none; display: none;
+    overflow: hidden; margin-top: 0;
     background: var(--bg3); border: 1px solid var(--border2);
     border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif;
   }
@@ -682,7 +683,7 @@
 const LIFE_ITEMS = [
   { key: 'companion', label: 'Companion prayer',       comment: true  },
   { key: 'airtable',  label: 'Airtable stats updated', comment: false },
-  { key: 'notes',     label: 'Comments',               comment: true, notesOnly: true },
+  { key: 'notes',     label: 'Notes',               comment: true, notesOnly: true },
 ];
 const DAY_LABELS_SHORT = ['LD','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DAY_ORDER = ["Lord's day","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -809,10 +810,10 @@ function renderLife() {
   el.innerHTML = LIFE_ITEMS.map(item => {
     if (item.notesOnly) {
       const val = data.notes || '';
-      return `<div class="life-row">
-        <div class="life-row-inline">
+      return `<div class="life-row" style="align-items:center;">
+        <div class="life-row-inline" style="align-items:center;">
           <div class="life-row-label">${item.label}</div>
-          <textarea class="comments-area inline-comment" style="display:block" placeholder="Anything special to note for this week?" oninput="autoExpand(this);saveWeekNotes(this.value)">${val}</textarea>
+          <textarea class="comments-area inline-comment" style="display:block;margin-top:0;" placeholder="Anything special to note for this week?" oninput="autoExpand(this);saveWeekNotes(this.value)">${val}</textarea>
         </div>
       </div>`;
     }
@@ -823,7 +824,7 @@ function renderLife() {
       <div class="life-row-inline">
         <div class="life-row-label">${item.label}</div>
         ${item.key === 'companion'
-          ? `<textarea class="comments-area inline-comment" placeholder="When and with whom..." onchange="saveComment('${item.key}',this.value)">${comment}</textarea>`
+          ? `<textarea class="comments-area inline-comment" placeholder="When and with whom?" onchange="saveComment('${item.key}',this.value)">${comment}</textarea>`
           : ''}
       </div>
       <div class="life-checkbox ${on?'checked':''}" onclick="toggleLife('${item.key}',this)"></div>
@@ -832,7 +833,7 @@ function renderLife() {
   renderBibleGrid();
   fetchBibleMsgNums();
   // Auto-expand notes textarea after render
-  el.querySelectorAll('textarea').forEach(t => autoExpand(t));
+  el.querySelectorAll('textarea').forEach(t => { if (t.value) autoExpand(t); });
 }
 
 function toggleDay(box) {
@@ -857,7 +858,12 @@ function toggleLife(key, el) {
   save();
 }
 function saveWeekNotes(val) { getWeekData().notes = val; save(); }
-function autoExpand(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
+function autoExpand(el) {
+  el.style.height = '28px'; // reset to single line
+  if (el.scrollHeight > el.offsetHeight) {
+    el.style.height = el.scrollHeight + 'px';
+  }
+}
 
 /* ─────────────── BIBLE READING ─────────────── */
 const BIBLE_DAY_LABELS = ['LD','Mon','Tue','Wed','Thu','Fri','Sat'];
