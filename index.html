@@ -553,7 +553,6 @@
       <div class="bible-legend">
         <div class="bible-legend-item"><div class="bible-legend-swatch"></div>2C = 2 Corinthians</div>
         <div class="bible-legend-item"><div class="bible-legend-swatch"></div>E = Ephesians</div>
-        <div class="bible-legend-item"><div class="bible-legend-swatch"></div>BR = Bible Reading</div>
       </div>
     </div>
     <div id="life-rows"></div>
@@ -889,7 +888,8 @@ function renderBibleGrid() {
   // Days: LD=0, Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6
   // Based on sheet: Mon-Wed = 2C, Thu-Fri = E, Sat/LD = BR only
   // Message numbers change weekly — we'll show them if stored, otherwise just book name
-  const msgNums = data.bibleMsg || {};
+  const msgNums  = data.bibleMsg || {};
+  const chapters = data.bibleChapters || {};
 
   const BIBLE_BOOK_LABELS = ['', '2C', '2C', '2C', 'E', 'E', ''];
 
@@ -899,15 +899,16 @@ function renderBibleGrid() {
     const lsOn  = !!(data.bible[lsKey]);
     const brOn  = !!(data.bible[brKey]);
     const hasLS = dayIdx !== 0 && dayIdx !== 6;
-    const bookLbl = BIBLE_BOOK_LABELS[dayIdx];
-    const msgNum  = msgNums[dayIdx] ? ' ' + msgNums[dayIdx] : '';
+    const bookLbl    = BIBLE_BOOK_LABELS[dayIdx];
+    const msgNum     = msgNums[dayIdx] ? ' ' + msgNums[dayIdx] : '';
+    const chapterLbl = chapters[dayIdx] || 'BR';
     return `<div class="bible-cell">
       <div class="bible-cell-label">${lbl}</div>
       <div class="bible-check-wrap">
         ${hasLS ? `<div class="bible-check ${lsOn?'checked':''}" title="LS/Book" onclick="toggleBible(${dayIdx},'ls',this)"></div>
         <div class="bible-check-lbl">${bookLbl}${msgNum}</div>` : ''}
         <div class="bible-check ${brOn?'checked':''}" title="Bible Reading" onclick="toggleBible(${dayIdx},'br',this)"></div>
-        <div class="bible-check-lbl">BR</div>
+        <div class="bible-check-lbl">${chapterLbl}</div>
       </div>
     </div>`;
   }).join('');
@@ -947,6 +948,7 @@ function fetchBibleMsgNums() {
     if (result.status === 'ok' && result.msgNums) {
       const data = getWeekData();
       data.bibleMsg = result.msgNums;
+      if (result.chapters) data.bibleChapters = result.chapters;
       save();
       renderBibleGrid();
     }
@@ -1138,7 +1140,7 @@ function rowsToCSV(rows){ return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g
 function exportWeekCSV(k){ dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
 function exportAllCSV(){ const weeks=Object.keys(state).sort(); let all=[]; weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); }); dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv'); }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx_s51ywvL0WFPShF6f-X6HVHt2tJR9kZcZiuzYPse19uA5uzyTI8iAn7egXQau4ZnGHQ/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz-SFxK_Rub9N19Q-h65n7_HfPpLNWC9l3kDixagIGVyZcJN46nzTgZym2hUkCXA_wD/exec';
 
 function sendToSheets(weekKey) {
   const data = state[weekKey];
