@@ -937,7 +937,6 @@ function toggleBible(dayIdx, type, el) {
 function pushBibleDay(dateStr, type) {
   fetch(SHEETS_URL, {
     method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ type: 'bible_reading', date: dateStr, readingType: type })
   }).catch(() => {});
 }
@@ -1149,7 +1148,6 @@ function sendToSheets(weekKey) {
   fetch(SHEETS_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ weekKey, data })
   })
   .then(() => { btn.textContent = '✓ Sent'; btn.style.color = '#4caf6e'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); })
@@ -1171,7 +1169,6 @@ function sendBibleReading() {
   btn.textContent = '…'; btn.disabled = true;
   fetch(SHEETS_URL, {
     method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ type: 'bible_reading', date: dateStr })
   })
   .then(() => { btn.textContent = '✓ Marked as read!'; btn.style.color = '#4caf6e'; setTimeout(() => { btn.textContent = '✓ Mark today as read in team sheet'; btn.style.color = ''; btn.disabled = false; }, 3000); })
