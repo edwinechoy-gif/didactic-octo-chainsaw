@@ -682,6 +682,7 @@
 const LIFE_ITEMS = [
   { key: 'companion', label: 'Companion prayer',       comment: true  },
   { key: 'airtable',  label: 'Airtable stats updated', comment: false },
+  { key: 'notes',     label: 'Comments',               comment: true, notesOnly: true },
 ];
 const DAY_LABELS_SHORT = ['LD','Mon','Tue','Wed','Thu','Fri','Sat'];
 const DAY_ORDER = ["Lord's day","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -806,6 +807,15 @@ function renderLife() {
 
   const el = document.getElementById('life-rows');
   el.innerHTML = LIFE_ITEMS.map(item => {
+    if (item.notesOnly) {
+      const val = data.notes || '';
+      return `<div class="life-row">
+        <div class="life-row-inline">
+          <div class="life-row-label">${item.label}</div>
+          <textarea class="comments-area inline-comment" style="display:block" placeholder="Anything special to note for this week?" oninput="autoExpand(this);saveWeekNotes(this.value)">${val}</textarea>
+        </div>
+      </div>`;
+    }
     const on      = !!data.life[item.key];
     const comment = data.comments[item.key] || '';
     const compCls = (item.key === 'companion' && on) ? ' companion-on' : '';
@@ -821,6 +831,8 @@ function renderLife() {
   }).join('');
   renderBibleGrid();
   fetchBibleMsgNums();
+  // Auto-expand notes textarea after render
+  el.querySelectorAll('textarea').forEach(t => autoExpand(t));
 }
 
 function toggleDay(box) {
@@ -844,7 +856,8 @@ function toggleLife(key, el) {
   if (key==='companion') { const row=el.closest('.life-row'); if(row) row.classList.toggle('companion-on',data.life[key]); }
   save();
 }
-function saveComment(key, val) { getWeekData().comments[key] = val; save(); }
+function saveWeekNotes(val) { getWeekData().notes = val; save(); }
+function autoExpand(el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
 
 /* ─────────────── BIBLE READING ─────────────── */
 const BIBLE_DAY_LABELS = ['LD','Mon','Tue','Wed','Thu','Fri','Sat'];
