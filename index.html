@@ -426,6 +426,10 @@
     padding: 5px 10px; cursor: pointer; margin-left: 6px;
   }
   .wh-sheets:active { opacity: .7; }
+  .wh-export-log { margin-top: 4px; display: flex; flex-direction: column; gap: 1px; }
+  .wh-export-entry { font-size: 10px; color: #4caf6e; font-family: 'DM Mono', monospace; }
+  .wh-export-latest { opacity: .6; }
+  .wh-not-sent { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; }
   .export-sheets-btn {
     width: 100%; background: #1a3d2b; border: 1px solid #2d7a3a;
     border-radius: var(--radius-sm); color: #4caf6e;
@@ -1122,12 +1126,32 @@ function navTo(screen){
 }
 
 /* ─────────────── EXPORT ─────────────── */
+function getExportLog() {
+  try { return JSON.parse(localStorage.getItem('manny_export_log') || '{}'); } catch(e) { return {}; }
+}
+function logExport(weekKey) {
+  const log = getExportLog();
+  if (!log[weekKey]) log[weekKey] = [];
+  log[weekKey].push(new Date().toISOString());
+  localStorage.setItem('manny_export_log', JSON.stringify(log));
+}
+function fmtExportTime(iso) {
+  const d = new Date(iso);
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const h = d.getHours(), m = String(d.getMinutes()).padStart(2,'0');
+  return months[d.getMonth()] + ' ' + d.getDate() + ' at ' + (h % 12 || 12) + ':' + m + ' ' + (h < 12 ? 'AM' : 'PM');
+}
 function renderExport(){
   initBibleLabel();
   const weeks=Object.keys(state).sort().reverse(), el=document.getElementById('week-history');
   if(!weeks.length){ el.innerHTML='<div class="empty-state">No data yet</div>'; return; }
+  const log = getExportLog();
   el.innerHTML=weeks.map(w=>{ const d=state[w]||{},e=d.entries||[]; const app=e.filter(x=>x.cat==='app').length,gos=e.filter(x=>x.cat==='gos').length,misc=e.filter(x=>x.cat==='misc').length,days=(d.days||[]).length;
-    return `<div class="week-history-item"><div><div class="wh-label">Week of ${weekLabel(w)}</div><div class="wh-counts">${days}/7 days &middot; ${app} appt &middot; ${gos} gospel &middot; ${misc} misc</div></div><button class="wh-sheets" onclick="sendToSheets('${w}')">Sheets</button></div>`;
+    const exports = (log[w] || []);
+    const exportHtml = exports.length
+      ? '<div class="wh-export-log">' + [...exports].reverse().map((t,i) => '<span class="wh-export-entry">↑ Sent ' + fmtExportTime(t) + (i===0 ? ' <span class="wh-export-latest">(latest)</span>' : '') + '</span>').join('') + '</div>'
+      : '<div class="wh-export-log wh-not-sent">Not yet sent to Sheets</div>';
+    return '<div class="week-history-item"><div><div class="wh-label">Week of ' + weekLabel(w) + '</div><div class="wh-counts">' + days + '/7 days &middot; ' + app + ' appt &middot; ' + gos + ' gospel &middot; ' + misc + ' misc</div>' + exportHtml + '</div><button class="wh-sheets" onclick="sendToSheets(\'' + w + '\')">Sheets</button></div>';
   }).join('');
 }
 function buildCSVRows(weekKey){
@@ -1154,7 +1178,7 @@ function sendToSheets(weekKey) {
     mode: 'no-cors',
     body: form
   })
-  .then(() => { btn.textContent = '✓ Sent'; btn.style.color = '#4caf6e'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); })
+  .then(() => { logExport(weekKey); renderExport(); btn.textContent = '✓ Sent'; btn.style.color = '#4caf6e'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); })
   .catch(() => { btn.textContent = 'Failed'; btn.style.color = 'var(--danger)'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); });
 }
 function dlFile(content,name,type){ const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([content],{type})),download:name}); document.body.appendChild(a); a.click(); document.body.removeChild(a); }
