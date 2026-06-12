@@ -935,9 +935,11 @@ function toggleBible(dayIdx, type, el) {
 }
 
 function pushBibleDay(dateStr, type) {
+  const form = new FormData();
+  form.append('payload', JSON.stringify({ type: 'bible_reading', date: dateStr, readingType: type }));
   fetch(SHEETS_URL, {
     method: 'POST', mode: 'no-cors',
-    body: JSON.stringify({ type: 'bible_reading', date: dateStr, readingType: type })
+    body: form
   }).catch(() => {});
 }
 
@@ -1139,16 +1141,18 @@ function rowsToCSV(rows){ return rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g
 function exportWeekCSV(k){ dlFile(rowsToCSV(buildCSVRows(k)),'accountability_'+k+'.csv','text/csv'); }
 function exportAllCSV(){ const weeks=Object.keys(state).sort(); let all=[]; weeks.forEach((w,i)=>{ if(i>0) all.push([]); all=all.concat(buildCSVRows(w)); }); dlFile(rowsToCSV(all),'accountability_all_weeks.csv','text/csv'); }
 
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbz-SFxK_Rub9N19Q-h65n7_HfPpLNWC9l3kDixagIGVyZcJN46nzTgZym2hUkCXA_wD/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyM7OjhppwgfjrIfAqEhXBvb_d8EzO10t5rRSts9uTVCXrLM-VxLRSJ45GZ020Ghx9R/exec';
 
 function sendToSheets(weekKey) {
   const data = state[weekKey];
   if (!data) { alert('No data for this week.'); return; }
   const btn = event.target; btn.textContent = '…'; btn.disabled = true;
+  const form = new FormData();
+  form.append('payload', JSON.stringify({ weekKey, data }));
   fetch(SHEETS_URL, {
     method: 'POST',
     mode: 'no-cors',
-    body: JSON.stringify({ weekKey, data })
+    body: form
   })
   .then(() => { btn.textContent = '✓ Sent'; btn.style.color = '#4caf6e'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); })
   .catch(() => { btn.textContent = 'Failed'; btn.style.color = 'var(--danger)'; setTimeout(() => { btn.textContent = 'Sheets'; btn.style.color = ''; btn.disabled = false; }, 2500); });
