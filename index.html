@@ -105,6 +105,9 @@
   }
   .screen.active { display: flex; }
 
+  #screen-prayer { gap: 32px; }
+  #prayer-setup-view { display: flex; flex-direction: column; }
+  #prayer-setup-view .card + .card { margin-top: 12px; }
   #screen-service {
     overflow: hidden;
     height: calc(100dvh - var(--topbar-h));
@@ -459,6 +462,95 @@
   .nav-btn.active .nav-fill   { fill: var(--green); }
   .nav-stroke { stroke: var(--text3); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke .15s; }
   .nav-fill   { fill: var(--text3); transition: fill .15s; }
+
+  /* ── PRAYER TAB ── */
+  .prayer-setup-row { display: flex; gap: 12px; margin-bottom: 14px; }
+  .prayer-setup-field { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .prayer-field-label { display: block; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 7px; }
+  .prayer-number-input { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Mono', monospace; font-size: 18px; padding: 11px 14px; width: 100%; box-sizing: border-box; text-align: center; appearance: none; }
+  .prayer-number-input:focus { outline: none; border-color: var(--green-dim); }
+  .prayer-cat-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .prayer-cat-pill { flex: 1; padding: 10px 0; border: 1.5px solid var(--border2); border-radius: var(--radius-sm); background: var(--bg3); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text3); transition: all .15s; text-align: center; }
+  .prayer-cat-pill.active { background: transparent; }
+  .prayer-cat-pill[data-cat="all"].active { border-color: var(--green-dim); color: var(--green); }
+  .prayer-cat-pill[data-cat="Family"].active { border-color: #7a2020; color: #f07070; }
+  .prayer-cat-pill[data-cat="Saints"].active { border-color: #5a3a9a; color: #a78bfa; }
+  .prayer-cat-pill[data-cat="Students"].active { border-color: #0d7a50; color: #34d399; }
+  .prayer-cat-select-input { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 11px 10px; cursor: pointer; }
+  .prayer-start-btn { width: 100%; background: var(--green); border: none; border-radius: var(--radius-sm); color: #0a1209; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; padding: 14px; cursor: pointer; transition: opacity .15s; }
+  .prayer-start-btn:active { opacity: .85; }
+  .prayer-add-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+  .prayer-name-field { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 11px 14px; min-width: 0; }
+  .prayer-name-field:focus { outline: none; border-color: var(--green-dim); }
+  .prayer-add-btn { background: var(--bg3); border: 1.5px dashed var(--border2); border-radius: var(--radius-sm); color: var(--text3); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 11px 14px; cursor: pointer; white-space: nowrap; transition: all .15s; }
+  .prayer-add-btn:active { background: var(--surface2); color: var(--text2); }
+  .prayer-name-item { padding: 10px 0; border-bottom: 1px solid var(--border2); }
+  .prayer-name-item:last-child { border-bottom: none; }
+  .prayer-name-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+  .prayer-name-left { display: flex; align-items: center; gap: 8px; }
+  .prayer-name-text { font-size: 15px; color: var(--text); }
+  .prayer-name-badge { font-size: 10px; font-family: 'DM Mono', monospace; padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border2); color: var(--text3); background: var(--bg3); }
+  .prayer-name-badge.cat-Family { color: #f07070; border-color: #7a2020; background: transparent; }
+  .prayer-name-badge.cat-Saints { color: #a78bfa; border-color: #5a3a9a; background: transparent; }
+  .prayer-name-badge.cat-Students { color: #34d399; border-color: #0d7a50; background: transparent; }
+  .prayer-name-del { background: none; border: none; color: var(--text3); font-size: 18px; cursor: pointer; padding: 0 4px; line-height: 1; }
+  .prayer-expand-chevron { color: var(--text3); font-size: 18px; line-height: 1; transition: transform .2s; display: inline-block; }
+  .prayer-item-count { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .prayer-name-expand { padding-top: 8px; }
+  .prayer-item-list { list-style: none; padding: 0; margin: 4px 0 0 0; display: flex; flex-direction: column; gap: 3px; }
+  .prayer-item-row { display: flex; align-items: center; gap: 6px; }
+  .prayer-item-text { font-size: 13px; color: var(--text2); flex: 1; }
+  .prayer-item-del { background: none; border: none; color: var(--text3); font-size: 15px; cursor: pointer; padding: 0 2px; line-height: 1; }
+  .prayer-item-add-row { display: flex; gap: 6px; margin-top: 8px; }
+  .prayer-item-input { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 8px 12px; }
+  .prayer-item-input:focus { outline: none; border-color: var(--green-dim); }
+  .prayer-item-add-btn { background: var(--bg3); border: 1.5px dashed var(--border2); border-radius: var(--radius-sm); color: var(--text3); font-size: 13px; padding: 8px 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .15s; }
+  .prayer-item-add-btn:active { background: var(--surface2); color: var(--text2); }
+  .prayer-timer-card { text-align: center; padding: 28px 16px; }
+  .prayer-timer-display { font-family: 'DM Mono', monospace; font-size: 56px; color: var(--green); letter-spacing: .04em; line-height: 1; }
+  .prayer-timer-label { font-size: 12px; color: var(--text3); margin-top: 6px; font-family: 'DM Mono', monospace; }
+  .prayer-timer-btns { display: flex; gap: 10px; margin-top: 20px; justify-content: center; }
+  .prayer-pause-btn { background: var(--bg3); border: 1.5px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 11px 28px; cursor: pointer; transition: opacity .15s; }
+  .prayer-end-btn { background: var(--bg3); border: 1.5px solid var(--border2); border-radius: var(--radius-sm); color: var(--misc-color); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 11px 28px; cursor: pointer; transition: opacity .15s; }
+  .prayer-pause-btn:active, .prayer-end-btn:active { opacity: .7; }
+  .prayer-add-person-row { display: flex; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border2); align-items: center; }
+  .prayer-person-item { padding: 12px 0; border-bottom: 1px solid var(--border2); }
+  .prayer-person-item:last-child { border-bottom: none; }
+  .prayer-person-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .prayer-person-check { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1.5px solid var(--border2); background: var(--bg3); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; transition: all .2s; }
+  .prayer-person-check.checked { background: var(--green-glow); border-color: var(--green); }
+  .prayer-person-check.checked::after { content: ''; width: 9px; height: 5px; border-left: 2px solid var(--green); border-bottom: 2px solid var(--green); transform: rotate(-45deg) translateY(-1px); display: block; }
+  .prayer-person-name { font-size: 16px; color: var(--text); font-weight: 500; }
+  .prayer-session-items { margin-bottom: 8px; padding-left: 36px; }
+  .prayer-session-item-row { display: flex; align-items: center; gap: 6px; padding: 2px 0; }
+  .prayer-session-item-check { width: 20px; height: 20px; border-radius: var(--radius-sm); border: 1.5px solid var(--border2); background: var(--bg3); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; transition: all .2s; }
+  .prayer-session-item-check.checked { background: var(--green-glow); border-color: var(--green); }
+  .prayer-session-item-check.checked::after { content: ''; width: 7px; height: 4px; border-left: 2px solid var(--green); border-bottom: 2px solid var(--green); transform: rotate(-45deg) translateY(-1px); display: block; }
+  .prayer-session-item-text { font-size: 13px; color: var(--text2); }
+  .prayer-person-note { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 12px; box-sizing: border-box; resize: none; min-height: 36px; }
+  .prayer-person-note:focus { outline: none; border-color: var(--green-dim); }
+  /* History */
+  .ph-item { padding: 12px 0; border-bottom: 1px solid var(--border2); }
+  .ph-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .ph-del-btn { background: none; border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text3); font-size: 13px; font-family: 'DM Sans', sans-serif; cursor: pointer; padding: 3px 10px; line-height: 1; flex-shrink: 0; transition: opacity .15s; }
+  .ph-del-btn:active { opacity: .5; }
+  .ph-edit-note { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 12px; box-sizing: border-box; resize: none; min-height: 34px; margin-top: 4px; }
+  .ph-edit-note:focus { outline: none; border-color: var(--green-dim); }
+  .ph-clear-btn { font-size: 12px; font-family: 'DM Sans', sans-serif; color: var(--misc-color); background: none; border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 4px 12px; cursor: pointer; transition: opacity .15s; }
+  .ph-clear-btn:active { opacity: .7; }
+  .ph-item:last-child { border-bottom: none; }
+  .ph-date { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 6px; }
+  .ph-person { display: flex; flex-direction: column; gap: 3px; padding: 5px 0; border-bottom: 1px solid var(--bg3); }
+  .ph-person:last-child { border-bottom: none; }
+  .ph-person-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .ph-person-name { font-size: 14px; color: var(--text); }
+  .ph-person-items { font-size: 12px; color: var(--text3); margin-top: 2px; padding-left: 10px; }
+  .ph-person-item-row { display: flex; align-items: center; gap: 5px; }
+  .ph-person-note { font-size: 12px; color: var(--text3); font-style: italic; margin-top: 2px; }
+  .ph-answered-btn { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg3); color: var(--text3); cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all .15s; }
+  .ph-answered-btn.answered { background: rgba(61,186,111,.1); border-color: var(--green-dim); color: var(--green); }
+  .ph-duration { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-top: 4px; }
+  .prayer-empty { font-size: 14px; color: var(--text3); text-align: center; padding: 28px 0; }
 </style>
 </head>
 <body>
@@ -663,6 +755,119 @@
     </div>
   </div>
 
+
+  <div class="screen" id="screen-prayer">
+
+    <!-- SESSION SETUP -->
+    <div id="prayer-setup-view">
+      <div class="card">
+        <div class="card-label">Timer</div>
+        <div class="prayer-setup-row">
+          <div class="prayer-setup-field">
+            <label class="prayer-field-label">Duration (min)</label>
+            <select id="prayer-duration" class="prayer-number-input">
+              <option value="1" selected>1 min</option>
+              <option value="5">5 min</option>
+              <option value="10">10 min</option>
+              <option value="15">15 min</option>
+              <option value="20">20 min</option>
+              <option value="25">25 min</option>
+              <option value="30">30 min</option>
+              <option value="35">35 min</option>
+              <option value="40">40 min</option>
+              <option value="45">45 min</option>
+              <option value="50">50 min</option>
+              <option value="55">55 min</option>
+              <option value="60">60 min</option>
+              <option value="75">75 min</option>
+              <option value="90">90 min</option>
+              <option value="120">120 min</option>
+            </select>
+          </div>
+          <div class="prayer-setup-field">
+            <label class="prayer-field-label">How many people</label>
+            <select id="prayer-count" class="prayer-number-input">
+              <option value="">All</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+        </div>
+        <div class="prayer-field-label" style="margin-bottom:8px">Category (optional)</div>
+        <div class="prayer-cat-row" id="prayer-cat-select">
+          <button class="prayer-cat-pill active" data-cat="all" onclick="selectPrayerCat(this)">All</button>
+          <button class="prayer-cat-pill" data-cat="Family" onclick="selectPrayerCat(this)">Family</button>
+          <button class="prayer-cat-pill" data-cat="Saints" onclick="selectPrayerCat(this)">Saints</button>
+          <button class="prayer-cat-pill" data-cat="Students" onclick="selectPrayerCat(this)">Students</button>
+        </div>
+        <button class="prayer-start-btn" onclick="startPrayerSession()">Start Prayer Time</button>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Name List</div>
+        <div class="prayer-add-row">
+          <input id="prayer-name-input" type="text" class="prayer-name-field" placeholder="Name..." onkeydown="if(event.key==='Enter') addPrayerName()">
+          <select id="prayer-name-cat" class="prayer-cat-select-input">
+            <option value="Family">Family</option>
+            <option value="Saints">Saints</option>
+            <option value="Students">Students</option>
+          </select>
+          <button class="prayer-add-btn" onclick="addPrayerName()">Add</button>
+        </div>
+        <div id="prayer-names-list"></div>
+      </div>
+
+      <div class="card" id="prayer-history-card">
+        <div class="card-label" style="display:flex;align-items:center;justify-content:space-between">History <button class="ph-clear-btn" onclick="clearAllPrayerHistory()">Clear all</button></div>
+        <div id="prayer-history-list"></div>
+      </div>
+    </div>
+
+    <!-- ACTIVE SESSION -->
+    <div id="prayer-session-view" style="display:none">
+      <div class="card prayer-timer-card">
+        <div class="prayer-timer-display" id="prayer-timer-display">30:00</div>
+        <div class="prayer-timer-label" id="prayer-timer-label">Time remaining</div>
+        <div class="prayer-timer-btns">
+          <button class="prayer-pause-btn" id="prayer-pause-btn" onclick="togglePrayerPause()">Pause</button>
+          <button class="prayer-end-btn" onclick="endPrayerSession()">End Session</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Praying for</div>
+        <div id="prayer-people-list"></div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border2)">
+          <div class="prayer-field-label" style="margin-bottom:6px">Add from list</div>
+          <div class="prayer-add-person-row" style="margin-bottom:10px">
+            <select id="prayer-add-person-select" class="prayer-cat-select-input" style="flex:1"></select>
+            <button class="prayer-add-btn" onclick="addPersonToSession()">+ Add</button>
+          </div>
+          <div class="prayer-field-label" style="margin-bottom:6px">Add new name</div>
+          <div class="prayer-add-person-row">
+            <input id="session-new-name" type="text" class="prayer-name-field" placeholder="Name..." style="flex:1">
+            <select id="session-new-cat" class="prayer-cat-select-input">
+              <option value="Family">Family</option>
+              <option value="Saints">Saints</option>
+              <option value="Students">Students</option>
+            </select>
+            <button class="prayer-add-btn" onclick="addNewPersonToSession()">+ Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- NAV -->
   <nav class="nav" id="nav-bar">
     <button class="nav-btn active" id="nav-life" onclick="navTo('life')">
@@ -676,6 +881,10 @@
     <button class="nav-btn" id="nav-export" onclick="navTo('export')">
       <svg class="nav-icon" viewBox="0 0 24 24"><path class="nav-stroke" d="M12 4v10M8 10l4 4 4-4M5 17v2a1 1 0 001 1h12a1 1 0 001-1v-2"/></svg>
       <span class="nav-label">Export</span>
+    </button>
+    <button class="nav-btn" id="nav-prayer" onclick="navTo('prayer')">
+      <svg class="nav-icon" viewBox="0 0 24 24"><path class="nav-stroke" d="M6 4c0 4 2 6 6 8 4-2 6-4 6-8M12 12v8M9 20h6"/></svg>
+      <span class="nav-label">Prayer</span>
     </button>
   </nav>
 
@@ -1122,6 +1331,7 @@ function navTo(screen){
   const nb=document.getElementById('nav-'+screen); if(nb) nb.classList.add('active');
   if(screen==='service') renderService();
   if(screen==='export') renderExport();
+  if(screen==='prayer') renderPrayer();
   window.scrollTo(0,0);
 }
 
@@ -1201,6 +1411,342 @@ function sendBibleReading() {
   })
   .then(() => { btn.textContent = '✓ Marked as read!'; btn.style.color = '#4caf6e'; setTimeout(() => { btn.textContent = '✓ Mark today as read in team sheet'; btn.style.color = ''; btn.disabled = false; }, 3000); })
   .catch(() => { btn.textContent = 'Failed — try again'; btn.style.color = 'var(--danger)'; setTimeout(() => { btn.textContent = '✓ Mark today as read in team sheet'; btn.style.color = ''; btn.disabled = false; }, 3000); });
+}
+
+
+/* ─────────────── PRAYER TAB ─────────────── */
+function getPrayerData() {
+  try {
+    const d = JSON.parse(localStorage.getItem('manny_prayer') || '{}');
+    if (!d.names) d.names = [];
+    if (!d.history) d.history = [];
+    // Migrate old names (strings) to objects
+    d.names = d.names.map(n => typeof n === 'string' ? { name: n, cat: 'Saints', items: [] } : n);
+    return d;
+  } catch(e) { return { names: [], history: [] }; }
+}
+function savePrayerData(d) { localStorage.setItem('manny_prayer', JSON.stringify(d)); }
+
+let prayerTimer = null;
+let prayerSecondsLeft = 0;
+let prayerPaused = false;
+let prayerStartTime = null;
+let prayerDurationSecs = 0;
+let prayerSessionPeople = []; // [{name, cat, items:[{text,checked}], sessionNote, checked}]
+let prayerSelectedCat = 'all';
+
+function selectPrayerCat(btn) {
+  document.querySelectorAll('.prayer-cat-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  prayerSelectedCat = btn.dataset.cat;
+}
+
+/* ── Prayer List ── */
+function renderPrayerNames() {
+  const d = getPrayerData();
+  const el = document.getElementById('prayer-names-list');
+  if (!d.names.length) { el.innerHTML = '<div class="prayer-empty">No names yet</div>'; return; }
+  el.innerHTML = d.names.map((person, i) => {
+    const items = (person.items || []);
+    const count = items.length;
+    const itemsHtml = items.map((item, j) =>
+      '<li class="prayer-item-row">' +
+        '<span class="prayer-item-text">· ' + item.text + '</span>' +
+        '<button class="prayer-item-del" onclick="deletePrayerItem(' + i + ',' + j + ')">×</button>' +
+      '</li>'
+    ).join('');
+    return '<div class="prayer-name-item" id="pni-' + i + '">' +
+      '<div class="prayer-name-top" onclick="togglePrayerNameExpand(' + i + ')" style="cursor:pointer">' +
+        '<div class="prayer-name-left">' +
+          '<span class="prayer-name-text">' + person.name + '</span>' +
+          '<span class="prayer-name-badge cat-' + person.cat + '">' + person.cat + '</span>' +
+          (count ? '<span class="prayer-item-count">' + count + ' item' + (count>1?'s':'') + '</span>' : '') +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+          '<span class="prayer-expand-chevron" id="pni-chev-' + i + '">›</span>' +
+          '<button class="prayer-name-del" onclick="event.stopPropagation();deletePrayerName(' + i + ')">×</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="prayer-name-expand" id="pni-body-' + i + '" style="display:none">' +
+        (items.length ? '<ul class="prayer-item-list">' + itemsHtml + '</ul>' : '') +
+        '<div class="prayer-item-add-row">' +
+          '<input class="prayer-item-input" placeholder="Add prayer item..." onkeydown="if(event.key===\'Enter\') addPrayerItem(' + i + ', this)">' +
+          '<button class="prayer-item-add-btn" onclick="addPrayerItem(' + i + ', this.previousElementSibling)">+ Item</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function togglePrayerNameExpand(i) {
+  const body = document.getElementById('pni-body-' + i);
+  const chev = document.getElementById('pni-chev-' + i);
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  chev.style.transform = open ? 'rotate(90deg)' : '';
+}
+
+function addPrayerName() {
+  const inp = document.getElementById('prayer-name-input');
+  const cat = document.getElementById('prayer-name-cat').value;
+  const name = inp.value.trim();
+  if (!name) return;
+  const d = getPrayerData();
+  d.names.push({ name, cat, items: [] });
+  savePrayerData(d);
+  inp.value = '';
+  renderPrayerNames();
+}
+
+function deletePrayerName(i) {
+  const d = getPrayerData();
+  d.names.splice(i, 1);
+  savePrayerData(d);
+  renderPrayerNames();
+}
+
+function addPrayerItem(personIdx, inputEl) {
+  const text = inputEl.value.trim();
+  if (!text) return;
+  const d = getPrayerData();
+  if (!d.names[personIdx].items) d.names[personIdx].items = [];
+  d.names[personIdx].items.push({ text, checked: false });
+  savePrayerData(d);
+  inputEl.value = '';
+  renderPrayerNames();
+}
+
+function deletePrayerItem(personIdx, itemIdx) {
+  const d = getPrayerData();
+  d.names[personIdx].items.splice(itemIdx, 1);
+  savePrayerData(d);
+  renderPrayerNames();
+}
+
+/* ── Session ── */
+function startPrayerSession() {
+  const mins = parseInt(document.getElementById('prayer-duration').value) || 30;
+  const countVal = document.getElementById('prayer-count').value;
+  const d = getPrayerData();
+  const pool = prayerSelectedCat === 'all' ? d.names : d.names.filter(p => p.cat === prayerSelectedCat);
+  const count = countVal ? parseInt(countVal) : pool.length;
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  prayerSessionPeople = shuffled.slice(0, Math.min(count, pool.length)).map(p => ({
+    name: p.name, cat: p.cat,
+    items: (p.items || []).map(it => ({ text: it.text, checked: false })),
+    sessionNote: '', checked: false
+  }));
+  prayerDurationSecs = mins * 60;
+  prayerSecondsLeft = prayerDurationSecs;
+  prayerPaused = false;
+  prayerStartTime = new Date().toISOString();
+  document.getElementById('prayer-setup-view').style.display = 'none';
+  document.getElementById('prayer-session-view').style.display = 'block';
+  document.getElementById('prayer-pause-btn').textContent = 'Pause';
+  populateAddPersonSelect();
+  renderPrayerPeople();
+  updatePrayerTimerDisplay();
+  prayerTimer = setInterval(tickPrayerTimer, 1000);
+}
+
+function populateAddPersonSelect() {
+  const d = getPrayerData();
+  const sel = document.getElementById('prayer-add-person-select');
+  const sessionNames = new Set(prayerSessionPeople.map(p => p.name));
+  const options = d.names.filter(p => !sessionNames.has(p.name));
+  sel.innerHTML = options.length
+    ? options.map(p => '<option value="' + p.name + '">' + p.name + ' (' + p.cat + ')</option>').join('')
+    : '<option value="">No more names</option>';
+}
+
+function addPersonToSession() {
+  const sel = document.getElementById('prayer-add-person-select');
+  const name = sel.value;
+  if (!name) return;
+  const d = getPrayerData();
+  const person = d.names.find(p => p.name === name);
+  if (!person) return;
+  prayerSessionPeople.push({
+    name: person.name, cat: person.cat,
+    items: (person.items || []).map(it => ({ text: it.text, checked: false })),
+    sessionNote: '', checked: false
+  });
+  populateAddPersonSelect();
+  renderPrayerPeople();
+}
+
+function addNewPersonToSession() {
+  const nameEl = document.getElementById('session-new-name');
+  const catEl = document.getElementById('session-new-cat');
+  const name = nameEl.value.trim();
+  if (!name) return;
+  const cat = catEl.value;
+  // Save to name list
+  const d = getPrayerData();
+  if (!d.names.find(p => p.name === name)) {
+    d.names.push({ name, cat, items: [] });
+    savePrayerData(d);
+  }
+  // Add to session
+  prayerSessionPeople.push({ name, cat, items: [], sessionNote: '', checked: false });
+  nameEl.value = '';
+  populateAddPersonSelect();
+  renderPrayerPeople();
+}
+
+function tickPrayerTimer() {
+  if (prayerPaused) return;
+  prayerSecondsLeft--;
+  updatePrayerTimerDisplay();
+  if (prayerSecondsLeft <= 0) {
+    clearInterval(prayerTimer);
+    document.getElementById('prayer-timer-label').textContent = "Time's up!";
+    document.getElementById('prayer-timer-display').style.color = '#4caf6e';
+  }
+}
+
+function updatePrayerTimerDisplay() {
+  const m = Math.floor(Math.max(0, prayerSecondsLeft) / 60);
+  const s = Math.max(0, prayerSecondsLeft) % 60;
+  document.getElementById('prayer-timer-display').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+function togglePrayerPause() {
+  prayerPaused = !prayerPaused;
+  document.getElementById('prayer-pause-btn').textContent = prayerPaused ? 'Resume' : 'Pause';
+}
+
+function renderPrayerPeople() {
+  const el = document.getElementById('prayer-people-list');
+  el.innerHTML = prayerSessionPeople.map((p, i) => {
+    const itemsHtml = (p.items || []).map((item, j) =>
+      '<div class="prayer-session-item-row">' +
+        '<div class="prayer-session-item-check ' + (item.checked ? 'checked' : '') + '" onclick="toggleSessionItem(' + i + ',' + j + ')"></div>' +
+        '<span class="prayer-session-item-text">' + item.text + '</span>' +
+      '</div>'
+    ).join('');
+    return '<div class="prayer-person-item">' +
+      '<div class="prayer-person-top">' +
+        '<div class="prayer-person-check ' + (p.checked ? 'checked' : '') + '" onclick="togglePrayerPersonCheck(' + i + ')"></div>' +
+        '<span class="prayer-person-name">' + p.name + '</span>' +
+        '<span class="prayer-name-badge cat-' + p.cat + '" style="margin-left:auto">' + p.cat + '</span>' +
+      '</div>' +
+      (itemsHtml ? '<div class="prayer-session-items">' + itemsHtml + '</div>' : '') +
+      '<textarea class="prayer-person-note" placeholder="Additional notes..." oninput="savePrayerPersonNote(' + i + ', this.value); autoExpand(this)">' + p.sessionNote + '</textarea>' +
+    '</div>';
+  }).join('');
+  el.querySelectorAll('textarea').forEach(t => { if (t.value) autoExpand(t); });
+}
+
+function togglePrayerPersonCheck(i) {
+  prayerSessionPeople[i].checked = !prayerSessionPeople[i].checked;
+  renderPrayerPeople();
+}
+
+function toggleSessionItem(personIdx, itemIdx) {
+  prayerSessionPeople[personIdx].items[itemIdx].checked = !prayerSessionPeople[personIdx].items[itemIdx].checked;
+  renderPrayerPeople();
+}
+
+function savePrayerPersonNote(i, val) {
+  prayerSessionPeople[i].sessionNote = val;
+}
+
+function endPrayerSession() {
+  clearInterval(prayerTimer);
+  const elapsed = prayerDurationSecs - prayerSecondsLeft;
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+  const duration = mins + 'm ' + String(secs).padStart(2,'0') + 's';
+  const d = getPrayerData();
+  d.history.unshift({
+    date: prayerStartTime, duration,
+    people: prayerSessionPeople.map(p => ({
+      name: p.name, cat: p.cat, checked: p.checked,
+      items: (p.items || []).map(it => ({ text: it.text, checked: it.checked, answered: false })),
+      note: p.sessionNote
+    }))
+  });
+  savePrayerData(d);
+  prayerSessionPeople = [];
+  document.getElementById('prayer-session-view').style.display = 'none';
+  document.getElementById('prayer-setup-view').style.display = 'block';
+  document.getElementById('prayer-timer-display').style.color = '';
+  document.getElementById('prayer-timer-label').textContent = 'Time remaining';
+  renderPrayerNames();
+  renderPrayerHistory();
+}
+
+function toggleAnswered(sessionIdx, personIdx, itemIdx) {
+  const d = getPrayerData();
+  const person = d.history[sessionIdx].people[personIdx];
+  if (itemIdx === -1) {
+    person.answered = !person.answered;
+  } else {
+    person.items[itemIdx].answered = !person.items[itemIdx].answered;
+  }
+  savePrayerData(d);
+  renderPrayerHistory();
+}
+
+function deleteHistorySession(si) {
+  const d = getPrayerData();
+  d.history.splice(si, 1);
+  savePrayerData(d);
+  renderPrayerHistory();
+}
+
+function clearAllPrayerHistory() {
+  const d = getPrayerData();
+  d.history = [];
+  savePrayerData(d);
+  renderPrayerHistory();
+}
+
+function saveHistoryPersonNote(si, pi, val) {
+  const d = getPrayerData();
+  d.history[si].people[pi].note = val;
+  savePrayerData(d);
+}
+
+function renderPrayerHistory() {
+  const d = getPrayerData();
+  const el = document.getElementById('prayer-history-list');
+  if (!d.history.length) { el.innerHTML = '<div class="prayer-empty">No sessions yet</div>'; return; }
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  el.innerHTML = d.history.map((session, si) => {
+    const dt = new Date(session.date);
+    const dateStr = months[dt.getMonth()] + ' ' + dt.getDate() + ', ' + dt.getFullYear() + ' · ' + (dt.getHours()%12||12) + ':' + String(dt.getMinutes()).padStart(2,'0') + ' ' + (dt.getHours()<12?'AM':'PM');
+    const peopleHtml = session.people.map((p, pi) => {
+      const itemsHtml = (p.items || []).map((item, ii) =>
+        '<div class="ph-person-item-row">' +
+          '<span class="ph-person-items" style="padding:0">' + (item.checked ? '✓ ' : '· ') + item.text + '</span>' +
+          '<button class="ph-answered-btn ' + (item.answered ? 'answered' : '') + '" onclick="toggleAnswered(' + si + ',' + pi + ',' + ii + ')">' + (item.answered ? '✓' : '?') + '</button>' +
+        '</div>'
+      ).join('');
+      return '<div class="ph-person">' +
+        '<div class="ph-person-top">' +
+          '<span class="ph-person-name">' + (p.checked ? '✓ ' : '') + p.name + ' <span class="prayer-name-badge cat-' + (p.cat||'') + '">' + (p.cat||'') + '</span></span>' +
+          '<button class="ph-answered-btn ' + (p.answered ? 'answered' : '') + '" onclick="toggleAnswered(' + si + ',' + pi + ',-1)">' + (p.answered ? '✓ Answered' : 'Answered?') + '</button>' +
+        '</div>' +
+        (itemsHtml ? '<div class="ph-person-items">' + itemsHtml + '</div>' : '') +
+        '<textarea class="ph-edit-note" placeholder="Add a note..." oninput="saveHistoryPersonNote(' + si + ',' + pi + ',this.value);autoExpand(this)">' + (p.note||'') + '</textarea>' +
+      '</div>';
+    }).join('');
+    return '<div class="ph-item">' +
+      '<div class="ph-header">' +
+        '<div class="ph-date">' + dateStr + ' · ' + session.duration + '</div>' +
+        '<button class="ph-del-btn" onclick="deleteHistorySession(' + si + ')" title="Delete session">✕</button>' +
+      '</div>' +
+      peopleHtml +
+    '</div>';
+  }).join('');
+  el.querySelectorAll('textarea').forEach(t => { if (t.value) autoExpand(t); });
+}
+
+function renderPrayer() {
+  renderPrayerNames();
+  renderPrayerHistory();
 }
 
 /* ─────────────── DAY / NIGHT ─────────────── */
