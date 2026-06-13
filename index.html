@@ -475,7 +475,7 @@
   .prayer-cat-pill[data-cat="all"].active { border-color: var(--green-dim); color: var(--green); }
   .prayer-cat-pill[data-cat="Family"].active { border-color: #7a2020; color: #f07070; }
   .prayer-cat-pill[data-cat="Saints"].active { border-color: #5a3a9a; color: #a78bfa; }
-  .prayer-cat-pill[data-cat="Students"].active { border-color: #0d7a50; color: #34d399; }
+  .prayer-cat-pill[data-cat="Contacts"].active { border-color: #0d7a50; color: #34d399; }
   .prayer-cat-select-input { background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 11px 10px; cursor: pointer; }
   .prayer-start-btn { width: 100%; background: var(--green); border: none; border-radius: var(--radius-sm); color: #0a1209; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; padding: 14px; cursor: pointer; transition: opacity .15s; }
   .prayer-start-btn:active { opacity: .85; }
@@ -484,6 +484,14 @@
   .prayer-name-field:focus { outline: none; border-color: var(--green-dim); }
   .prayer-add-btn { background: var(--bg3); border: 1.5px dashed var(--border2); border-radius: var(--radius-sm); color: var(--text3); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 11px 14px; cursor: pointer; white-space: nowrap; transition: all .15s; }
   .prayer-add-btn:active { background: var(--surface2); color: var(--text2); }
+  .prayer-cat-group { margin-bottom: 4px; }
+  .prayer-cat-group:last-child { margin-bottom: 0; }
+  .prayer-cat-group-header { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; cursor: pointer; border-bottom: 1px solid var(--border2); }
+  .prayer-cat-group-header:last-of-type { border-bottom: none; }
+  .prayer-cat-group-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text); }
+  .prayer-cat-group-count { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .prayer-cat-group-chevron { color: var(--text3); font-size: 16px; transition: transform .2s; display: inline-block; }
+  .prayer-cat-group-body { display: none; padding-left: 4px; }
   .prayer-name-item { padding: 10px 0; border-bottom: 1px solid var(--border2); }
   .prayer-name-item:last-child { border-bottom: none; }
   .prayer-name-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
@@ -492,7 +500,7 @@
   .prayer-name-badge { font-size: 10px; font-family: 'DM Mono', monospace; padding: 2px 7px; border-radius: 10px; border: 1px solid var(--border2); color: var(--text3); background: var(--bg3); }
   .prayer-name-badge.cat-Family { color: #f07070; border-color: #7a2020; background: transparent; }
   .prayer-name-badge.cat-Saints { color: #a78bfa; border-color: #5a3a9a; background: transparent; }
-  .prayer-name-badge.cat-Students { color: #34d399; border-color: #0d7a50; background: transparent; }
+  .prayer-name-badge.cat-Contacts { color: #34d399; border-color: #0d7a50; background: transparent; }
   .prayer-name-del { background: none; border: none; color: var(--text3); font-size: 18px; cursor: pointer; padding: 0 4px; line-height: 1; }
   .prayer-expand-chevron { color: var(--text3); font-size: 18px; line-height: 1; transition: transform .2s; display: inline-block; }
   .prayer-item-count { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
@@ -662,7 +670,7 @@
         <div class="total-box app">
           <div class="total-num"><span id="tot-app">0</span><span class="total-denom">/10</span></div>
           <div class="total-lbl">Appt</div>
-          <div class="subtotal-stu"><span id="tot-stu">0</span><span id="lbl-stu" class="subtotal-lbl"> Students</span></div>
+          <div class="subtotal-stu"><span id="tot-stu">0</span><span id="lbl-stu" class="subtotal-lbl"> Contacts</span></div>
         </div>
         <div class="total-box gos">
           <div class="total-num"><span id="tot-gos">0</span><span class="total-denom">/2</span></div>
@@ -735,7 +743,7 @@
       <div class="form-group" id="appt-type-group">
         <label>Appointment type</label>
         <select id="f-appt-type">
-          <option value="student">Student</option>
+          <option value="student">Contact</option>
           <option value="non-student">Non-student</option>
         </select>
       </div>
@@ -808,23 +816,25 @@
           <button class="prayer-cat-pill active" data-cat="all" onclick="selectPrayerCat(this)">All</button>
           <button class="prayer-cat-pill" data-cat="Family" onclick="selectPrayerCat(this)">Family</button>
           <button class="prayer-cat-pill" data-cat="Saints" onclick="selectPrayerCat(this)">Saints</button>
-          <button class="prayer-cat-pill" data-cat="Students" onclick="selectPrayerCat(this)">Students</button>
+          <button class="prayer-cat-pill" data-cat="Contacts" onclick="selectPrayerCat(this)">Contacts</button>
         </div>
         <button class="prayer-start-btn" onclick="startPrayerSession()">Start Prayer Time</button>
       </div>
 
       <div class="card">
         <div class="card-label">Name List</div>
-        <div class="prayer-add-row">
+        <div class="prayer-add-row" style="margin-bottom:12px">
           <input id="prayer-name-input" type="text" class="prayer-name-field" placeholder="Name..." onkeydown="if(event.key==='Enter') addPrayerName()">
           <select id="prayer-name-cat" class="prayer-cat-select-input">
             <option value="Family">Family</option>
             <option value="Saints">Saints</option>
-            <option value="Students">Students</option>
+            <option value="Contacts">Contacts</option>
           </select>
           <button class="prayer-add-btn" onclick="addPrayerName()">Add</button>
         </div>
-        <div id="prayer-names-list"></div>
+        <div id="prayer-cat-family" class="prayer-cat-group"></div>
+        <div id="prayer-cat-saints" class="prayer-cat-group"></div>
+        <div id="prayer-cat-contacts" class="prayer-cat-group"></div>
       </div>
 
       <div class="card" id="prayer-history-card">
@@ -858,7 +868,7 @@
             <select id="session-new-cat" class="prayer-cat-select-input">
               <option value="Family">Family</option>
               <option value="Saints">Saints</option>
-              <option value="Students">Students</option>
+              <option value="Contacts">Contacts</option>
             </select>
             <button class="prayer-add-btn" onclick="addNewPersonToSession()">+ Add</button>
           </div>
@@ -875,16 +885,16 @@
       <span class="nav-label">Life</span>
     </button>
     <button class="nav-btn" id="nav-service" onclick="navTo('service')">
-      <svg class="nav-icon" viewBox="0 0 24 24"><rect class="nav-fill" x="4" y="6" width="16" height="2" rx="1"/><rect class="nav-fill" x="4" y="11" width="16" height="2" rx="1"/><rect class="nav-fill" x="4" y="16" width="10" height="2" rx="1"/></svg>
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle class="nav-stroke" cx="9" cy="6" r="2.5"/><path class="nav-stroke" d="M4 20 C4 16.5 6 14 9 14 C12 14 14 16.5 14 20"/><circle class="nav-stroke" cx="16" cy="7" r="2"/><path class="nav-stroke" d="M14.5 14.5 C15 14.2 15.5 14 16 14 C18.5 14 20 16 20 19"/></svg>
       <span class="nav-label">Service</span>
     </button>
-    <button class="nav-btn" id="nav-export" onclick="navTo('export')">
-      <svg class="nav-icon" viewBox="0 0 24 24"><path class="nav-stroke" d="M12 4v10M8 10l4 4 4-4M5 17v2a1 1 0 001 1h12a1 1 0 001-1v-2"/></svg>
-      <span class="nav-label">Export</span>
-    </button>
     <button class="nav-btn" id="nav-prayer" onclick="navTo('prayer')">
-      <svg class="nav-icon" viewBox="0 0 24 24"><path class="nav-stroke" d="M6 4c0 4 2 6 6 8 4-2 6-4 6-8M12 12v8M9 20h6"/></svg>
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><line class="nav-stroke" x1="7" y1="4" x2="7" y2="20"/><line class="nav-stroke" x1="17" y1="4" x2="17" y2="20"/><line class="nav-stroke" x1="7" y1="7" x2="17" y2="7"/><line class="nav-stroke" x1="7" y1="12" x2="17" y2="12"/><line class="nav-stroke" x1="7" y1="17" x2="17" y2="17"/></svg>
       <span class="nav-label">Prayer</span>
+    </button>
+    <button class="nav-btn" id="nav-export" onclick="navTo('export')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path class="nav-stroke" d="M12 14V4M9 7l3-3 3 3"/><path class="nav-stroke" d="M5 14v4a1 1 0 001 1h12a1 1 0 001-1v-4"/></svg>
+      <span class="nav-label">Export</span>
     </button>
   </nav>
 
@@ -1118,10 +1128,10 @@ function renderBibleGrid() {
     return `<div class="bible-cell">
       <div class="bible-cell-label">${lbl}</div>
       <div class="bible-check-wrap">
-        ${hasLS ? `<div class="bible-check ${lsOn?'checked':''}" title="LS/Book" onclick="toggleBible(${dayIdx},'ls',this)"></div>
-        <div class="bible-check-lbl">${bookLbl}${msgNum}</div>` : ''}
         <div class="bible-check ${brOn?'checked':''}" title="Bible Reading" onclick="toggleBible(${dayIdx},'br',this)"></div>
         <div class="bible-check-lbl">${chapterLbl}</div>
+        ${hasLS ? `<div class="bible-check ${lsOn?'checked':''}" title="LS/Book" onclick="toggleBible(${dayIdx},'ls',this)"></div>
+        <div class="bible-check-lbl">${bookLbl}${msgNum}</div>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -1186,7 +1196,7 @@ function renderService() {
   document.getElementById('tot-gos').textContent  = gos;
   document.getElementById('tot-misc').textContent = misc;
   document.getElementById('tot-stu').textContent  = stu;
-  document.getElementById('lbl-stu').textContent  = stu === 1 ? ' Student' : ' Students';
+  document.getElementById('lbl-stu').textContent  = stu === 1 ? ' Contact' : ' Contacts';
 
   const el = document.getElementById('entry-list');
   if (!entries.length) { el.innerHTML='<div class="empty-state">No entries yet this week</div>'; return; }
@@ -1211,7 +1221,7 @@ function renderService() {
             </div>
             <div class="entry-meta">
               ${e.cat==='app'&&e.apptType
-                ?`<span class="appt-badge ${e.apptType==='student'?'badge-student':'badge-non-student'}">${e.apptType==='student'?'Student':'Non-student'}</span>`:''}
+                ?`<span class="appt-badge ${e.apptType==='student'?'badge-student':'badge-non-student'}">${e.apptType==='student'?'Contact':'Non-student'}</span>`:''}
             </div>
           </div>
           <div class="entry-actions">
@@ -1444,38 +1454,65 @@ function selectPrayerCat(btn) {
 /* ── Prayer List ── */
 function renderPrayerNames() {
   const d = getPrayerData();
-  const el = document.getElementById('prayer-names-list');
-  if (!d.names.length) { el.innerHTML = '<div class="prayer-empty">No names yet</div>'; return; }
-  el.innerHTML = d.names.map((person, i) => {
-    const items = (person.items || []);
-    const count = items.length;
-    const itemsHtml = items.map((item, j) =>
-      '<li class="prayer-item-row">' +
-        '<span class="prayer-item-text">· ' + item.text + '</span>' +
-        '<button class="prayer-item-del" onclick="deletePrayerItem(' + i + ',' + j + ')">×</button>' +
-      '</li>'
-    ).join('');
-    return '<div class="prayer-name-item" id="pni-' + i + '">' +
-      '<div class="prayer-name-top" onclick="togglePrayerNameExpand(' + i + ')" style="cursor:pointer">' +
-        '<div class="prayer-name-left">' +
-          '<span class="prayer-name-text">' + person.name + '</span>' +
-          '<span class="prayer-name-badge cat-' + person.cat + '">' + person.cat + '</span>' +
-          (count ? '<span class="prayer-item-count">' + count + ' item' + (count>1?'s':'') + '</span>' : '') +
+  const cats = ['Family', 'Saints', 'Contacts'];
+  const catIds = { Family: 'prayer-cat-family', Saints: 'prayer-cat-saints', Contacts: 'prayer-cat-contacts' };
+  cats.forEach(cat => {
+    const el = document.getElementById(catIds[cat]);
+    if (!el) return;
+    const people = d.names.map((p,i) => ({...p, idx:i})).filter(p => p.cat === cat);
+    const count = people.length;
+    const bodyId = 'pcg-body-' + cat;
+    const chevId = 'pcg-chev-' + cat;
+    const peopleHtml = people.map(person => {
+      const i = person.idx;
+      const items = (person.items || []);
+      const ic = items.length;
+      const itemsHtml = items.map((item, j) =>
+        '<li class="prayer-item-row">' +
+          '<span class="prayer-item-text">· ' + item.text + '</span>' +
+          '<button class="prayer-item-del" onclick="deletePrayerItem(' + i + ',' + j + ')">×</button>' +
+        '</li>'
+      ).join('');
+      return '<div class="prayer-name-item" id="pni-' + i + '">' +
+        '<div class="prayer-name-top" onclick="togglePrayerNameExpand(' + i + ')" style="cursor:pointer">' +
+          '<div class="prayer-name-left">' +
+            '<span class="prayer-name-text">' + person.name + '</span>' +
+            (ic ? '<span class="prayer-item-count">' + ic + ' item' + (ic>1?'s':'') + '</span>' : '') +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+            '<span class="prayer-expand-chevron" id="pni-chev-' + i + '">›</span>' +
+            '<button class="prayer-name-del" onclick="event.stopPropagation();deletePrayerName(' + i + ')">×</button>' +
+          '</div>' +
         '</div>' +
-        '<div style="display:flex;align-items:center;gap:8px">' +
-          '<span class="prayer-expand-chevron" id="pni-chev-' + i + '">›</span>' +
-          '<button class="prayer-name-del" onclick="event.stopPropagation();deletePrayerName(' + i + ')">×</button>' +
+        '<div class="prayer-name-expand" id="pni-body-' + i + '" style="display:none">' +
+          (items.length ? '<ul class="prayer-item-list">' + itemsHtml + '</ul>' : '') +
+          '<div class="prayer-item-add-row">' +
+            '<input class="prayer-item-input" placeholder="Add prayer item..." onkeydown="if(event.key===\'Enter\') addPrayerItem(' + i + ', this)">' +
+            '<button class="prayer-item-add-btn" onclick="addPrayerItem(' + i + ', this.previousElementSibling)">+ Item</button>' +
+          '</div>' +
         '</div>' +
+      '</div>';
+    }).join('');
+    el.innerHTML =
+      '<div class="prayer-cat-group-header" onclick="togglePrayerCatGroup(\'' + cat + '\')">' +
+        '<div class="prayer-cat-group-title">' +
+          '<span class="prayer-name-badge cat-' + cat + '">' + cat + '</span>' +
+          '<span class="prayer-cat-group-count">' + count + ' ' + (count===1?'name':'names') + '</span>' +
+        '</div>' +
+        '<span class="prayer-cat-group-chevron" id="' + chevId + '">›</span>' +
       '</div>' +
-      '<div class="prayer-name-expand" id="pni-body-' + i + '" style="display:none">' +
-        (items.length ? '<ul class="prayer-item-list">' + itemsHtml + '</ul>' : '') +
-        '<div class="prayer-item-add-row">' +
-          '<input class="prayer-item-input" placeholder="Add prayer item..." onkeydown="if(event.key===\'Enter\') addPrayerItem(' + i + ', this)">' +
-          '<button class="prayer-item-add-btn" onclick="addPrayerItem(' + i + ', this.previousElementSibling)">+ Item</button>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  }).join('');
+      '<div class="prayer-cat-group-body" id="' + bodyId + '">' +
+        (count ? peopleHtml : '<div class="prayer-empty" style="padding:10px 0">None yet</div>') +
+      '</div>';
+  });
+}
+
+function togglePrayerCatGroup(cat) {
+  const body = document.getElementById('pcg-body-' + cat);
+  const chev = document.getElementById('pcg-chev-' + cat);
+  const open = body.style.display === 'none' || body.style.display === '';
+  body.style.display = open ? 'block' : 'none';
+  chev.style.transform = open ? 'rotate(90deg)' : '';
 }
 
 function togglePrayerNameExpand(i) {
@@ -1668,6 +1705,19 @@ function endPrayerSession() {
     }))
   });
   savePrayerData(d);
+  // Auto-check PM prayer for today
+  const weekData = getWeekData();
+  if (!weekData.prayerDays) weekData.prayerDays = [];
+  const today = new Date();
+  const dayIdx = today.getDay(); // 0=Sun, 6=Sat
+  if (!weekData.prayerDays.includes(dayIdx)) {
+    weekData.prayerDays.push(dayIdx);
+    save();
+    document.querySelectorAll('.prayer-check-box').forEach(box => {
+      if (parseInt(box.dataset.day) === dayIdx) box.classList.add('checked');
+    });
+    document.getElementById('prayer-count-num').textContent = weekData.prayerDays.length;
+  }
   prayerSessionPeople = [];
   document.getElementById('prayer-session-view').style.display = 'none';
   document.getElementById('prayer-setup-view').style.display = 'block';
